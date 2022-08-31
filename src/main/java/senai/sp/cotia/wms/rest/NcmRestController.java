@@ -11,20 +11,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Ncm;
-import senai.sp.cotia.wms.repository.NcmRepository;
 
 @RestController
 @RequestMapping("api/estoque")
 public class NcmRestController {
-	
-	
-	@Autowired
-	private NcmRepository ncmRepo;
-	
-	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public ResponseEntity<Object> saveNcm(@RequestBody Ncm ncm, HttpServletRequest request, 
-			HttpServletResponse response){
-		
-		return ResponseEntity.ok().build();
-	}
+//	
+//	
+//	@Autowired
+//	private NcmRepository ncmRepo;
+//	
+//	@RequestMapping(value = "save", method = RequestMethod.POST)
+//	public ResponseEntity<Object> saveNcm(@RequestBody Ncm ncm, HttpServletRequest request, 
+//			HttpServletResponse response){
+//		
+//		return ResponseEntity.ok().build();
+//	}
 }
