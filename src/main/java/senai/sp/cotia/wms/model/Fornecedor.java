@@ -25,7 +25,6 @@ public class Fornecedor {
 	private String localidade;
 	private String uf;	
 	private boolean homologado;
-	@OneToMany
-	private List<ItemFornecedor> item;
+	
 	
 }

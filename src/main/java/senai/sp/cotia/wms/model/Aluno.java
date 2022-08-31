@@ -23,6 +23,5 @@ public class Aluno {
 	private String codMatricula;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String senha;
-	@OneToMany
-	private Pedido pedido;
+	
 }

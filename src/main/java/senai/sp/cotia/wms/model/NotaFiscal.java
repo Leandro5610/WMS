@@ -24,6 +24,5 @@ public class NotaFiscal {
 	private Pedido pedido;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Calendar dataEmissao;	
-	@OneToMany
-	private List<ItemNota> itens;
+
 }

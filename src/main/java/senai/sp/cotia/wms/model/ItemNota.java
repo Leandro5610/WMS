@@ -6,7 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+
 @Entity
+@Data
 public class ItemNota {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

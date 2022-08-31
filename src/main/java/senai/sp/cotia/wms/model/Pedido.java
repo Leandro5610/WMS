@@ -23,6 +23,6 @@ public class Pedido {
 	@JsonFormat(pattern = "yyyy-MM-dd 'T'HH:mm")
 	private Calendar dataPedido;
 	@OneToOne
-	private List<ItensPedido> itens;
+	private Aluno aluno;
 	
 }

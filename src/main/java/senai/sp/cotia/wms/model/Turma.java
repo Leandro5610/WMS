@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -29,8 +30,7 @@ public class Turma {
 	private Calendar dataFinal;
 	@Enumerated(EnumType.STRING)
 	private Periodo	periodo;
-	@OneToMany
+	@ManyToOne
 	private Aluno aluno;
-	@OneToOne
-	private Professor professor;
+
 }
