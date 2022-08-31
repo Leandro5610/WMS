@@ -1,5 +1,9 @@
 package senai.sp.cotia.wms.repository;
 
-public interface EnderecamentoRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import senai.sp.cotia.wms.model.Enderecamento;
+
+public interface EnderecamentoRepository extends PagingAndSortingRepository<Enderecamento, Long>{
 
 }

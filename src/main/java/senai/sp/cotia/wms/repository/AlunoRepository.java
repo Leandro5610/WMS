@@ -1,5 +1,10 @@
 package senai.sp.cotia.wms.repository;
 
-public interface AlunoRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
 
+import senai.sp.cotia.wms.model.Aluno;
+
+public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long> {
+	
+	
 }
