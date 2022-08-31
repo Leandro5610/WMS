@@ -1,5 +1,9 @@
 package senai.sp.cotia.wms.repository;
 
-public interface UnidadeMedidaRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import senai.sp.cotia.wms.model.UnidadeMedida;
+
+public interface UnidadeMedidaRepository extends PagingAndSortingRepository<UnidadeMedida, Long>{
 
 }
