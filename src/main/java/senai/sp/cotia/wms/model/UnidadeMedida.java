@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import lombok.Data;
 @Data
 @Entity
-public class UniMedida {
+public class UnidadeMedida {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

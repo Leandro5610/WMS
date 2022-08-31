@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import lombok.Data;
-import senai.sp.cotia.wms.type.EnumDemanda;
+import senai.sp.cotia.wms.type.Demanda;
 @Data
 @Entity
 public class Produto {
@@ -23,14 +23,17 @@ public class Produto {
 	@Column(unique = true)
 	private String sku;
 	private String nome;
-	private Double valor;
+	private Double valorUnitario;
 	private String descricao;
 	@OneToOne
-	private UniMedida medida;
-	private boolean produtoImportado;
+	private UnidadeMedida medida;
+	private boolean importado;
 	@Enumerated(EnumType.STRING)
-	private EnumDemanda demanda;
+	private Demanda demanda;
 	private Double ipi;
+	private Double pis;
+	private Double cofins;
+	private Double icms;
 	@OneToMany
 	private List<Fornecedor> fornecedores;	
 }

@@ -4,10 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class ItemNota {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idItemNota;
+	private Long id;
+	@OneToOne
+	private Pedido pedido;
+	@OneToOne
+	private NotaFiscal notaFiscal;
+	private int qtd;
 }

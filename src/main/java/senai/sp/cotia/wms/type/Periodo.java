@@ -1,13 +1,13 @@
 package senai.sp.cotia.wms.type;
 
-public enum EnumPeriodo {
+public enum Periodo {
 		MANHA("manha"),
 		TARDE("tarde"),
 		NOITE("noite");
 
 		String periodo;
 		
-		private EnumPeriodo(String periodo) {
+		private Periodo(String periodo) {
 			this.periodo = periodo;
 		}
 

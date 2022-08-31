@@ -26,6 +26,6 @@ public class Fornecedor {
 	private String uf;	
 	private boolean homologado;
 	@OneToMany
-	private List<ItemFornecedor> listItem;
+	private List<ItemFornecedor> item;
 	
 }

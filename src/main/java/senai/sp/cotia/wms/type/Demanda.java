@@ -1,13 +1,13 @@
 package senai.sp.cotia.wms.type;
 
-public enum EnumDemanda {
+public enum Demanda {
 	BAIXA("baixa"),
 	MEDIA("media"),
 	ALTA("alta");
 	
 	String demanda;
 	
-	private EnumDemanda(String demanda) {
+	private Demanda(String demanda) {
 		this.demanda = demanda;
 	}
 

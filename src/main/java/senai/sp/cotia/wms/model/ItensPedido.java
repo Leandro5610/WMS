@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 @Data
@@ -12,11 +13,11 @@ import lombok.Data;
 public class ItensPedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	private Long idItem;
-	private Double valorItem;
+	private Long id;
 	private int quantidade;
 	@OneToMany
 	private Produto produto;
+	@OneToOne
 	private Pedido pedido; 	
 }
      
