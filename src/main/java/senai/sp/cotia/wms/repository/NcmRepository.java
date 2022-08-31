@@ -1,5 +1,9 @@
 package senai.sp.cotia.wms.repository;
 
-public interface NcmRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import senai.sp.cotia.wms.model.Ncm;
+
+public interface NcmRepository extends PagingAndSortingRepository<Ncm, Long>{
 
 }
