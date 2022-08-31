@@ -1,5 +1,9 @@
 package senai.sp.cotia.wms.repository;
 
-public interface PedidoRepository {
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+import senai.sp.cotia.wms.model.Pedido;
+
+public interface PedidoRepository extends PagingAndSortingRepository<Pedido, Long>{
 
 }
