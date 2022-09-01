@@ -7,8 +7,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import senai.sp.cotia.wms.model.ItemFornecedor;
 
-public interface ItensFornecedorRepository extends PagingAndSortingRepository<ItemFornecedor, Long> {
-	
+public interface ItemFornecedorRepository extends PagingAndSortingRepository<ItemFornecedor, Long> {
+	/*
 	public ItemFornecedor findBycodMatriculaAndSenha(String codMatricula, String senha);
 	
 	//procura um item no banco de dados por qualquer atributo
@@ -16,9 +16,10 @@ public interface ItensFornecedorRepository extends PagingAndSortingRepository<It
 	public List<ItemFornecedor> procurarItemFornecedor(@Param("p") String param);
 	
 	
-		//metodo para procurar itens no banco de dados por qualquer atributo
-		@Query("SELECT itens FROM ItensFornecedor itens WHERE itens.fornecedor LIKE %:p% OR itens.produto LIKE %:p% ")
-	    public List<ItemFornecedor> procurarTudo(@Param("p") String param);
+	//metodo para procurar itens no banco de dados por qualquer atributo
+	@Query("SELECT i FROM ItemFornecedor i WHERE i.fornecedor LIKE %:p% OR i.produto LIKE %:p% ")
+	public List<ItemFornecedor> procurarTudo(@Param("p") String param);
+	*/
 
 }
 

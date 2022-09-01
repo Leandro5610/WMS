@@ -15,21 +15,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.ItemFornecedor;
 import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.ItemPedido;
-import senai.sp.cotia.wms.repository.ItensPedidoRepository;
-import senai.sp.cotia.wms.repository.ItensFornecedorRepository;
+import senai.sp.cotia.wms.repository.ItemPedidoRepository;
+import senai.sp.cotia.wms.repository.ItemFornecedorRepository;
 
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping("/api/itemPedido")
-public class ItensPedidoRestController {
+public class ItemPedidoRestController {
 
 	@Autowired
-	private ItensPedidoRepository itemPedidoRepository;
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Privado
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -80,11 +81,13 @@ public class ItensPedidoRestController {
 			return ResponseEntity.noContent().build();
 		}
 
+		/*
 		// metodo para procurar um item à partir de qualquer atributo
 		@RequestMapping(value = "/findbyall/{p}")
 		public List<ItemPedido> findByAll(@PathVariable("p") String param) {
 			return itemPedidoRepository.procurarTudo(param);
 		}
+		*/
 	
 	
 }

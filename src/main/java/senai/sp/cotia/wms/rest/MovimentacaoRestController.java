@@ -80,10 +80,12 @@ public class MovimentacaoRestController {
 				return ResponseEntity.noContent().build();
 			}
 
+			/*
 			// metodo para procurar um item à partir de qualquer atributo
 			@RequestMapping(value = "/findbyall/{p}")
 			public List<Movimentacao> findByAll(@PathVariable("p") String param) {
 				return movimentacaoRepository.procurarTudo(param);
 			}
+			*/
 	
 }

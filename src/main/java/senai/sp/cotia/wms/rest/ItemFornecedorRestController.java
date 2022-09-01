@@ -14,17 +14,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.ItemFornecedor;
-import senai.sp.cotia.wms.repository.ItensFornecedorRepository;
+import senai.sp.cotia.wms.repository.ItemFornecedorRepository;
 
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping("/api/itemFornecedor")
-public class ItensFornecedorRestController {
+public class ItemFornecedorRestController {
 
 	@Autowired
-	private ItensFornecedorRepository itensfornecedorRepository;
+	private ItemFornecedorRepository itensfornecedorRepository;
 
 	@Privado
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -75,10 +77,12 @@ public class ItensFornecedorRestController {
 		return ResponseEntity.noContent().build();
 	}
 
+	/*
 	// metodo para procurar um item à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<ItemFornecedor> findByAll(@PathVariable("p") String param) {
 		return itensfornecedorRepository.procurarTudo(param);
 	}
+	*/
 
 }
