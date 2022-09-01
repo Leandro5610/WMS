@@ -30,7 +30,6 @@ public class ItemNotaRestController {
 	@Autowired
 	private ItemNotaRepository itemNotaRepository;
 
-	@Privado
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveItensNota(@RequestBody ItemNota itens) {
 		try {
@@ -43,7 +42,6 @@ public class ItemNotaRestController {
 
 	}
 
-	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemNota> findItensNota(@PathVariable("id") Long idItens) {
 		// busca os itens
@@ -56,7 +54,6 @@ public class ItemNotaRestController {
 	}
 
 	// atualiza os itens recebendo o id
-	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarItensNota(@RequestBody ItemNota itens, @PathVariable("id") Long id) {
 		// valida o ID
@@ -72,7 +69,6 @@ public class ItemNotaRestController {
 
 	}
 	
-	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirItemNota(@PathVariable("id") Long idItens) {
 		itemNotaRepository.deleteById(idItens);

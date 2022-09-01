@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -34,6 +35,9 @@ public class Produto {
 	private Double pis;
 	private Double cofins;
 	private Double icms;
-	@OneToMany
-	private List<Fornecedor> fornecedores;	
+	@ManyToOne
+	private Fornecedor fornecedores;
+	@OneToOne
+	private Ncm ncm;
+	private int qtd;
 }

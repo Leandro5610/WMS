@@ -73,7 +73,7 @@ public class ProdutoRestController {
 				prodRepo.save(produto);
 				// criar novo cabeçalho HTTP
 				HttpHeaders header = new HttpHeaders();
-				header.setLocation(URI.create("/api/usuário"));
+				header.setLocation(URI.create("/api/produto"));
 				return new ResponseEntity<Void>(header, HttpStatus.OK);	
 			}
 			

@@ -1,4 +1,4 @@
-package senai.sp.cotia.wms.model;
+	package senai.sp.cotia.wms.model;
 
 import java.util.Calendar;
 
@@ -30,7 +30,6 @@ public class Turma {
 	private Calendar dataFinal;
 	@Enumerated(EnumType.STRING)
 	private Periodo	periodo;
-	@ManyToOne
-	private Aluno aluno;
+
 
 }

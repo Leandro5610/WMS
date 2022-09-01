@@ -31,7 +31,6 @@ public class MovimentacaoRestController {
 	private MovimentacaoRepository movimentacaoRepository;
 	
 	
-	@Privado
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveMovimentacao(@RequestBody Movimentacao itens) {
 		try {
@@ -44,7 +43,6 @@ public class MovimentacaoRestController {
 
 	}
 	
-	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Movimentacao> findMovimentaco(@PathVariable("id") Long idMovimentacao) {
 		// busca os itens
@@ -57,7 +55,6 @@ public class MovimentacaoRestController {
 	}
 	
 	// atualiza os itens recebendo o id
-			@Privado
 			@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 			public ResponseEntity<Void> atualizarMovimentacao(@RequestBody Movimentacao movimentacao, @PathVariable("id") Long id) {
 				// valida o ID
@@ -73,7 +70,6 @@ public class MovimentacaoRestController {
 
 			}
 			
-			@Privado
 			@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 			public ResponseEntity<Void> excluirMovimentacao(@PathVariable("id") Long idMovimentacao) {
 				movimentacaoRepository.deleteById(idMovimentacao);

@@ -18,7 +18,7 @@ import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.TurmaRepository;
 
 @RestController
-@RequestMapping("api/Turma")
+@RequestMapping("api/turma")
 public class TurmaRestController {
 	@Autowired
 	private TurmaRepository repo;
@@ -53,7 +53,7 @@ public class TurmaRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> atualizaTurma(@PathVariable("id")Long id, Turma turma){
+	public ResponseEntity<Void> atualizaTurma(@PathVariable("id")Long id,@RequestBody Turma turma){
 			if(id != turma.getId() ) {
 				throw new RuntimeException("id invalido");	
 			}
