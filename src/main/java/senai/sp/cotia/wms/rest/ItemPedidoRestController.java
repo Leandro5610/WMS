@@ -77,13 +77,13 @@ public class ItemPedidoRestController {
 			return ResponseEntity.noContent().build();
 		}
 
-		/*
+		
 		// metodo para procurar um item à partir de qualquer atributo
 		@RequestMapping(value = "/findbyall/{p}")
 		public List<ItemPedido> findByAll(@PathVariable("p") String param) {
 			return itemPedidoRepository.procurarTudo(param);
 		}
-		*/
+		
 	
 	
 }

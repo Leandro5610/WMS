@@ -76,8 +76,5 @@ public class EstoqueRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	@RequestMapping(value = "/findbyall/{p}")
-	public Iterable<Estoque> findByAll(@PathVariable("p") String param) {
-		return repository.procurarTudo(param);
-	}
+	
 }

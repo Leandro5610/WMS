@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.ProfessorRepository;
@@ -64,6 +66,11 @@ public class ProfessorRestController {
 				return new ResponseEntity<Void>(header, HttpStatus.OK);
 	
 	}
+	// metodo para procurar uma reserva à partir de qualquer atributo
+		@RequestMapping(value = "/findbyall/{p}")
+		public Iterable<Professor> findByAll(@PathVariable("p") String param) {
+			return repo.procurarTudo(param);
+		}
 
 	
 	

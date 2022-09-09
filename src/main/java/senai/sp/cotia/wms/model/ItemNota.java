@@ -18,5 +18,5 @@ public class ItemNota {
 	private Pedido pedido;
 	@OneToOne
 	private NotaFiscal notaFiscal;
-	private int qtd;
+	private int quantidade;
 }

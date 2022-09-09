@@ -73,12 +73,12 @@ public class ItemFornecedorRestController {
 		return ResponseEntity.noContent().build();
 	}
 
-	/*
+	
 	// metodo para procurar um item à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<ItemFornecedor> findByAll(@PathVariable("p") String param) {
 		return itensfornecedorRepository.procurarTudo(param);
 	}
-	*/
+
 
 }

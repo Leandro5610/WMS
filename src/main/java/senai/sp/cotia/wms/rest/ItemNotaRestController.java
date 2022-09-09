@@ -75,13 +75,13 @@ public class ItemNotaRestController {
 		return ResponseEntity.noContent().build();
 	}
 
-	/*
+	
 	// metodo para procurar um item à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public List<ItemNota> findByAll(@PathVariable("p") String param) {
 		return itemNotaRepository.procurarTudo(param);
 	}
-	*/
+	
 	
 	
 

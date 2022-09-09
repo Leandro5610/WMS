@@ -39,5 +39,5 @@ public class Produto {
 	private Fornecedor fornecedores;
 	@OneToOne
 	private Ncm ncm;
-	private int qtd;
+	private int quantidade;
 }

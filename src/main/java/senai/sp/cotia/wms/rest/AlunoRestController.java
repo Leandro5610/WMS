@@ -2,6 +2,7 @@ package senai.sp.cotia.wms.rest;
 
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +71,9 @@ public class AlunoRestController {
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Aluno> listAluno(){
+		ArrayList<Aluno> list = new ArrayList<Aluno>();
+		list = (ArrayList<Aluno>) repository.findAll();
+		System.out.println(list);
 		return repository.findAll();
 	}
 

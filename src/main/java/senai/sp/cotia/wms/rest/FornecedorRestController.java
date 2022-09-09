@@ -76,8 +76,8 @@ public class FornecedorRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-//	@RequestMapping(value = "/findbyall/{p}")
-//	public Iterable<Fornecedor> findByAll(@PathVariable("p") String param) {
-//		return repository.procurarTudo(param);
-//	}
+	@RequestMapping(value = "/findbyall/{p}")
+	public Iterable<Fornecedor> findByAll(@PathVariable("p") String param) {
+		return repository.procurarTudo(param);
+}
 }

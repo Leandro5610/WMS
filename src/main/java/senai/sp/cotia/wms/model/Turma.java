@@ -1,4 +1,4 @@
-	package senai.sp.cotia.wms.model;
+package senai.sp.cotia.wms.model;
 
 import java.util.Calendar;
 

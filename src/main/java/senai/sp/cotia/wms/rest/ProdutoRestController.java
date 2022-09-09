@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
@@ -82,6 +83,11 @@ public class ProdutoRestController {
 			public ResponseEntity<Void> excluirProduto(@PathVariable("id") Long codProduto){
 				prodRepo.deleteById(codProduto);
 				return ResponseEntity.noContent().build();
+			}
+			// metodo para procurar uma reserva à partir de qualquer atributo
+			@RequestMapping(value = "/findbyall/{p}")
+			public Iterable<Produto> findByAll(@PathVariable("p") String param) {
+				return prodRepo.procurarTudo(param);
 			}
 
 }

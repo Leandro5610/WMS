@@ -70,9 +70,10 @@ public class EnderecamentoRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	/*@RequestMapping(value = "/findbyall/{p}")
+	
+	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Enderecamento> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
-	}*/
+	}
 	
 }

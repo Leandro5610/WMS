@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.UnidadeMedida;
 import senai.sp.cotia.wms.repository.UnidadeMedidaRepository;
 
@@ -71,6 +71,11 @@ public class UnidadeMedidaRestController {
 				return new ResponseEntity<Void>(header, HttpStatus.OK);
 	
 	}
+	// metodo para procurar uma reserva à partir de qualquer atributo
+		@RequestMapping(value = "/findbyall/{p}")
+		public Iterable<UnidadeMedida> findByAll(@PathVariable("p") String param) {
+			return repo.procurarTudo(param);
+		}
 	
 	
 }
