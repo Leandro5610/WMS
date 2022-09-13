@@ -64,16 +64,16 @@ public class PedidoRestController {
 		
 		// MÉTODO PARA SALVAR ATUALIZAÇÃO
 		@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-		public ResponseEntity<Void> atualizarPedido(@RequestBody Pedido pedido, @PathVariable("id") Long numPedido){
+		public ResponseEntity<Void> atualizarPedido(@RequestBody Pedido pedido, @PathVariable("id") Long idPedido){
 			// validação de id
-			if (numPedido != pedido.getNumPedido()) {
+			if (idPedido != pedido.getNumPedido()) {
 				throw new RuntimeException("ID inválido");
 			}
 			// salvar pedido atualizado
 			pedidoRepo.save(pedido);
 			// criar novo cabeçalho HTTP
 			HttpHeaders header = new HttpHeaders();
-			header.setLocation(URI.create("/api/usuário"));
+			header.setLocation(URI.create("/api/pedido"));
 			return new ResponseEntity<Void>(header, HttpStatus.OK);	
 		}
 		

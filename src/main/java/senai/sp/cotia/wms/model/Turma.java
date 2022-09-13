@@ -32,5 +32,5 @@ public class Turma {
 	private Periodo	periodo;
 	@ManyToOne
 	private Aluno aluno;
-
+	
 }

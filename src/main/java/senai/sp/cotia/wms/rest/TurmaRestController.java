@@ -1,4 +1,4 @@
-package senai.sp.cotia.wms.rest;
+	package senai.sp.cotia.wms.rest;
 
 import java.net.URI;
 import java.util.Optional;
@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.TurmaRepository;
 
 @RestController
-@RequestMapping("api/Turma")
+@RequestMapping("api/turma")
 public class TurmaRestController {
 	@Autowired
 	private TurmaRepository repo;
@@ -53,7 +54,7 @@ public class TurmaRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> atualizaTurma(@PathVariable("id")Long id, Turma turma){
+	public ResponseEntity<Void> atualizaTurma(@PathVariable("id")Long id, @RequestBody Turma turma){
 			if(id != turma.getId() ) {
 				throw new RuntimeException("id invalido");	
 			}
@@ -61,7 +62,11 @@ public class TurmaRestController {
 				HttpHeaders header = new HttpHeaders();
 				header.setLocation(URI.create("/api/turma"));
 				return new ResponseEntity<Void>(header, HttpStatus.OK);
+				
 	
 	}
-
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public Iterable<Turma> listAluno(){
+		return repo.findAll();
+	}
 }

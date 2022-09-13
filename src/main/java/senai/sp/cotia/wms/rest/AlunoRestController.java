@@ -13,6 +13,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,11 @@ public class AlunoRestController {
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session){
 			try {
+			BCryptPasswordEncoder criptografar = new BCryptPasswordEncoder();
+				String dadoCrip = criptografar.encode(aluno.getNome());
+				criptografar.encode(aluno.getCodMatricula());
+				aluno.setCodMatricula(dadoCrip);
+				aluno.setNome(dadoCrip);
 				repository.save(aluno);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.model.UnidadeMedida;
 import senai.sp.cotia.wms.repository.UnidadeMedidaRepository;
 
@@ -70,6 +70,11 @@ public class UnidadeMedidaRestController {
 				header.setLocation(URI.create("/api/unidade"));
 				return new ResponseEntity<Void>(header, HttpStatus.OK);
 	
+	}
+	
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public Iterable<UnidadeMedida> listAluno(){
+		return repo.findAll();
 	}
 	
 	

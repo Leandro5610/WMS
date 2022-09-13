@@ -64,6 +64,11 @@ public class ProfessorRestController {
 				return new ResponseEntity<Void>(header, HttpStatus.OK);
 	
 	}
+	
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public Iterable<Professor> listAluno(){
+		return repo.findAll();
+	}
 
 	
 	
