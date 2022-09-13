@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Pedido;
@@ -22,6 +25,7 @@ import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/produto")
 public class ProdutoRestController {
 	
@@ -31,10 +35,12 @@ public class ProdutoRestController {
 	// MÉTODO PARA SALVAR
 			@RequestMapping(value = "save")
 			public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
-					HttpServletResponse response){
+					HttpServletResponse response, MultipartFile imagem){
 				
 				try {
+				produto.setImagem(imagem.getBytes());
 				prodRepo.save(produto);
+				return ResponseEntity.ok(HttpStatus.CREATED);
 				
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -89,5 +95,10 @@ public class ProdutoRestController {
 			public Iterable<Produto> findByAll(@PathVariable("p") String param) {
 				return prodRepo.procurarTudo(param);
 			}
+			
+		
+			
+			
+			
 
 }
