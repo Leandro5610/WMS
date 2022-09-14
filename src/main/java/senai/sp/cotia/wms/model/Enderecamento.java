@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.aspectj.weaver.patterns.IfPointcut.IfFalsePointcut;
+import org.jasypt.util.text.BasicTextEncryptor;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -24,5 +27,5 @@ public class Enderecamento {
 	private String modulo;
 	@Enumerated(EnumType.STRING)
 	private Demanda demanda;
-	
+	 
 }

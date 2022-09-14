@@ -34,11 +34,6 @@ public class AlunoRestController {
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session){
 			try {
-			BCryptPasswordEncoder criptografar = new BCryptPasswordEncoder();
-				String dadoCrip = criptografar.encode(aluno.getNome());
-				criptografar.encode(aluno.getCodMatricula());
-				aluno.setCodMatricula(dadoCrip);
-				aluno.setNome(dadoCrip);
 				repository.save(aluno);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {

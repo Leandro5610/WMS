@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.jasypt.util.text.BasicTextEncryptor;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -24,4 +26,35 @@ public class Professor {
 	private String senha;
 	@OneToOne
 	private Turma turma;
+	
+	public void setNome(String nome) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String nomeCrip = textEncriptor.encrypt(nome);
+		 this.nome = nomeCrip;
+	}
+	
+	public void setNif(String nif) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String nifCrip = textEncriptor.encrypt(nif);
+		 this.nif = nifCrip;
+	}
+	
+	public String getNif() {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String nifDescrip = textEncriptor.decrypt(nif);
+		return nifDescrip;
+	}
+	public String getNome() {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String nomeDescrip = textEncriptor.decrypt(nome);
+		return nomeDescrip;
+	}
 }

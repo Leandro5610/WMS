@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.jasypt.util.text.BasicTextEncryptor;
+
 import lombok.Data;
 @Data
 @Entity
@@ -25,6 +27,40 @@ public class Fornecedor {
 	private String localidade;
 	private String uf;	
 	private boolean homologado;
+	
+	public void setNome(String nome) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String nomeCrip = textEncriptor.encrypt(nome);
+		 this.nome = nomeCrip;
+	}
+	
+	public void setCnpj(String cnpj) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String cnpjCrip = textEncriptor.encrypt(cnpj);
+		 this.cnpj = cnpjCrip;
+	}
+	
+	public String getCnpj() {
+		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
+		textDecriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String CnpjDecrip = textDecriptor.decrypt(cnpj);
+		return CnpjDecrip;
+	}
+	
+	public String getNome() {
+		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
+		textDecriptor.setPasswordCharArray("chaves".toCharArray());
+		
+		String nomeDecrip = textDecriptor.decrypt(nome);
+		return nomeDecrip;
+	}
+	
+	
 	
 	
 }

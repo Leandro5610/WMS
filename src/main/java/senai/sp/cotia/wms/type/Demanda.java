@@ -1,5 +1,7 @@
 package senai.sp.cotia.wms.type;
 
+import org.jasypt.util.text.BasicTextEncryptor;
+
 public enum Demanda {
 	BAIXA("baixa"),
 	MEDIA("media"),
