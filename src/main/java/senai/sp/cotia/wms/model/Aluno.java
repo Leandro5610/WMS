@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -26,4 +27,7 @@ public class Aluno {
 	private String senha;
 	@ManyToOne
 	private Turma turma;
+	@Lob
+	@Column(columnDefinition = "MEDIUMBLOB")
+	private String imagem;
 }

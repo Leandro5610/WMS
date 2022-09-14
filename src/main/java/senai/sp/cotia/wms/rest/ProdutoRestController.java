@@ -1,6 +1,9 @@
 package senai.sp.cotia.wms.rest;
 
+import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +41,9 @@ public class ProdutoRestController {
 	// MÉTODO PARA SALVAR
 			@RequestMapping(value = "save")
 			public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
-					HttpServletResponse response, MultipartFile imagem){
+					HttpServletResponse response){
 				
 				try {
-				produto.setImagem(imagem.getBytes());
 				prodRepo.save(produto);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 				
@@ -53,6 +58,7 @@ public class ProdutoRestController {
 			public Iterable<Produto> listarPedidos(){
 				return prodRepo.findAll();
 			}
+
 			
 			// MÉTODO PARA BUSCAR PRODUTO NO BANCO
 			@RequestMapping(value = "/{id}", method = RequestMethod.GET)

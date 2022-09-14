@@ -41,5 +41,6 @@ public class Produto {
 	private Ncm ncm;
 	private int quantidade;
 	@Lob
-	private byte[] imagem;
+	@Column(columnDefinition = "MEDIUMBLOB")
+	private String imagem;
 }

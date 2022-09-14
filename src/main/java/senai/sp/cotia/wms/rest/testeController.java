@@ -1,7 +1,9 @@
 package senai.sp.cotia.wms.rest;
 
+import java.awt.print.PrinterJob;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,6 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.Barcode128;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -30,9 +39,9 @@ public class testeController {
 	private AlunoRepository repo;
 	
 	@RequestMapping(value = "pdf", method = RequestMethod.GET)
-	public String generatedPdf() throws FileNotFoundException, JRException {
+	public String generatedPdf() throws FileNotFoundException, JRException, DocumentException {
 		
-		List<Aluno> list = repo.findAll();
+		/*List<Aluno> list = repo.findAll();
 		
 
 		JRBeanCollectionDataSource bean =new JRBeanCollectionDataSource(list);
@@ -41,8 +50,32 @@ public class testeController {
 		HashMap<String, Object> map = new HashMap<>();
 		JasperPrint print = JasperFillManager.fillReport(report, map, bean);
 		
-		//JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Nova pasta\\teste.pdf");
+		//JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Nova pasta\\teste.pdf");*/
 		
-		return "gerado";
-	}
+		try{
+			
+		
+		Document document = new Document();
+		
+		PdfWriter arquivo = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\TecDevTarde\\Downloads\\teste.pdf"));
+		document.open();
+		
+		Barcode128 barcode = new Barcode128();
+		
+		barcode.setCode("1234567891234");
+		
+		Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
+
+		
+		img.scalePercent(200);
+		document.add(img);
+		document.close();
+		
+		return "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+		}catch (Exception e) {
+			return "nooooooooooooooooooooooooo";
+		}
+		
+		
+	}	
 }
