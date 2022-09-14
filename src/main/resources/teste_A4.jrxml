@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="teste_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e8d1c96-77f8-4ada-bfe1-f5dd2eedea5a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nome" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<field name="codMatricula" class="java.lang.String"/>
+	<field name="senha" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="65" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="0" width="100" height="30" uuid="5db7585f-ef8d-4fd7-aa29-991dc81de7bd"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="0" width="100" height="30" uuid="0cc6c9f5-1206-48db-bdd7-cc94cd8eec3e"/>
+				<text><![CDATA[senha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="100" height="30" uuid="fb502d04-df7e-4f37-8564-c8907d2d3cb9"/>
+				<text><![CDATA[Codigo de Matricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="100" height="30" uuid="a435bc54-d827-4567-a0d9-04d8da23dc50"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="35" width="100" height="30" uuid="bbb5b9db-c2b7-4b20-94c8-c40845e0d667"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="35" width="100" height="30" uuid="6847d979-2244-42de-90ab-8a3057cbae11"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="35" width="100" height="30" uuid="b4172bad-b037-4714-a63c-44588d267e10"/>
+				<textFieldExpression><![CDATA[$F{codMatricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="35" width="100" height="30" uuid="ed30b7c1-7c3f-4f19-98d5-086ac8beb90c"/>
+				<textFieldExpression><![CDATA[$F{senha}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="490" y="25" width="50" height="50" uuid="4051b967-5335-4cff-8c0a-ba1d47d1453e"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+	new com.google.zxing.qrcode.QRCodeWriter().encode(
+		$F{nome},
+		com.google.zxing.BarcodeFormat.QR_CODE, 300,300))
+	
+]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

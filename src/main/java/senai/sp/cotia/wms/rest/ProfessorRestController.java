@@ -8,16 +8,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.ProfessorRepository;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/professor")
 public class ProfessorRestController {
 	
@@ -64,11 +68,19 @@ public class ProfessorRestController {
 				return new ResponseEntity<Void>(header, HttpStatus.OK);
 	
 	}
+<<<<<<< HEAD
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Professor> listAluno(){
 		return repo.findAll();
 	}
+=======
+	// metodo para procurar uma reserva à partir de qualquer atributo
+		@RequestMapping(value = "/findbyall/{p}")
+		public Iterable<Professor> findByAll(@PathVariable("p") String param) {
+			return repo.procurarTudo(param);
+		}
+>>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 
 	
 	

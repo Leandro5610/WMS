@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.repository.EnderecamentoRepository;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/enderecamento")
 public class EnderecamentoRestController {
@@ -70,9 +72,10 @@ public class EnderecamentoRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	/*@RequestMapping(value = "/findbyall/{p}")
+	
+	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Enderecamento> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
-	}*/
+	}
 	
 }

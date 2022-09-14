@@ -2,6 +2,7 @@ package senai.sp.cotia.wms.rest;
 
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+=======
+import org.springframework.web.bind.annotation.CrossOrigin;
+>>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.repository.AlunoRepository;
+@CrossOrigin
 
 @RestController
 @RequestMapping("api/aluno")
@@ -72,6 +78,9 @@ public class AlunoRestController {
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Aluno> listAluno(){
+		ArrayList<Aluno> list = new ArrayList<Aluno>();
+		list = (ArrayList<Aluno>) repository.findAll();
+		System.out.println(list);
 		return repository.findAll();
 	}
 

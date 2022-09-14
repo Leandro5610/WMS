@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -27,6 +29,7 @@ public class Aluno {
 	private String codMatricula;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String senha;
+<<<<<<< HEAD
 	
 	public void setNome(String nome) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
@@ -74,4 +77,11 @@ public class Aluno {
 	
 	
 	
+=======
+	@ManyToOne
+	private Turma turma;
+	@Lob
+	@Column(columnDefinition = "MEDIUMBLOB")
+	private String imagem;
+>>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 }

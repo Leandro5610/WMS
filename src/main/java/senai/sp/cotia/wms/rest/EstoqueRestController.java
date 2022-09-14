@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import senai.sp.cotia.wms.model.Estoque;
 import senai.sp.cotia.wms.repository.EstoqueRepository;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/estoque")
 public class EstoqueRestController {
 	
@@ -76,8 +78,5 @@ public class EstoqueRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	@RequestMapping(value = "/findbyall/{p}")
-	public Iterable<Estoque> findByAll(@PathVariable("p") String param) {
-		return repository.procurarTudo(param);
-	}
+	
 }

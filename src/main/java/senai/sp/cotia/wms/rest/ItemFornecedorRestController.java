@@ -28,7 +28,6 @@ public class ItemFornecedorRestController {
 	@Autowired
 	private ItemFornecedorRepository itensfornecedorRepository;
 
-	@Privado
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveItensFornecedor(@RequestBody ItemFornecedor itens) {
 		try {
@@ -41,7 +40,6 @@ public class ItemFornecedorRestController {
 
 	}
 
-	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemFornecedor> findItensFornecedor(@PathVariable("id") Long idItens) {
 		// busca os itens
@@ -54,7 +52,6 @@ public class ItemFornecedorRestController {
 	}
 
 	// atualiza os itens recebendo o id
-	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarItens(@RequestBody ItemFornecedor itens, @PathVariable("id") Long id) {
 		// valida o ID
@@ -70,19 +67,18 @@ public class ItemFornecedorRestController {
 
 	}
 
-	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirItensFornecedor(@PathVariable("id") Long idItens) {
 		itensfornecedorRepository.deleteById(idItens);
 		return ResponseEntity.noContent().build();
 	}
 
-	/*
+	
 	// metodo para procurar um item à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<ItemFornecedor> findByAll(@PathVariable("p") String param) {
 		return itensfornecedorRepository.procurarTudo(param);
 	}
-	*/
+
 
 }

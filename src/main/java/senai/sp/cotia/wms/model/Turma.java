@@ -30,7 +30,12 @@ public class Turma {
 	private Calendar dataFinal;
 	@Enumerated(EnumType.STRING)
 	private Periodo	periodo;
+<<<<<<< HEAD
 	@ManyToOne
 	private Aluno aluno;
 	
+=======
+
+
+>>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 }
