@@ -68,19 +68,16 @@ public class ProfessorRestController {
 				return new ResponseEntity<Void>(header, HttpStatus.OK);
 	
 	}
-<<<<<<< HEAD
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Professor> listAluno(){
 		return repo.findAll();
 	}
-=======
 	// metodo para procurar uma reserva à partir de qualquer atributo
 		@RequestMapping(value = "/findbyall/{p}")
 		public Iterable<Professor> findByAll(@PathVariable("p") String param) {
 			return repo.procurarTudo(param);
 		}
->>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 
 	
 	

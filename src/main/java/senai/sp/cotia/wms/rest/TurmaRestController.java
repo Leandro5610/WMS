@@ -20,10 +20,7 @@ import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.TurmaRepository;
 
 @RestController
-<<<<<<< HEAD
-=======
 @CrossOrigin
->>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 @RequestMapping("api/turma")
 public class TurmaRestController {
 	@Autowired
@@ -59,11 +56,7 @@ public class TurmaRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-<<<<<<< HEAD
 	public ResponseEntity<Void> atualizaTurma(@PathVariable("id")Long id, @RequestBody Turma turma){
-=======
-	public ResponseEntity<Void> atualizaTurma(@PathVariable("id")Long id,@RequestBody Turma turma){
->>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 			if(id != turma.getId() ) {
 				throw new RuntimeException("id invalido");	
 			}
@@ -74,17 +67,14 @@ public class TurmaRestController {
 				
 	
 	}
-<<<<<<< HEAD
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Turma> listAluno(){
 		return repo.findAll();
 	}
-=======
 	// metodo para procurar uma reserva à partir de qualquer atributo
 		@RequestMapping(value = "/findbyall/{p}")
 		public Iterable<Turma> findByAll(@PathVariable("p") String param) {
 			return repo.procurarTudo(param);
 		}
 
->>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 }

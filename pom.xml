@@ -50,19 +50,16 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<<<<<<< HEAD
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter -->
 		<dependency>
 			<groupId>com.github.ulisesbocchio</groupId>
 			<artifactId>jasypt-spring-boot-starter</artifactId>
 			<version>3.0.4</version>
 		</dependency>
 
-=======
 		<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
 <dependency>
     <groupId>net.sf.jasperreports</groupId>
@@ -93,7 +90,6 @@
     <artifactId>itext-pdfa</artifactId>
     <version>5.5.11</version>
 </dependency>
->>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 
 	</dependencies>
 

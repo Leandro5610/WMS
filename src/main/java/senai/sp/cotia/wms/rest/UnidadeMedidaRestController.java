@@ -20,11 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< HEAD
 import senai.sp.cotia.wms.model.Turma;
-=======
 import senai.sp.cotia.wms.model.Aluno;
->>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
 import senai.sp.cotia.wms.model.UnidadeMedida;
 import senai.sp.cotia.wms.repository.UnidadeMedidaRepository;
 

@@ -29,7 +29,11 @@ public class Aluno {
 	private String codMatricula;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String senha;
-<<<<<<< HEAD
+	@ManyToOne
+	private Turma turma;
+	@Lob
+	@Column(columnDefinition = "MEDIUMBLOB")
+	private String imagem;
 	
 	public void setNome(String nome) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
@@ -77,11 +81,5 @@ public class Aluno {
 	
 	
 	
-=======
-	@ManyToOne
-	private Turma turma;
-	@Lob
-	@Column(columnDefinition = "MEDIUMBLOB")
-	private String imagem;
->>>>>>> 29308330848802eda01db680a9f0c93e508ccfbd
+	
 }
