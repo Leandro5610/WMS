@@ -3,6 +3,7 @@ package senai.sp.cotia.wms.rest;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +37,13 @@ public class AlunoRestController {
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session){
+		
+			
 			try {
+				byte[] decode = Base64.getDecoder().decode(aluno.getImagem());
+				
+				String decodeText = new String(decode,"UTF-8");
+				System.out.println(decodeText);
 				repository.save(aluno);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {
