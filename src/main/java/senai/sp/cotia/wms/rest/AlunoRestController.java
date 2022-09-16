@@ -1,7 +1,13 @@
 package senai.sp.cotia.wms.rest;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Optional;
@@ -10,13 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +31,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.repository.AlunoRepository;
+import senai.sp.cotia.wms.util.FireBaseUtil;
 @CrossOrigin
 
 @RestController
@@ -33,18 +42,22 @@ import senai.sp.cotia.wms.repository.AlunoRepository;
 public class AlunoRestController {
 	@Autowired
 	private AlunoRepository repository;
+	@Autowired
+	private FireBaseUtil fire;
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
-			HttpServletResponse response, HttpSession session){
-		
+			HttpServletResponse response, HttpSession session) throws IOException{
 			
+		String base64ImageString = aluno.getImagem().replace("data:image/png;base64,", "");
+		byte[] decode = Base64.getDecoder().decode(base64ImageString);
+//		FileItem file = new DiskFileItem("fileData", "application/png", true, "teste", 100000000, new java.io.File(System.getProperty("java.io.tmpdir")));
+		
+		Path arquivo = Files.write(Paths.get("C:\\Users\\TecDevTarde\\Downloads\\image.png"), decode);
+		
 			try {
-				byte[] decode = Base64.getDecoder().decode(aluno.getImagem());
-				
-				String decodeText = new String(decode,"UTF-8");
-				System.out.println(decodeText);
 				repository.save(aluno);
+			
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {
 				// TODO: handle exception
