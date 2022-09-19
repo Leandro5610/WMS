@@ -4,6 +4,7 @@ package senai.sp.cotia.wms.rest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
@@ -30,7 +32,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.support.MultipartFilter;
 
+import com.google.firestore.v1.Write;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.repository.AlunoRepository;
@@ -45,27 +51,41 @@ public class AlunoRestController {
 	@Autowired
 	private FireBaseUtil fire;
 	
+	
+	
+	
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException{
-			
+		
+		
 		String base64ImageString = aluno.getImagem().replace("data:image/png;base64,", "");
 		byte[] decode = Base64.getDecoder().decode(base64ImageString);
-//		FileItem file = new DiskFileItem("fileData", "application/png", true, "teste", 100000000, new java.io.File(System.getProperty("java.io.tmpdir")));
 		
-		Path arquivo = Files.write(Paths.get("C:\\Users\\TecDevTarde\\Downloads\\image.png"), decode);
+		String foto = aluno.getImagem();
+		
+		File f = new File ("teste.png");
+		FileOutputStream fos = null;
+		
 		
 			try {
+				 fos = new FileOutputStream (f);
+				 fos.write (decode);
 				repository.save(aluno);
 			
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {
 				// TODO: handle exception
+				if (fos != null) try { fos.close(); } catch (IOException ex) {}
+				
 				e.printStackTrace();
 				return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		
 	}
+	
+	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Aluno> findAluno(@PathVariable("id") Long idAluno, HttpServletRequest request, HttpServletResponse response){
 		Optional<Aluno> aluno = repository.findById(idAluno);

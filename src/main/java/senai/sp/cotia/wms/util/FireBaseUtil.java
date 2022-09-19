@@ -1,6 +1,7 @@
 package senai.sp.cotia.wms.util;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.UUID;
 
 import org.springframework.core.io.ClassPathResource;
@@ -15,6 +16,8 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+
+import senai.sp.cotia.wms.model.Aluno;
 
 @Service
 public class FireBaseUtil {
@@ -55,10 +58,12 @@ public class FireBaseUtil {
 	}
 	
 	public String uploadFile(MultipartFile arquivo) throws IOException {
+		
 		//gera uma string aleatoria para o nome do arquivo
 		String nomeArquivo = UUID.randomUUID().toString()+getExtensao(arquivo.getOriginalFilename());
 		//criar um BlobId
-		BlobId blobId = BlobId.of(BUCKET_NAME, nomeArquivo);
+		BlobId blobId = BlobId.of(BUCKET_NAME, nomeArquivo );
+
 		
 		//blobinfo a partir do bloid
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
@@ -66,7 +71,7 @@ public class FireBaseUtil {
 		storage.create(blobInfo, arquivo.getBytes());
 		//retornar a url para acessar o arquivo
 		
-		return String.format(DOWNLOAD_URL,nomeArquivo);
+		return String.format(DOWNLOAD_URL,arquivo);
 	}
 	//retorna a extensao do arquivo atraves do nome
 		private String getExtensao(String nomeArquivo) {
