@@ -1,5 +1,6 @@
 package senai.sp.cotia.wms.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.UUID;
@@ -28,7 +29,7 @@ public class FireBaseUtil {
 	private Storage storage;
 	
 	//constate para bucket name
-	private final String BUCKET_NAME = "gs://systemwms-14aa0.appspot.com";
+	private final String BUCKET_NAME = "systemwms-14aa0.appspot.com";
 	
 	// constate para o prefixo da URL
 	private final String PREFFIX ="https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/";
@@ -57,20 +58,19 @@ public class FireBaseUtil {
 		}
 	}
 	
-	public String uploadFile(MultipartFile arquivo) throws IOException {
+	public String uploadFile(File arquivo, byte[] arq) throws IOException {
 		
 		//gera uma string aleatoria para o nome do arquivo
-		String nomeArquivo = UUID.randomUUID().toString()+getExtensao(arquivo.getOriginalFilename());
+		//String nomeArquivo = UUID.randomUUID().toString()+getExtensao(arquivo);
 		//criar um BlobId
-		BlobId blobId = BlobId.of(BUCKET_NAME, nomeArquivo );
+		BlobId blobId = BlobId.of(BUCKET_NAME, arquivo.toString());
 
 		
 		//blobinfo a partir do bloid
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
 		//manda o info para o storage passando os bytes do arquivo para ele
-		storage.create(blobInfo, arquivo.getBytes());
+		storage.create(blobInfo, arq);
 		//retornar a url para acessar o arquivo
-		
 		return String.format(DOWNLOAD_URL,arquivo);
 	}
 	//retorna a extensao do arquivo atraves do nome

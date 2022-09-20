@@ -12,14 +12,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,17 +31,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.support.MultipartFilter;
-
-import com.google.firestore.v1.Write;
-
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.repository.AlunoRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 @CrossOrigin
-
 @RestController
 @RequestMapping("api/aluno")
 public class AlunoRestController {
@@ -55,28 +47,36 @@ public class AlunoRestController {
 	
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
+	public ResponseEntity<Object> saveAluno(@RequestBody Aluno alunoString, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException{
-		
-		
-		String base64ImageString = aluno.getImagem().replace("data:image/png;base64,", "");
+		String stringImagem = alunoString.getImagem();
+		int pos = stringImagem.indexOf('/');
+		int pos1 = stringImagem.indexOf(';');
+		String extensao = stringImagem.substring(pos, pos1);
+		String ex = extensao.replace("/", "");
+		String base64ImageString = stringImagem.replace("data:image/"+ex+";base64,", "");
 		byte[] decode = Base64.getDecoder().decode(base64ImageString);
+		String arq = decode.toString();
+		String arquivo = arq.replace("[B@", "");
 		
-		String foto = aluno.getImagem();
 		
-		File f = new File ("teste.png");
-		FileOutputStream fos = null;
+		
+		
+		String nomeArquivo = UUID.randomUUID().toString()+arquivo+"."+ex;
+		System.out.println(nomeArquivo);
+		
+		File file = new File(nomeArquivo);
+		FileOutputStream in = new FileOutputStream(file) ; 
+		in.write(decode);
 		
 		
 			try {
-				 fos = new FileOutputStream (f);
-				 fos.write (decode);
-				repository.save(aluno);
+				fire.uploadFile(file, decode);
+				repository.save(alunoString);
 			
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {
 				// TODO: handle exception
-				if (fos != null) try { fos.close(); } catch (IOException ex) {}
 				
 				e.printStackTrace();
 				return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
