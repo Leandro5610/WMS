@@ -2,6 +2,8 @@ package senai.sp.cotia.wms.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -58,7 +60,7 @@ public class FireBaseUtil {
 		}
 	}
 	
-	public String uploadFile(File arquivo, byte[] arq) throws IOException {
+	public String uploadFile(File arquivo, byte[] bytesDoArquivo) throws IOException {
 		
 		//gera uma string aleatoria para o nome do arquivo
 		//String nomeArquivo = UUID.randomUUID().toString()+getExtensao(arquivo);
@@ -69,14 +71,17 @@ public class FireBaseUtil {
 		//blobinfo a partir do bloid
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
 		//manda o info para o storage passando os bytes do arquivo para ele
-		storage.create(blobInfo, arq);
+		storage.create(blobInfo, bytesDoArquivo);
 		//retornar a url para acessar o arquivo
+		
+		 
+
 		return String.format(DOWNLOAD_URL,arquivo);
 	}
 	//retorna a extensao do arquivo atraves do nome
-		private String getExtensao(String nomeArquivo) {
+		/*private String getExtensao(String nomeArquivo) {
 			return nomeArquivo.substring(nomeArquivo.lastIndexOf('.'));
-		}
+		}*/
 		
 		public void removeFile(String nomeArquivo) {
 			//retira o prefixo e sufixo do arquivo

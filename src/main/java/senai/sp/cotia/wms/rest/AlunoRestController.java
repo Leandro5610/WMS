@@ -49,31 +49,51 @@ public class AlunoRestController {
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno alunoString, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException{
+		
+		//variavel para guardar a imagem codificada Base64 que está vindo do front
 		String stringImagem = alunoString.getImagem();
-		int pos = stringImagem.indexOf('/');
-		int pos1 = stringImagem.indexOf(';');
-		String extensao = stringImagem.substring(pos, pos1);
+		
+		// variaveis para extrair o que está entre a / e o ;
+		int posicaoBarra = stringImagem.indexOf('/');
+		int posicaoPontoVirgula = stringImagem.indexOf(';');
+		
+		//variavel para retirar a / e o ; para pegar a extensão da imagem
+		String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
+		
+		//variavel para retirar a / da extensão
 		String ex = extensao.replace("/", "");
+		
+		//variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do base64 codificado do front-end
 		String base64ImageString = stringImagem.replace("data:image/"+ex+";base64,", "");
+		
+		//variavel para para decodificar o codigo base64 e converter em um vetor de bytes
 		byte[] decode = Base64.getDecoder().decode(base64ImageString);
-		String arq = decode.toString();
-		String arquivo = arq.replace("[B@", "");
 		
+		//variavel para converter o vetor de bytes em um texto
+		String arquivoString = decode.toString();
 		
+		//variavel para retirar o texto "[B@" da variavel arquivoString
+		String arquivo = arquivoString.replace("[B@", "");
 		
-		
+		//variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
 		String nomeArquivo = UUID.randomUUID().toString()+arquivo+"."+ex;
-		System.out.println(nomeArquivo);
 		
+		//variavel para guardar o nome do arquivo em um File  
 		File file = new File(nomeArquivo);
-		FileOutputStream in = new FileOutputStream(file) ; 
+		
+		//variavel para converter em arquivo e armazenar no sistema do pc
+		FileOutputStream in = new FileOutputStream("temporaria/"+file) ;
+		
+		//variavel para escrever os bytes no arquivo
 		in.write(decode);
 		
-		
+		Path pathFile = Paths.get("temporaria/"+nomeArquivo); 
+		System.out.println(pathFile);
+		fire.uploadFile(file, decode);
+		in.close();
 			try {
-				fire.uploadFile(file, decode);
 				repository.save(alunoString);
-			
+				Files.delete(pathFile);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -81,6 +101,7 @@ public class AlunoRestController {
 				e.printStackTrace();
 				return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+
 		
 	}
 	
