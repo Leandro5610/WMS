@@ -16,7 +16,7 @@ public interface ProdutoRepository extends PagingAndSortingRepository<Produto, L
 			+ " OR pro.valorUnitario LIKE %:p% OR pro.descricao LIKE %:p% OR pro.medida LIKE %:p%" 
 			+" OR pro.importado LIKE %:p% OR pro.demanda LIKE %:p% OR pro.ipi LIKE %:p%"
 			+" OR pro.pis LIKE %:p% OR pro.cofins LIKE %:p% OR pro.icms LIKE %:p%"
-			+" OR pro.fornecedores LIKE %:p% OR pro.ncm LIKE %:p% OR pro.quantidade LIKE %:p%" )
+			+" OR pro.fornecedores LIKE %:p% OR pro.ncm LIKE %:p% OR pro.pontoPedido LIKE %:p%" )
    public List<Produto> procurarTudo(@Param("p") String param);
 
 }

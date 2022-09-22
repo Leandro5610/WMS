@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Estoque;
+import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.repository.EstoqueRepository;
 
 @RestController
@@ -78,5 +79,8 @@ public class EstoqueRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	
+	
 	
 }

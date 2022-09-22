@@ -18,11 +18,17 @@ public class Estoque {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	private int saldo;
 	private int capacidade;
 	private int disponivel;
 	@ManyToOne
 	private Enderecamento enderecamento;
-	@ManyToOne
-	private Movimentacao movimentacao;
+	
+	public int setSaldo(int capacidade, int disponivel, int saldo) {
+        return this.saldo = capacidade - disponivel;
+    }
+	
+	
+
 
 }

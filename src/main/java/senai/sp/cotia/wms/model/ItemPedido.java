@@ -20,8 +20,8 @@ public class ItemPedido {
 	private Produto produto;
 	@ManyToOne
 	private Pedido pedido; 	
-	@ManyToOne
-	private Enderecamento enderecamento;
+	/*@ManyToOne
+	private Enderecamento enderecamento;*/
 	
 }
      

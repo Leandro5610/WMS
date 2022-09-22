@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import org.aspectj.weaver.patterns.IfPointcut.IfFalsePointcut;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -27,5 +28,9 @@ public class Enderecamento {
 	private String modulo;
 	@Enumerated(EnumType.STRING)
 	private Demanda demanda;
+	@OneToOne
+	private ItemPedido itens;
 	 
+	
+	
 }

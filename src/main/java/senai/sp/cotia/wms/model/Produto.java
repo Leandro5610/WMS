@@ -39,7 +39,7 @@ public class Produto {
 	private Fornecedor fornecedores;
 	@OneToOne
 	private Ncm ncm;
-	private int quantidade;
+	private int pontoPedido;
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;

@@ -13,4 +13,7 @@ public interface PedidoRepository extends PagingAndSortingRepository<Pedido, Lon
 	@Query("SELECT ped FROM Pedido ped WHERE ped.valor LIKE %:p% OR ped.dataPedido LIKE %:p% "
 			+ " OR ped.aluno LIKE %:p% ")
    public List<Pedido> procurarTudo(@Param("p") String param);
+	
+	@Query("SELECT pu FROM Pedido pu WHERE pu.aluno = idToken")
+	public List<Pedido> procurarPedidoPeloUsuario(@Param("pu") String pedidoUser, @Param("idToken") Long id);
 }

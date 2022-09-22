@@ -92,6 +92,7 @@ public class AlunoRestController {
 		fire.uploadFile(file, decode);
 		in.close();
 			try {
+				alunoString.setImagem(file.toString());
 				repository.save(alunoString);
 				Files.delete(pathFile);
 				return ResponseEntity.ok(HttpStatus.CREATED);
@@ -101,7 +102,7 @@ public class AlunoRestController {
 				e.printStackTrace();
 				return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-
+			
 		
 	}
 	
