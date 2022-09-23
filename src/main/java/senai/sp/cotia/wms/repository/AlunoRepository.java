@@ -1,6 +1,7 @@
 package senai.sp.cotia.wms.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -14,5 +15,7 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
     public List<Aluno> procurarTudo(@Param("p") String param);
 	
 	//public List<Aluno> findAll();
+	
+	public Optional<Aluno> searchEmail(@Param("email") String email);
 	
 }

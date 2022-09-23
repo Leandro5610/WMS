@@ -92,4 +92,5 @@ public class PedidoRestController {
 		public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
 			return pedidoRepo.procurarTudo(param);
 		}
+		
 	}
