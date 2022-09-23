@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.itextpdf.text.pdf.AcroFields.Item;
+
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Estoque;
@@ -39,16 +41,16 @@ public class MovimentacaoRestController {
 	private MovimentacaoRepository movimentacaoRepository;
 
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> saveMovimentacao(@RequestBody Movimentacao itens, Estoque est, Enderecamento end) {
-		if (itens.getTipo() == Tipo.ENTRADA) {
-			realizarEntrada(itens);
+	public ResponseEntity<Object> saveMovimentacao(@RequestBody Movimentacao mov, Estoque est, Enderecamento end, ItemPedido itens) {
+		if (mov.getTipo() == Tipo.ENTRADA) {
+			realizarEntrada(mov);
 		} else {
-			realizarSaida(itens);
-			debitar(itens, est, end);
+			realizarSaida(mov);
+			debitar(mov, est, end,itens);
 		}
 
 		try {
-			movimentacaoRepository.save(itens);
+			movimentacaoRepository.save(mov);
 			return ResponseEntity.ok(HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,12 +126,13 @@ public class MovimentacaoRestController {
 	}
 
 	
-	public ResponseEntity<Object> debitar(Movimentacao mov, Estoque estoq, Enderecamento endereco) {
+	public ResponseEntity<Object> debitar(Movimentacao mov, Estoque estoq, Enderecamento endereco, ItemPedido item) {
 		mov.setTipo(Tipo.SAIDA);
 		int cap = estoq.getCapacidade();
 		int disp = estoq.getDisponivel();
 		int saldo = estoq.getSaldo();
-		estoq.setSaldo(cap, disp, saldo);
+		int qtd = item.getQuantidade();
+		estoq.setSaldo(qtd);
 		endereco.setAndar(null);
 		endereco.setCorredor(null);
 		endereco.setEdificio(null);
@@ -139,7 +142,14 @@ public class MovimentacaoRestController {
 
 		return ResponseEntity.ok().build();
 	}
-	
+	public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento enderecamento, Estoque est, ItemPedido itens){
+		int saldo = est.getSaldo();		
+		est.setDiponivel(itens);
+		int qtd = itens.getQuantidade();
+		est.setSaldo(qtd);		
+		return ResponseEntity.ok().build();
+		
+	}
 	
 
 }

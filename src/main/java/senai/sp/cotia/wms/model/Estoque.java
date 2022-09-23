@@ -24,10 +24,16 @@ public class Estoque {
 	@ManyToOne
 	private Enderecamento enderecamento;
 	
-	public int setSaldo(int capacidade, int disponivel, int saldo) {
-        return this.saldo = capacidade - disponivel;
+	public int setSaldo(int item) {
+		int saldo = item;
+        return this.saldo;
     }
 	
+	public int setDiponivel(ItemPedido itenPedido ) {
+		int totalProdutos = itenPedido.getQuantidade();
+
+		return this.disponivel = capacidade - totalProdutos;
+	}
 	
 
 

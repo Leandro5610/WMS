@@ -54,7 +54,7 @@ public class ProdutoRestController {
 			}
 			
 			//MÉTODO PARA LISTAR OS PRODUTOS
-			@RequestMapping(value = "", method = RequestMethod.GET)
+			@RequestMapping(value = "list", method = RequestMethod.GET)
 			public Iterable<Produto> listarPedidos(){
 				return prodRepo.findAll();
 			}
