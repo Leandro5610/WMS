@@ -27,5 +27,5 @@ public class Movimentacao {
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 	@ManyToOne
-	private ItemPedido itens;
+	private Pedido itens;
 }

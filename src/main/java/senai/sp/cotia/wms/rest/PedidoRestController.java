@@ -1,6 +1,8 @@
 package senai.sp.cotia.wms.rest;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.NotaFiscal;
 import senai.sp.cotia.wms.model.Pedido;
+import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 import senai.sp.cotia.wms.repository.PedidoRepository;
 
@@ -36,7 +40,21 @@ public class PedidoRestController {
 		public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 				HttpServletResponse response){
 			
+			
+			//double total = pedido.totalPedido(pedido);
 			try {
+				for (ItemPedido itens : pedido.getItens()) {
+					itens.setPedido(pedido);
+				}
+			
+				//pedido.setValor(total);
+				
+			LocalDateTime time = LocalDateTime.now();
+			
+			
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			
+			pedido.setDataPedido(time.format(fmt));
 			pedidoRepo.save(pedido);
 			
 			} catch (Exception e) {
@@ -45,8 +63,8 @@ public class PedidoRestController {
 			return ResponseEntity.ok().build();
 		}
 		
-		@RequestMapping(value = "", method = RequestMethod.GET)
-		public Iterable<Pedido> listarPedidos(){
+		@RequestMapping(value = "list", method = RequestMethod.GET)
+		public Iterable<Pedido> listarPedidos(){	
 			return pedidoRepo.findAll();
 		}
 		

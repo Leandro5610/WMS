@@ -32,7 +32,7 @@ public class Turma {
 	private Periodo	periodo;
 	@ManyToOne
 	private Aluno aluno;
-	
+	private int numParticipantes;
 
 
 }

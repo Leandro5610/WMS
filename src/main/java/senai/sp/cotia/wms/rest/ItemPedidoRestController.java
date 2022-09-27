@@ -21,6 +21,7 @@ import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.ItemFornecedor;
 import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.ItemPedido;
+import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.repository.ItemPedidoRepository;
 import senai.sp.cotia.wms.repository.ItemFornecedorRepository;
 
@@ -53,6 +54,10 @@ public class ItemPedidoRestController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public Iterable<ItemPedido> listarPedidos(){
+		return itemPedidoRepository.findAll();
 	}
 	
 		// atualiza os itens recebendo o id

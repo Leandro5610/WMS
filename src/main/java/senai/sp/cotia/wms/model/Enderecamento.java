@@ -29,7 +29,7 @@ public class Enderecamento {
 	@Enumerated(EnumType.STRING)
 	private Demanda demanda;
 	@OneToOne
-	private ItemPedido itens;
+	private Pedido itens;
 	 
 	
 	

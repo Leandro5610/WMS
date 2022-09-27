@@ -16,6 +16,6 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
 	
 	//public List<Aluno> findAll();
 	
-	public Optional<Aluno> searchEmail(@Param("email") String email);
+//	public Optional<Aluno> searchEmail(@Param("email") String email);
 	
 }
