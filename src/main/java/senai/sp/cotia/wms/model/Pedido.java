@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -22,13 +23,12 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long numPedido;
 	private Double valor;
-	@JsonFormat(pattern = "yyyy-MM-dd 'T'HH:mm")
 	private String dataPedido;
 	@OneToOne
 	private Aluno aluno;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itens;
-	
+	private int totalItens;
 	public Double totalPedido(Pedido pedido) {
 		
 		double total = 0;

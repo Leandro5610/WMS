@@ -20,12 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.model.Estoque;
 import senai.sp.cotia.wms.model.ItemPedido;
+import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.model.NotaFiscal;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
+import senai.sp.cotia.wms.repository.EstoqueRepository;
+import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 import senai.sp.cotia.wms.repository.PedidoRepository;
+import senai.sp.cotia.wms.type.Tipo;
 
 @RestController
 @CrossOrigin
@@ -35,13 +40,16 @@ public class PedidoRestController {
 		@Autowired
 		private PedidoRepository pedidoRepo;
 		
+		@Autowired
+		private MovimentacaoRepository movRepo;
+		@Autowired
+		private EstoqueRepository estoque;
 		// MÉTODO PARA SALVAR
 		@RequestMapping(value = "save")
 		public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 				HttpServletResponse response){
-			
-			
 			//double total = pedido.totalPedido(pedido);
+			
 			try {
 				for (ItemPedido itens : pedido.getItens()) {
 					itens.setPedido(pedido);
@@ -55,7 +63,12 @@ public class PedidoRestController {
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 			
 			pedido.setDataPedido(time.format(fmt));
+		
 			pedidoRepo.save(pedido);
+			saveMovimentacao(pedido);
+			Estoque est = new Estoque();
+			est.setDiponivel(pedido.getTotalItens());
+			estoque.save(est);
 			
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -109,6 +122,26 @@ public class PedidoRestController {
 		@RequestMapping(value = "/findbyall/{p}")
 		public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
 			return pedidoRepo.procurarTudo(param);
+		}
+		
+		public Object saveMovimentacao(Pedido pedido) {
+
+			for(ItemPedido itens : pedido.getItens()) {
+				Movimentacao movi  = new Movimentacao();
+				movi.setPedido(pedido);
+				movi.setProduto(itens.getProduto());
+				movi.setTipo(Tipo.ENTRADA);
+				LocalDateTime time = LocalDateTime.now();
+				DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+				movi.setData(time.format(fmt));
+				movRepo.save(movi);
+				
+				
+			}
+			
+			return "deu certo";
+		
+
 		}
 		
 	}

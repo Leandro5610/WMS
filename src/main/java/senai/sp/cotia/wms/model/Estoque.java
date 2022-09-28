@@ -29,9 +29,7 @@ public class Estoque {
         return this.saldo;
     }
 	
-	public int setDiponivel(ItemPedido itenPedido ) {
-		int totalProdutos = itenPedido.getQuantidade();
-
+	public int setDiponivel(int totalProdutos ) {
 		return this.disponivel = capacidade - totalProdutos;
 	}
 	

@@ -29,35 +29,22 @@ import senai.sp.cotia.wms.model.Estoque;
 import senai.sp.cotia.wms.model.ItemFornecedor;
 import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Movimentacao;
+import senai.sp.cotia.wms.model.Pedido;
+import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
+import senai.sp.cotia.wms.repository.ProdutoRepository;
 import senai.sp.cotia.wms.type.Tipo;
 
 @CrossOrigin
 @Controller
-@RequestMapping("/api/movimentacao")
+@RequestMapping("api/movimentacao")
 public class MovimentacaoRestController {
 
 	@Autowired
 	private MovimentacaoRepository movimentacaoRepository;
 
-	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> saveMovimentacao(@RequestBody Movimentacao mov, Estoque est, Enderecamento end, ItemPedido itens) {
-		if (mov.getTipo() == Tipo.ENTRADA) {
-			realizarEntrada(mov);
-		} else {
-			realizarSaida(mov);
-			debitar(mov, est, end,itens);
-		}
+	
 
-		try {
-			movimentacaoRepository.save(mov);
-			return ResponseEntity.ok(HttpStatus.CREATED);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Movimentacao> findMovimentaco(@PathVariable("id") Long idMovimentacao) {
@@ -68,6 +55,11 @@ public class MovimentacaoRestController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
+	}
+	
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public Iterable<Movimentacao> listarMovimentacao(){	
+		return movimentacaoRepository.findAll();
 	}
 
 	// atualiza os itens recebendo o id
@@ -101,6 +93,8 @@ public class MovimentacaoRestController {
 
 	@RequestMapping(value = "teste", method = RequestMethod.GET)
 	public ResponseEntity<Object> realizarEntrada(Movimentacao mov) {
+		
+	
 		LocalDateTime time = LocalDateTime.now();
 
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -125,7 +119,6 @@ public class MovimentacaoRestController {
 
 	}
 
-	
 	public ResponseEntity<Object> debitar(Movimentacao mov, Estoque estoq, Enderecamento endereco, ItemPedido item) {
 		mov.setTipo(Tipo.SAIDA);
 		int cap = estoq.getCapacidade();
@@ -142,14 +135,15 @@ public class MovimentacaoRestController {
 
 		return ResponseEntity.ok().build();
 	}
-	public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento enderecamento, Estoque est, ItemPedido itens){
-		int saldo = est.getSaldo();		
-		est.setDiponivel(itens);
+
+	public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento enderecamento, Estoque est,
+			ItemPedido itens) {
+		int saldo = est.getSaldo();
+		//est.setDiponivel();
 		int qtd = itens.getQuantidade();
-		est.setSaldo(qtd);		
+		est.setSaldo(qtd);
 		return ResponseEntity.ok().build();
-		
+
 	}
-	
 
 }
