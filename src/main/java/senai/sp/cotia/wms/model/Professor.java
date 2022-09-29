@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -26,6 +27,10 @@ public class Professor {
 	private String senha;
 	@OneToOne
 	private Turma turma;
+	@Lob
+	@Column(columnDefinition = "MEDIUMBLOB")
+	private String imagem;
+	
 	
 	public void setNome(String nome) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();

@@ -24,7 +24,6 @@ public class NotaFiscalRestController {
 	@Autowired
 	private NotaFiscalRepository nfRepo;
 	
-	@RequestMapping(value = "save")
 	public ResponseEntity<Object> saveNotaFiscal(@RequestBody NotaFiscal nota, HttpServletRequest request,
 			HttpServletResponse response){
 		

@@ -30,18 +30,7 @@ public class ItemNotaRestController {
 	@Autowired
 	private ItemNotaRepository itemNotaRepository;
 
-	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> saveItensNota(@RequestBody ItemNota itens) {
-		try {
-			itemNotaRepository.save(itens);
-			return ResponseEntity.ok(HttpStatus.CREATED);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
-	}
-
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemNota> findItensNota(@PathVariable("id") Long idItens) {
 		// busca os itens

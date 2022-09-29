@@ -3,6 +3,7 @@ package senai.sp.cotia.wms.rest;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Estoque;
+import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.model.NotaFiscal;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.EstoqueRepository;
+import senai.sp.cotia.wms.repository.ItemNotaRepository;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 import senai.sp.cotia.wms.repository.PedidoRepository;
@@ -41,6 +44,13 @@ public class PedidoRestController {
 		private PedidoRepository pedidoRepo;
 		
 		@Autowired
+		private ItemNotaRepository itemNotaRepository;
+		
+		@Autowired
+		private NotaFiscalRepository nfRepo;
+
+		
+		@Autowired
 		private MovimentacaoRepository movRepo;
 		@Autowired
 		private EstoqueRepository estoque;
@@ -53,6 +63,7 @@ public class PedidoRestController {
 			try {
 				for (ItemPedido itens : pedido.getItens()) {
 					itens.setPedido(pedido);
+					
 				}
 			
 				//pedido.setValor(total);
@@ -66,9 +77,7 @@ public class PedidoRestController {
 		
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
-			Estoque est = new Estoque();
-			est.setDiponivel(pedido.getTotalItens());
-			estoque.save(est);
+		
 			
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -143,5 +152,43 @@ public class PedidoRestController {
 		
 
 		}
+		
+		public ResponseEntity<Object> saveItensNota(NotaFiscal nota) {
+			try {
+				for (ItemPedido itens : nota.getPedido().getItens()) {
+					ItemNota itemNota = new ItemNota();
+					itemNota.setNotaFiscal(nota);
+					itemNota.setQuantidade(nota.getQuantidade());
+					//itemNota.setProduto(nota.getPedido());
+					itemNota.setItem(nota.getPedido().getItens());
+					itemNotaRepository.save(itemNota);
+				}
+				
+				return ResponseEntity.ok(HttpStatus.CREATED);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
+		}
+		
+		public ResponseEntity<Object> saveNotaFiscal(Pedido pedido){
+			
+			try {
+				LocalDateTime time = LocalDateTime.now();
+				DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+					NotaFiscal nota = new NotaFiscal();
+					nota.setDataEmissao(time.format(fmt));
+					nota.setPedido(pedido);
+					nota.setValorTotal(pedido.getValor());
+			//nfRepo.save();
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return ResponseEntity.ok().build();
+		}
+		
+
 		
 	}

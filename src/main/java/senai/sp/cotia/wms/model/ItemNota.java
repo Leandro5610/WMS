@@ -1,5 +1,7 @@
 package senai.sp.cotia.wms.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,8 +17,8 @@ public class ItemNota {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@OneToOne
-	private Pedido pedido;
-	@OneToOne
 	private NotaFiscal notaFiscal;
 	private int quantidade;
+	private List<ItemPedido> item;
+	private Produto produto;
 }

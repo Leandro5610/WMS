@@ -22,7 +22,8 @@ public class NotaFiscal {
 	private Double valorTotal;
 	@OneToOne
 	private Pedido pedido;
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Calendar dataEmissao;	
-
+	private String dataEmissao;
+	private int quantidade;
+	
+	
 }

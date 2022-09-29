@@ -28,6 +28,7 @@ public class Pedido {
 	private Aluno aluno;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itens;
+	
 	private int totalItens;
 	public Double totalPedido(Pedido pedido) {
 		
