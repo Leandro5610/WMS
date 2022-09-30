@@ -52,8 +52,10 @@ public class PedidoRestController {
 		
 		@Autowired
 		private MovimentacaoRepository movRepo;
+		
 		@Autowired
 		private EstoqueRepository estoque;
+		
 		// MÉTODO PARA SALVAR
 		@RequestMapping(value = "save")
 		public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
@@ -67,18 +69,15 @@ public class PedidoRestController {
 				}
 			
 				//pedido.setValor(total);
+				NotaFiscal nota = new NotaFiscal();
 				
 			LocalDateTime time = LocalDateTime.now();
-			
-			
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			
 			pedido.setDataPedido(time.format(fmt));
-		
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
-		
-			
+			saveItensNota(nota);
+			saveNotaFiscal(pedido);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -127,6 +126,7 @@ public class PedidoRestController {
 			pedidoRepo.deleteById(numPedido);
 			return ResponseEntity.noContent().build();
 		}
+		
 		// metodo para procurar uma reserva à partir de qualquer atributo
 		@RequestMapping(value = "/findbyall/{p}")
 		public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
@@ -159,7 +159,7 @@ public class PedidoRestController {
 					ItemNota itemNota = new ItemNota();
 					itemNota.setNotaFiscal(nota);
 					itemNota.setQuantidade(nota.getQuantidade());
-					//itemNota.setProduto(nota.getPedido());
+					itemNota.setProduto(itens.getProduto());
 					itemNota.setItem(nota.getPedido().getItens());
 					itemNotaRepository.save(itemNota);
 				}
@@ -173,7 +173,6 @@ public class PedidoRestController {
 		}
 		
 		public ResponseEntity<Object> saveNotaFiscal(Pedido pedido){
-			
 			try {
 				LocalDateTime time = LocalDateTime.now();
 				DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -181,7 +180,8 @@ public class PedidoRestController {
 					nota.setDataEmissao(time.format(fmt));
 					nota.setPedido(pedido);
 					nota.setValorTotal(pedido.getValor());
-			//nfRepo.save();
+					nota.setQuantidade(pedido.getTotalItens());
+					nfRepo.save(nota);
 			
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -94,25 +94,18 @@ public class MovimentacaoRestController {
 	@RequestMapping(value = "teste", method = RequestMethod.GET)
 	public ResponseEntity<Object> realizarEntrada(Movimentacao mov) {
 		
-	
 		LocalDateTime time = LocalDateTime.now();
-
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-
 		mov.setData(time.format(fmt));
-
 		mov.setTipo(Tipo.ENTRADA);
-
 		return ResponseEntity.ok().build();
 	}
 
 	public Object realizarSaida(Movimentacao mov) {
+		
 		LocalDateTime time = LocalDateTime.now();
-
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-
 		mov.setData(time.format(fmt));
-
 		mov.setTipo(Tipo.SAIDA);
 
 		return mov;
@@ -120,10 +113,8 @@ public class MovimentacaoRestController {
 	}
 
 	public ResponseEntity<Object> debitar(Movimentacao mov, Estoque estoq, Enderecamento endereco, ItemPedido item) {
+		
 		mov.setTipo(Tipo.SAIDA);
-		int cap = estoq.getCapacidade();
-		int disp = estoq.getDisponivel();
-		int saldo = estoq.getSaldo();
 		int qtd = item.getQuantidade();
 		estoq.setSaldo(qtd);
 		endereco.setAndar(null);

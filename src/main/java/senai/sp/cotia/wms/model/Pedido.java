@@ -31,14 +31,10 @@ public class Pedido {
 	
 	private int totalItens;
 	public Double totalPedido(Pedido pedido) {
-		
 		double total = 0;
-		
 		for (ItemPedido itens : pedido.getItens()) {
-		
 			total = itens.getQuantidade();
 			System.out.println(total +"");
-			
 		}
 		
 		return total;
