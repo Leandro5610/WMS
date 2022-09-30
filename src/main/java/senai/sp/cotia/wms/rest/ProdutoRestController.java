@@ -54,6 +54,7 @@ public class ProdutoRestController {
 	public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		try {
+			if(produto.getImagem() != null) {
 			// variavel para guardar a imagem codificada Base64 que está vindo do front
 			String stringImagem = produto.getImagem();
 			
@@ -99,9 +100,12 @@ public class ProdutoRestController {
 			
 			fire.uploadFile(file, decodificada);
 			fileInput.close();
-			prodRepo.save(produto);
 			Files.delete(pathFile);
+
+			}else {
+			prodRepo.save(produto);
 			return ResponseEntity.ok(HttpStatus.CREATED);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

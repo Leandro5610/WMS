@@ -29,12 +29,14 @@ public class Pedido {
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itens;
 	
+	
+	
 	private int totalItens;
 	public Double totalPedido(Pedido pedido) {
 		double total = 0;
 		for (ItemPedido itens : pedido.getItens()) {
 			total = itens.getQuantidade();
-			System.out.println(total +"");
+			System.out.println("Total:"+total);
 		}
 		
 		return total;

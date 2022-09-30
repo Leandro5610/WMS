@@ -91,7 +91,7 @@ public class MovimentacaoRestController {
 		return movimentacaoRepository.procurarTudo(param);
 	}
 
-	@RequestMapping(value = "teste", method = RequestMethod.GET)
+	/*@RequestMapping(value = "teste", method = RequestMethod.GET)
 	public ResponseEntity<Object> realizarEntrada(Movimentacao mov) {
 		
 		LocalDateTime time = LocalDateTime.now();
@@ -99,9 +99,9 @@ public class MovimentacaoRestController {
 		mov.setData(time.format(fmt));
 		mov.setTipo(Tipo.ENTRADA);
 		return ResponseEntity.ok().build();
-	}
+	}*/
 
-	public Object realizarSaida(Movimentacao mov) {
+	/*public Object realizarSaida(Movimentacao mov) {
 		
 		LocalDateTime time = LocalDateTime.now();
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -110,24 +110,11 @@ public class MovimentacaoRestController {
 
 		return mov;
 
-	}
+	}*/
 
-	public ResponseEntity<Object> debitar(Movimentacao mov, Estoque estoq, Enderecamento endereco, ItemPedido item) {
-		
-		mov.setTipo(Tipo.SAIDA);
-		int qtd = item.getQuantidade();
-		estoq.setSaldo(qtd);
-		endereco.setAndar(null);
-		endereco.setCorredor(null);
-		endereco.setEdificio(null);
-		endereco.setModulo(null);
-		endereco.setId(null);
-		endereco.setDemanda(null);
+	
 
-		return ResponseEntity.ok().build();
-	}
-
-	public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento enderecamento, Estoque est,
+	/*public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento enderecamento, Estoque est,
 			ItemPedido itens) {
 		int saldo = est.getSaldo();
 		//est.setDiponivel();
@@ -135,6 +122,6 @@ public class MovimentacaoRestController {
 		est.setSaldo(qtd);
 		return ResponseEntity.ok().build();
 
-	}
+	}*/
 
 }
