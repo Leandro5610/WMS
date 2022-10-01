@@ -83,7 +83,7 @@ public class ProdutoRestController {
 			String arquivo = arquivoString.replace("[B@", "");
 			
 			// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-			String nomeArquivo = UUID.randomUUID().toString() + arquivo +"."+extensao;
+			String nomeArquivo = UUID.randomUUID().toString() + arquivo +"."+extensaoOriginal;
 			
 			// variavel para guardar o nome do arquivo em um File
 			File file = new File(nomeArquivo);
@@ -100,8 +100,8 @@ public class ProdutoRestController {
 			
 			fire.uploadFile(file, decodificada);
 			fileInput.close();
+			prodRepo.save(produto);
 			Files.delete(pathFile);
-
 			}else {
 			prodRepo.save(produto);
 			return ResponseEntity.ok(HttpStatus.CREATED);

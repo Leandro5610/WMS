@@ -72,7 +72,7 @@ public class TurmaRestController {
 				String arquivo = arquivoString.replace("[B@", "");
 
 				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensao;
+				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensaoOriginal;
 
 				// variavel para guardar o nome do arquivo em um File
 				File file = new File(nomeArquivo);
@@ -85,11 +85,10 @@ public class TurmaRestController {
 
 				// variavel para pegar o caminho da pasta com o arquivo da imagem
 				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-
 				firebase.uploadFile(file, decodificada);
+				repo.save(turma);
 				fileInput.close();
-			
-
+				
 			}else {
 				// salvar o usuário no banco de dados
 				repo.save(turma);
