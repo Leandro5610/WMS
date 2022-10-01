@@ -1,8 +1,10 @@
 package senai.sp.cotia.wms.rest;
 
+import java.io.FileInputStream;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -20,6 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Estoque;
@@ -61,7 +72,7 @@ public class PedidoRestController {
 	public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
 		// double total = pedido.totalPedido(pedido);
-
+		
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
@@ -76,6 +87,8 @@ public class PedidoRestController {
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -191,11 +204,17 @@ public class PedidoRestController {
 			nota.setValorTotal(pedido.getValor());
 			// nota.setQuantidade(pedido.getTotalItens());
 			nfRepo.save(nota);
-			for (ItemNota itens : nota.getItens()) {
-				itens.setNotaFiscal(nota);
-				itemNotaRepository.save(itens);
+			for (ItemPedido itens : pedido.getItens()) {
+				ItemNota item = new ItemNota();
+				item.setNotaFiscal(nota);
+				item.setPedido(pedido);
+				item.setProduto(itens.getProduto());
+				//item.setQuantidade(itens.getQuantidade());
+				itemNotaRepository.save(item);
 			}
 			
+			
+
 
 		} catch (Exception e) {
 			e.printStackTrace();

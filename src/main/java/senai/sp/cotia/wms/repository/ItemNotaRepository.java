@@ -7,6 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import senai.sp.cotia.wms.model.ItemNota;
+import senai.sp.cotia.wms.model.NotaFiscal;
 
 
 public interface ItemNotaRepository extends PagingAndSortingRepository<ItemNota, Long> {
@@ -20,6 +21,9 @@ public interface ItemNotaRepository extends PagingAndSortingRepository<ItemNota,
 	//metodo para procurar itens no banco de dados por qualquer atributo
 	@Query("SELECT itens FROM ItemNota itens WHERE itens.pedido LIKE %:p% OR itens.notaFiscal LIKE %:p% " + " OR itens.quantidade LIKE %:p% ")
 	public List<ItemNota> procurarTudo(@Param("p") String param);
+	
+	@Query("SELECT nota FROM ItemNota nota WHERE nota.notaFiscal = ':id' ")
+	public List<ItemNota> pegarNota(@Param("id") Long param);
 	
 
 }

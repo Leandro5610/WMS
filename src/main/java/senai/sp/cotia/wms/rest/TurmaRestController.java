@@ -41,58 +41,66 @@ public class TurmaRestController {
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object cadastrarMedida(@RequestBody Turma turma, HttpServletRequest request,
 			HttpServletResponse response) {
+		
 		try {
-			// variavel para guardar a imagem codificada Base64 que está vindo do front
-			String stringImagem = turma.getImagem();
+			if(turma.getImagem() != null) {
+				// variavel para guardar a imagem codificada Base64 que está vindo do front
+				String stringImagem = turma.getImagem();
 
-			// variaveis para extrair o que está entre a / e o ;
-			int posicaoBarra = stringImagem.indexOf('/');
-			int posicaoPontoVirgula = stringImagem.indexOf(';');
+				// variaveis para extrair o que está entre a / e o ;
+				int posicaoBarra = stringImagem.indexOf('/');
+				int posicaoPontoVirgula = stringImagem.indexOf(';');
 
-			// variavel para retirar a / e o ; para pegar a extensão da imagem
-			String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
+				// variavel para retirar a / e o ; para pegar a extensão da imagem
+				String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
 
-			// variavel para retirar a / da extensão
-			String extensaoOriginal = extensao.replace("/", "");
+				// variavel para retirar a / da extensão
+				String extensaoOriginal = extensao.replace("/", "");
 
-			// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-			// base64 codificado do front-end
-			String base64ImagemString = stringImagem.replace("data:image/" + extensaoOriginal + ";base64,", "");
+				// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
+				// base64 codificado do front-end
+				String base64ImagemString = stringImagem.replace("data:image/" + extensaoOriginal + ";base64,", "");
 
-			// variavel para para decodificar o codigo base64 e converter em um vetor de
-			// bytes
-			byte[] decodificada = Base64.getDecoder().decode(base64ImagemString);
+				// variavel para para decodificar o codigo base64 e converter em um vetor de
+				// bytes
+				byte[] decodificada = Base64.getDecoder().decode(base64ImagemString);
 
-			// variavel para converter o vetor de bytes em um texto
-			String arquivoString = decodificada.toString();
+				// variavel para converter o vetor de bytes em um texto
+				String arquivoString = decodificada.toString();
 
-			// variavel para retirar o texto "[B@" da variavel arquivoString
-			String arquivo = arquivoString.replace("[B@", "");
+				// variavel para retirar o texto "[B@" da variavel arquivoString
+				String arquivo = arquivoString.replace("[B@", "");
 
-			// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-			String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensao;
+				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
+				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensao;
 
-			// variavel para guardar o nome do arquivo em um File
-			File file = new File(nomeArquivo);
+				// variavel para guardar o nome do arquivo em um File
+				File file = new File(nomeArquivo);
 
-			// variavel para converter em arquivo e armazenar no sistema do pc
-			FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
+				// variavel para converter em arquivo e armazenar no sistema do pc
+				FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
 
-			// variavel para escrever os bytes no arquivo
-			fileInput.write(decodificada);
+				// variavel para escrever os bytes no arquivo
+				fileInput.write(decodificada);
 
-			// variavel para pegar o caminho da pasta com o arquivo da imagem
-			Path pathFile = Paths.get("temporaria/" + nomeArquivo);
+				// variavel para pegar o caminho da pasta com o arquivo da imagem
+				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
 
-			firebase.uploadFile(file, decodificada);
-			fileInput.close();
-			// salvar o usuário no banco de dados
-			repo.save(turma);
-			return ResponseEntity.ok(HttpStatus.CREATED);
+				firebase.uploadFile(file, decodificada);
+				fileInput.close();
+			
+
+			}else {
+				// salvar o usuário no banco de dados
+				repo.save(turma);
+				return ResponseEntity.ok(HttpStatus.CREATED);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		return response;
 
 	}
 

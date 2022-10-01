@@ -46,63 +46,67 @@ public class AlunoRestController {
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno alunoString, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException {
+		try{
+		if(alunoString.getImagem() != null) {
+			// variavel para guardar a imagem codificada Base64 que está vindo do front
+			String stringImagem = alunoString.getImagem();
 
-		// variavel para guardar a imagem codificada Base64 que está vindo do front
-		String stringImagem = alunoString.getImagem();
+			// variaveis para extrair o que está entre a / e o ;
+			int posicaoBarra = stringImagem.indexOf('/');
+			int posicaoPontoVirgula = stringImagem.indexOf(';');
 
-		// variaveis para extrair o que está entre a / e o ;
-		int posicaoBarra = stringImagem.indexOf('/');
-		int posicaoPontoVirgula = stringImagem.indexOf(';');
+			// variavel para retirar a / e o ; para pegar a extensão da imagem
+			String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
 
-		// variavel para retirar a / e o ; para pegar a extensão da imagem
-		String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
+			// variavel para retirar a / da extensão
+			String ex = extensao.replace("/", "");
 
-		// variavel para retirar a / da extensão
-		String ex = extensao.replace("/", "");
+			// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
+			// base64 codificado do front-end
+			String base64ImageString = stringImagem.replace("data:image/" + ex + ";base64,", "");
 
-		// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-		// base64 codificado do front-end
-		String base64ImageString = stringImagem.replace("data:image/" + ex + ";base64,", "");
+			// variavel para para decodificar o codigo base64 e converter em um vetor de
+			// bytes
+			byte[] decode = Base64.getDecoder().decode(base64ImageString);
 
-		// variavel para para decodificar o codigo base64 e converter em um vetor de
-		// bytes
-		byte[] decode = Base64.getDecoder().decode(base64ImageString);
+			// variavel para converter o vetor de bytes em um texto
+			String arquivoString = decode.toString();
 
-		// variavel para converter o vetor de bytes em um texto
-		String arquivoString = decode.toString();
+			// variavel para retirar o texto "[B@" da variavel arquivoString
+			String arquivo = arquivoString.replace("[B@", "");
 
-		// variavel para retirar o texto "[B@" da variavel arquivoString
-		String arquivo = arquivoString.replace("[B@", "");
+			// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
+			String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + ex;
 
-		// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-		String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + ex;
+			// variavel para guardar o nome do arquivo em um File
+			File file = new File(nomeArquivo);
 
-		// variavel para guardar o nome do arquivo em um File
-		File file = new File(nomeArquivo);
+			// variavel para converter em arquivo e armazenar no sistema do pc
+			FileOutputStream in = new FileOutputStream("temporaria/" + file);
 
-		// variavel para converter em arquivo e armazenar no sistema do pc
-		FileOutputStream in = new FileOutputStream("temporaria/" + file);
-
-		// variavel para escrever os bytes no arquivo
-		in.write(decode);
-		
-		Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-		
-		fire.uploadFile(file, decode);
-		in.close();
-		try {
+			// variavel para escrever os bytes no arquivo
+			in.write(decode);
+			
+			Path pathFile = Paths.get("temporaria/" + nomeArquivo);
+			
+			fire.uploadFile(file, decode);
+			in.close();
 			alunoString.setImagem(file.toString());
-			repository.save(alunoString);
+			
 			Files.delete(pathFile);
-			return ResponseEntity.ok(HttpStatus.CREATED);
+		}else {
+			repository.save(alunoString);
+		}
 		} catch (Exception e) {
-			// TODO: handle exception
-
+			// TODO: handle exceptionelse {
 			e.printStackTrace();
+
+			
+		}
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-	}
+	
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Aluno> findAluno(@PathVariable("id") Long idAluno, HttpServletRequest request,

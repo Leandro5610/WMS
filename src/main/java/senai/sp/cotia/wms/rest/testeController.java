@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,8 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.Barcode128;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -30,27 +33,48 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.model.NotaFiscal;
 import senai.sp.cotia.wms.repository.AlunoRepository;
+import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 
 @RestController
 @RequestMapping(value = "api/relatorio")
 public class testeController {
 	@Autowired
 	private AlunoRepository repo;
+	@Autowired
+	private NotaFiscalRepository repo1;
 	
 	@RequestMapping(value = "pdf", method = RequestMethod.GET)
 	public String generatedPdf() throws FileNotFoundException, JRException, DocumentException {
+		NotaFiscal n = new NotaFiscal();
+		Long id;
 		
-		/*List<Aluno> list = repo.findAll();
-		
+		HashMap employeeReportMap = new HashMap<String, NotaFiscal>();
 
-		JRBeanCollectionDataSource bean =new JRBeanCollectionDataSource(list);
+
+		  employeeReportMap.put("codigoNota", "JK- OOP");
+		  employeeReportMap.put("valorTotal", "J K Saini");
+		  employeeReportMap.put("dataEmissao", "NIC New Delhi");
+		 /* employeeReportMap.put("desgination", "Java/J2EE Doveloper");
+		  employeeReportMap.put("salary", "18000 RS");*/
+
+		
+		
+		JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
+		
+		
+	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, employeeReportMap,new JREmptyDataSource());
+		
+		JasperExportManager.exportReportToPdfFile(jasperPrint,"C:\\Users\\Pichau\\Desktop\\teste.pdf");
+		/*JRBeanCollectionDataSource bean =new JRBeanCollectionDataSource(list);
+		JRDataSource data = 
 		JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
 		
 		HashMap<String, Object> map = new HashMap<>();
 		JasperPrint print = JasperFillManager.fillReport(report, map, bean);
 		
-		//JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Nova pasta\\teste.pdf");*/
+		JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Nova pasta\\teste.pdf");*/
 		
 		try{
 			

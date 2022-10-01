@@ -1,5 +1,7 @@
 package senai.sp.cotia.wms.rest;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.NotaFiscal;
+import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/notafiscal")
+@RequestMapping("api/notaFiscal")
 public class NotaFiscalRestController {
 	
 	@Autowired
@@ -42,9 +45,22 @@ public class NotaFiscalRestController {
 		return nfRepo.findAll();
 	}
 	
-	@RequestMapping(value = "/{id}")
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirNota(@PathVariable("id") Long idNota){
 		nfRepo.deleteById(idNota);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<NotaFiscal> findPedido(@PathVariable("id") Long idNota) {
+		// buscar pedido
+		Optional<NotaFiscal> nota =nfRepo.findById(idNota);
+
+		// verificação de pedido
+		if (nota.isPresent()) {
+			return ResponseEntity.ok(nota.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 }

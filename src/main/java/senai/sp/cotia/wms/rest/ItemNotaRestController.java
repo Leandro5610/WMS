@@ -3,14 +3,17 @@ package senai.sp.cotia.wms.rest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,6 +73,14 @@ public class ItemNotaRestController {
 	public List<ItemNota> findByAll(@PathVariable("p") String param) {
 		return itemNotaRepository.procurarTudo(param);
 	}
+	
+	
+	// metodo para procurar um item à partir de qualquer atributo
+	@GetMapping(value = "/teste/{id}")
+	public List<ItemNota> teste(@PathVariable("id") Long param) {
+			return itemNotaRepository.pegarNota(param).stream().collect(Collectors.toList());
+		}
+	
 	
 	
 	
