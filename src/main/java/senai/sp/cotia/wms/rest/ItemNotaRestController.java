@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -76,10 +77,12 @@ public class ItemNotaRestController {
 	
 	
 	// metodo para procurar um item à partir de qualquer atributo
-	@GetMapping(value = "/teste/{id}")
-	public List<ItemNota> teste(@PathVariable("id") Long param) {
-			return itemNotaRepository.pegarNota(param).stream().collect(Collectors.toList());
-		}
+			@RequestMapping(value = "teste/{codigo}", method = RequestMethod.GET)
+		    public List<ItemNota> teste(@PathVariable("codigo") Long param) {
+		            return itemNotaRepository.pegarNota(param);
+		        }
+		   
+	
 	
 	
 	

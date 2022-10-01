@@ -22,8 +22,8 @@ public interface ItemNotaRepository extends PagingAndSortingRepository<ItemNota,
 	@Query("SELECT itens FROM ItemNota itens WHERE itens.pedido LIKE %:p% OR itens.notaFiscal LIKE %:p% " + " OR itens.quantidade LIKE %:p% ")
 	public List<ItemNota> procurarTudo(@Param("p") String param);
 	
-	@Query("SELECT nota FROM ItemNota nota WHERE nota.notaFiscal = ':id' ")
-	public List<ItemNota> pegarNota(@Param("id") Long param);
-	
+	@Query("SELECT nota.itens FROM NotaFiscal nota WHERE nota.codigoNota = 'codigo' ")
+    public List<ItemNota> pegarNota(@Param("codigo") Long param);
+   
 
 }
