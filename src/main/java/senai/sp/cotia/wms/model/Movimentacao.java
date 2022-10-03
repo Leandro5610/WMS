@@ -28,8 +28,6 @@ public class Movimentacao {
 	private String data;
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
-	@ManyToOne
-	private Pedido pedido;
 	@OneToOne
 	private Produto produto;
 }

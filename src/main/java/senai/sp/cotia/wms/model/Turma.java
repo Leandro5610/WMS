@@ -32,8 +32,7 @@ public class Turma {
 	private Calendar dataFinal;
 	@Enumerated(EnumType.STRING)
 	private Periodo	periodo;
-	@ManyToOne
-	private Aluno aluno;
+
 	private int numParticipantes;
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")

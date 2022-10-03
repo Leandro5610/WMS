@@ -20,4 +20,6 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
 	
 	//	public Aluno findByCodMatriculaAndSenha(String matricula);
 	
+	
+	
 }

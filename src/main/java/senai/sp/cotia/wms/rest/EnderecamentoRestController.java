@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Enderecamento;
+import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.repository.EnderecamentoRepository;
+import senai.sp.cotia.wms.repository.PedidoRepository;
 
 @CrossOrigin
 @RestController
@@ -29,6 +31,8 @@ import senai.sp.cotia.wms.repository.EnderecamentoRepository;
 public class EnderecamentoRestController {
 	@Autowired
 	private EnderecamentoRepository repository;
+	@Autowired
+	private PedidoRepository pedidoRep;
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveEnderecameto(@RequestBody Enderecamento enderecamento, HttpServletRequest request,
@@ -47,11 +51,13 @@ public class EnderecamentoRestController {
 	public Iterable<Enderecamento> listEnderecamento(){
 		return repository.findAll();
 	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteEnderecamento(@PathVariable("id") Long idEnderecamento){
 		repository.deleteById(idEnderecamento);
 		return ResponseEntity.noContent().build();
 	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateEnderecamento(@RequestBody Enderecamento enderecamento, @PathVariable("id" )Long id ){
 		if(id != enderecamento.getId()) {

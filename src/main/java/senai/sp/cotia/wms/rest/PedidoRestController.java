@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,11 +41,13 @@ import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.model.NotaFiscal;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
+import senai.sp.cotia.wms.repository.EnderecamentoRepository;
 import senai.sp.cotia.wms.repository.EstoqueRepository;
 import senai.sp.cotia.wms.repository.ItemNotaRepository;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 import senai.sp.cotia.wms.repository.PedidoRepository;
+import senai.sp.cotia.wms.repository.ProdutoRepository;
 import senai.sp.cotia.wms.type.Tipo;
 
 @RestController
@@ -65,7 +68,10 @@ public class PedidoRestController {
 	private MovimentacaoRepository movRepo;
 
 	@Autowired
-	private EstoqueRepository estoque;
+	private EnderecamentoRepository end;
+	@Autowired
+	private ProdutoRepository produtoRp;
+
 
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
@@ -83,11 +89,10 @@ public class PedidoRestController {
 
 			LocalDateTime time = LocalDateTime.now();
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			pedido.setDataPedido(time.format(fmt));
+			//pedido.setDataPedido(time.format(fmt));
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -146,7 +151,6 @@ public class PedidoRestController {
 
 		for (ItemPedido itens : pedido.getItens()) {
 			Movimentacao movi = new Movimentacao();
-			movi.setPedido(pedido);
 			movi.setProduto(itens.getProduto());
 			movi.setTipo(Tipo.ENTRADA);
 			LocalDateTime time = LocalDateTime.now();
@@ -159,20 +163,28 @@ public class PedidoRestController {
 		return "deu certo";
 
 	}
-
-	public ResponseEntity<Object> debitar(Movimentacao mov, Estoque estoq, Enderecamento endereco, ItemPedido item) {
-
+	
+	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> debitar(@PathVariable("id") Long idEndereco,@RequestBody Enderecamento endereco ) {
+		if (idEndereco != endereco.getId() ) {
+			throw new RuntimeException("ID inválido");
+		}
+		Movimentacao mov = new Movimentacao();
 		mov.setTipo(Tipo.SAIDA);
-		int qtd = item.getQuantidade();
-		estoq.setSaldo(qtd);
-		endereco.setAndar(null);
-		endereco.setCorredor(null);
-		endereco.setEdificio(null);
-		endereco.setModulo(null);
-		endereco.setId(null);
-		endereco.setDemanda(null);
-
-		return ResponseEntity.ok().build();
+		LocalDateTime time = LocalDateTime.now();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		mov.setData(time.format(fmt));
+		mov.setProduto(endereco.getItens());
+		movRepo.save(mov);
+		
+		if(endereco.getQuantidade() == 0) {
+			endereco.setItens(null);
+		}
+		end.save(endereco);
+		// criar novo cabeçalho HTTP
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/pedido"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> saveItensNota(Pedido pedido, NotaFiscal nota) {
@@ -221,5 +233,7 @@ public class PedidoRestController {
 		}
 		return ResponseEntity.ok().build();
 	}
+	
+	
 
 }
