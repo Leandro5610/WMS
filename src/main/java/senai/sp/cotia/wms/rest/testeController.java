@@ -50,23 +50,17 @@ public class testeController {
 		NotaFiscal n = new NotaFiscal();
 		Long id;
 		
-		HashMap employeeReportMap = new HashMap<String, NotaFiscal>();
-
-
-		  employeeReportMap.put("codigoNota", "JK- OOP");
-		  employeeReportMap.put("valorTotal", "J K Saini");
-		  employeeReportMap.put("dataEmissao", "NIC New Delhi");
+	  
 		 /* employeeReportMap.put("desgination", "Java/J2EE Doveloper");
 		  employeeReportMap.put("salary", "18000 RS");*/
 
 		
 		
-		JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
+		/*JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
 		
 		
-	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, employeeReportMap,new JREmptyDataSource());
+	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, p,new JREmptyDataSource());*/
 		
-		JasperExportManager.exportReportToPdfFile(jasperPrint,"C:\\Users\\Pichau\\Desktop\\teste.pdf");
 		/*JRBeanCollectionDataSource bean =new JRBeanCollectionDataSource(list);
 		JRDataSource data = 
 		JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));

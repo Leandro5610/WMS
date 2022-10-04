@@ -1,4 +1,4 @@
-	package senai.sp.cotia.wms.rest;
+package senai.sp.cotia.wms.rest;
 
 import java.net.URI;
 import java.util.List;
@@ -28,13 +28,12 @@ import senai.sp.cotia.wms.repository.ItemNotaRepository;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/itemNota")
+@RequestMapping("api/itemNota")
 public class ItemNotaRestController {
 
 	@Autowired
 	private ItemNotaRepository itemNotaRepository;
 
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemNota> findItensNota(@PathVariable("id") Long idItens) {
 		// busca os itens
@@ -61,31 +60,22 @@ public class ItemNotaRestController {
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirItemNota(@PathVariable("id") Long idItens) {
 		itemNotaRepository.deleteById(idItens);
 		return ResponseEntity.noContent().build();
 	}
 
-	
 	// metodo para procurar um item à partir de qualquer atributo
-	@RequestMapping(value = "/findbyall/{p}")
+	@GetMapping(value = "/findbyall/{p}")
 	public List<ItemNota> findByAll(@PathVariable("p") String param) {
 		return itemNotaRepository.procurarTudo(param);
 	}
-	
-	
-	// metodo para procurar um item à partir de qualquer atributo
-			@RequestMapping(value = "teste/{codigo}", method = RequestMethod.GET)
-		    public List<ItemNota> teste(@PathVariable("codigo") Long param) {
-		            return itemNotaRepository.pegarNota(param);
-		        }
-		   
-	
-	
-	
-	
-	
 
+	@GetMapping(value = "teste/{codigo}")
+	public List<ItemNota> teste(@PathVariable("codigo") Long param) {
+		return itemNotaRepository.pegarNota(param);
+		
+	}
 }

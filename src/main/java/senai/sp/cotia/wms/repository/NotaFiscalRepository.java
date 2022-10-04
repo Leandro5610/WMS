@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.NotaFiscal;
 
 public interface NotaFiscalRepository extends PagingAndSortingRepository<NotaFiscal, Long>{
@@ -13,7 +14,5 @@ public interface NotaFiscalRepository extends PagingAndSortingRepository<NotaFis
 			+ " OR nota.dataEmissao LIKE %:p%" )
    public List<NotaFiscal> procurarTudo(@Param("p") String param);*/
 	
-	
-	
-	
+
 }	

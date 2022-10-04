@@ -93,7 +93,9 @@ public class PedidoRestController {
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
-			
+			   
+		       
+		      
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -224,6 +226,18 @@ public class PedidoRestController {
 				//item.setQuantidade(itens.getQuantidade());
 				itemNotaRepository.save(item);
 			}
+			JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
+		       
+	        HashMap<String, Object> parameters = new HashMap<>();
+	        parameters.put("teste",nota.getCodigoNota().toString());
+	        parameters.put("data",nota.getDataEmissao());
+	        parameters.put("data",nota.getDataEmissao());
+
+
+
+	        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters,new JREmptyDataSource());
+		       
+	        JasperExportManager.exportReportToPdfFile(jasperPrint,"C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
 			
 			
 

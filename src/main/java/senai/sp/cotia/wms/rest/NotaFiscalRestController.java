@@ -27,40 +27,39 @@ import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 @CrossOrigin
 @RequestMapping("api/notaFiscal")
 public class NotaFiscalRestController {
-	
+
 	@Autowired
 	private NotaFiscalRepository nfRepo;
-	
+
 	private ItemNotaRepository itemrepo;
-	
+
 	public ResponseEntity<Object> saveNotaFiscal(@RequestBody NotaFiscal nota, HttpServletRequest request,
-			HttpServletResponse response){
-		
+			HttpServletResponse response) {
+
 		try {
-		nfRepo.save(nota);
-		
+			nfRepo.save(nota);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().build();
 	}
-	
-	
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<NotaFiscal> getNotasFiscais(){
+	public Iterable<NotaFiscal> getNotasFiscais() {
 		return nfRepo.findAll();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> excluirNota(@PathVariable("id") Long idNota){
+	public ResponseEntity<Void> excluirNota(@PathVariable("id") Long idNota) {
 		nfRepo.deleteById(idNota);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<NotaFiscal> findPedido(@PathVariable("id") Long idNota) {
 		// buscar pedido
-		Optional<NotaFiscal> nota =nfRepo.findById(idNota);
+		Optional<NotaFiscal> nota = nfRepo.findById(idNota);
 
 		// verificação de pedido
 		if (nota.isPresent()) {
@@ -69,6 +68,14 @@ public class NotaFiscalRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+//	// metodo para procurar um item à partir de qualquer atributo
+//	@RequestMapping(value = "teste/{codigo}", method = RequestMethod.GET)
+//	public List<ItemNota> teste(@PathVariable("codigo") Long param) {
+//		return itemrepo.pegarNota(param);
+//	}
+
 	
-	
+
+
 }
