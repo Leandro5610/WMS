@@ -14,5 +14,7 @@ public interface NotaFiscalRepository extends PagingAndSortingRepository<NotaFis
 			+ " OR nota.dataEmissao LIKE %:p%" )
    public List<NotaFiscal> procurarTudo(@Param("p") String param);*/
 	
+	
+	
 
 }	

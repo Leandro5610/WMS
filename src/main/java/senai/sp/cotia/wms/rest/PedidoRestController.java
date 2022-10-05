@@ -231,7 +231,9 @@ public class PedidoRestController {
 	        HashMap<String, Object> parameters = new HashMap<>();
 	        parameters.put("teste",nota.getCodigoNota().toString());
 	        parameters.put("data",nota.getDataEmissao());
-	        parameters.put("data",nota.getDataEmissao());
+	        
+	        parameters.put("item",nota.getItens().toString());
+	        
 
 
 

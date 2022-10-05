@@ -69,11 +69,7 @@ public class NotaFiscalRestController {
 		}
 	}
 
-//	// metodo para procurar um item à partir de qualquer atributo
-//	@RequestMapping(value = "teste/{codigo}", method = RequestMethod.GET)
-//	public List<ItemNota> teste(@PathVariable("codigo") Long param) {
-//		return itemrepo.pegarNota(param);
-//	}
+	
 
 	
 

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.ItemFornecedor;
 import senai.sp.cotia.wms.model.ItemNota;
+import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.repository.ItemNotaRepository;
 
 @CrossOrigin
@@ -66,6 +67,11 @@ public class ItemNotaRestController {
 		itemNotaRepository.deleteById(idItens);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public Iterable<ItemNota> listarPedidos() {
+		return itemNotaRepository.findAll();
+	}
 
 	// metodo para procurar um item à partir de qualquer atributo
 	@GetMapping(value = "/findbyall/{p}")
@@ -73,9 +79,9 @@ public class ItemNotaRestController {
 		return itemNotaRepository.procurarTudo(param);
 	}
 
-	@GetMapping(value = "teste/{codigo}")
+	//metodo para procurar um item à partir de qualquer atributo
+	@RequestMapping(value = "teste/{codigo}", method = RequestMethod.GET)
 	public List<ItemNota> teste(@PathVariable("codigo") Long param) {
 		return itemNotaRepository.pegarNota(param);
-		
 	}
 }
