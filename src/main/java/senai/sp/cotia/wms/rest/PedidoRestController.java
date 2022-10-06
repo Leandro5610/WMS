@@ -2,10 +2,14 @@ package senai.sp.cotia.wms.rest;
 
 import java.io.FileInputStream;
 import java.net.URI;
+import java.sql.Connection;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,13 +76,12 @@ public class PedidoRestController {
 	@Autowired
 	private ProdutoRepository produtoRp;
 
-
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
 	public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
 		// double total = pedido.totalPedido(pedido);
-		
+
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
@@ -89,13 +92,11 @@ public class PedidoRestController {
 
 			LocalDateTime time = LocalDateTime.now();
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			//pedido.setDataPedido(time.format(fmt));
+			pedido.setDataPedido(time.format(fmt));
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
-			   
-		       
-		      
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -165,10 +166,10 @@ public class PedidoRestController {
 		return "deu certo";
 
 	}
-	
+
 	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> debitar(@PathVariable("id") Long idEndereco,@RequestBody Enderecamento endereco ) {
-		if (idEndereco != endereco.getId() ) {
+	public ResponseEntity<Void> debitar(@PathVariable("id") Long idEndereco, @RequestBody Enderecamento endereco) {
+		if (idEndereco != endereco.getId()) {
 			throw new RuntimeException("ID inválido");
 		}
 		Movimentacao mov = new Movimentacao();
@@ -178,8 +179,8 @@ public class PedidoRestController {
 		mov.setData(time.format(fmt));
 		mov.setProduto(endereco.getItens());
 		movRepo.save(mov);
-		
-		if(endereco.getQuantidade() == 0) {
+
+		if (endereco.getQuantidade() == 0) {
 			endereco.setItens(null);
 		}
 		end.save(endereco);
@@ -223,33 +224,25 @@ public class PedidoRestController {
 				item.setNotaFiscal(nota);
 				item.setPedido(pedido);
 				item.setProduto(itens.getProduto());
-				//item.setQuantidade(itens.getQuantidade());
+				// item.setQuantidade(itens.getQuantidade());
 				itemNotaRepository.save(item);
 			}
-			JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
-		       
-	        HashMap<String, Object> parameters = new HashMap<>();
-	        parameters.put("teste",nota.getCodigoNota().toString());
-	        parameters.put("data",nota.getDataEmissao());
-	        
-	        parameters.put("item",nota.getItens().toString());
-	        
+			Long idNota = nota.getCodigoNota();
+			List<ItemNota> list = itemNotaRepository.pegarNota(idNota);
+			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 
+			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 
+			Map<String, Object> map = new HashMap<>();
 
-	        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters,new JREmptyDataSource());
-		       
-	        JasperExportManager.exportReportToPdfFile(jasperPrint,"C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
-			
-			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Desktop\\teste.pdf");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().build();
 	}
-	
-	
 
 }

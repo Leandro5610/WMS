@@ -4,6 +4,7 @@ import java.awt.print.PrinterJob;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,8 +34,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.NotaFiscal;
 import senai.sp.cotia.wms.repository.AlunoRepository;
+import senai.sp.cotia.wms.repository.ItemNotaRepository;
 import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 
 @RestController
@@ -44,36 +47,24 @@ public class testeController {
 	private AlunoRepository repo;
 	@Autowired
 	private NotaFiscalRepository repo1;
-	
+	private ItemNotaRepository itemRep;
+
 	@RequestMapping(value = "pdf", method = RequestMethod.GET)
 	public String generatedPdf() throws FileNotFoundException, JRException, DocumentException {
-		NotaFiscal n = new NotaFiscal();
-		Long id;
+		Long idNota = (long) 23;
+		Iterable<ItemNota> list =itemRep.pegarNota(idNota);
 		
-	  
-		 /* employeeReportMap.put("desgination", "Java/J2EE Doveloper");
-		  employeeReportMap.put("salary", "18000 RS");*/
-
-		
-		
-		/*JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
-		
-		
-	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, p,new JREmptyDataSource());*/
-		
-		/*JRBeanCollectionDataSource bean =new JRBeanCollectionDataSource(list);
-		JRDataSource data = 
 		JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
-		
 		HashMap<String, Object> map = new HashMap<>();
-		JasperPrint print = JasperFillManager.fillReport(report, map, bean);
 		
-		JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Nova pasta\\teste.pdf");*/
+	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map,(Connection) list);
+		
+		JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Desktop\\teste.pdf");
 		
 		try{
 			
 		
-		Document document = new Document();
+		/*Document document = new Document();
 		
 		PdfWriter arquivo = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\TecDevTarde\\Downloads\\teste.pdf"));
 		document.open();
@@ -87,7 +78,7 @@ public class testeController {
 		
 		img.scalePercent(200);
 		document.add(img);
-		document.close();
+		document.close();*/
 		
 		return "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 		}catch (Exception e) {
@@ -95,5 +86,5 @@ public class testeController {
 		}
 		
 		
-	}	
+	}
 }
