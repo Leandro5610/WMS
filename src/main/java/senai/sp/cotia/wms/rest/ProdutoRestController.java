@@ -34,8 +34,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.model.Fornecedor;
+import senai.sp.cotia.wms.model.ItemFornecedor;
+import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
+import senai.sp.cotia.wms.repository.FornecedorRepository;
+import senai.sp.cotia.wms.repository.ItemFornecedorRepository;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
@@ -48,12 +53,20 @@ public class ProdutoRestController {
 	private ProdutoRepository prodRepo;
 	
 	@Autowired
+	private FornecedorRepository fornRepo;
+	
+	@Autowired
 	private FireBaseUtil fire;
+	
+	@Autowired
+	private ItemFornecedorRepository itemFornece;
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
 	public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		try {
+			
+		
 			if(produto.getImagem() != null) {
 			// variavel para guardar a imagem codificada Base64 que está vindo do front
 			String stringImagem = produto.getImagem();
@@ -100,10 +113,16 @@ public class ProdutoRestController {
 			
 			fire.uploadFile(file, decodificada);
 			fileInput.close();
+			
+			for (ItemFornecedor itens : produto.getFornecedores()) {
+				itens.setProduto(produto);
+				itens.setFornecedor(itens.getFornecedor());
+				itemFornece.save(itens);
+			}
+		
 			prodRepo.save(produto);
 			Files.delete(pathFile);
 			}else {
-			prodRepo.save(produto);
 			return ResponseEntity.ok(HttpStatus.CREATED);
 			}
 

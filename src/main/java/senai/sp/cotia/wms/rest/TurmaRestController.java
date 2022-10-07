@@ -97,7 +97,6 @@ public class TurmaRestController {
 				for (Membros membros : turma.getMembros()) {
 					membros.setTurma(turma);
 					membros.setAluno(membros.getAluno());
-					membros.setProfessor(turma.getProf());
 					memRep.save(membros);
 
 				}

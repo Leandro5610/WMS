@@ -36,6 +36,7 @@ public class FornecedorRestController {
 	public ResponseEntity<Object> saveFornecedor(@RequestBody Fornecedor fornecedor, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session){
 			try {
+				
 				repository.save(fornecedor);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			} catch (Exception e) {

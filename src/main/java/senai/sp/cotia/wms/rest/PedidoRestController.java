@@ -89,7 +89,6 @@ public class PedidoRestController {
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
-
 			}
 
 			// pedido.setValor(total);

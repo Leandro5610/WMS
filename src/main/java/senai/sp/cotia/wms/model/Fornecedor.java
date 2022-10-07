@@ -28,6 +28,7 @@ public class Fornecedor {
 	private String uf;	
 	private boolean homologado;
 	
+	
 	public void setNome(String nome) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
