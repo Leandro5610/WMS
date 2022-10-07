@@ -11,7 +11,7 @@ import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.Turma;
 
 public interface ProfessorRepository extends PagingAndSortingRepository<Professor, Long> {
-	@Query("SELECT prof FROM Professor prof WHERE prof.nome LIKE %:p% OR prof.nif LIKE %:p% "
-			+ " OR prof.turma LIKE  %:p%" )
-   public List<Professor> procurarTudo(@Param("p") String param);
+//	@Query("SELECT prof FROM Professor prof WHERE prof.nome LIKE %:p% OR prof.nif LIKE %:p% "
+//			+ " OR prof.turma LIKE  %:p%" )
+//   public List<Professor> procurarTudo(@Param("p") String param);
 }

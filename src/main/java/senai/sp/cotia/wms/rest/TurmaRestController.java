@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Membros;
 import senai.sp.cotia.wms.model.Turma;
+import senai.sp.cotia.wms.repository.MembrosRepository;
 import senai.sp.cotia.wms.repository.TurmaRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
@@ -39,12 +40,14 @@ public class TurmaRestController {
 	@Autowired
 	private FireBaseUtil firebase;
 
+	@Autowired
+	private MembrosRepository memRep;
+
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Object cadastrarMedida(@RequestBody Turma turma, HttpServletRequest request,
-			HttpServletResponse response) {
-		
+	public Object cadastrarMedida(@RequestBody Turma turma, HttpServletRequest request, HttpServletResponse response) {
+
 		try {
-			if(turma.getImagem() != null) {
+			if (turma.getImagem() != null) {
 				// variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = turma.getImagem();
 
@@ -77,6 +80,7 @@ public class TurmaRestController {
 
 				// variavel para guardar o nome do arquivo em um File
 				File file = new File(nomeArquivo);
+			
 
 				// variavel para converter em arquivo e armazenar no sistema do pc
 				FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
@@ -89,20 +93,21 @@ public class TurmaRestController {
 				firebase.uploadFile(file, decodificada);
 				repo.save(turma);
 				fileInput.close();
-				
+
 				for (Membros membros : turma.getMembros()) {
 					membros.setTurma(turma);
 					membros.setAluno(membros.getAluno());
 					membros.setProfessor(turma.getProf());
-					
+					memRep.save(membros);
+
 				}
-				
-			}else {
+
+			} else {
 				// salvar o usuário no banco de dados
 				repo.save(turma);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);

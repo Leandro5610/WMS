@@ -137,9 +137,9 @@ public class ProfessorRestController {
 	}
 
 	// metodo para procurar uma reserva à partir de qualquer atributo
-	@RequestMapping(value = "/findbyall/{p}")
-	public Iterable<Professor> findByAll(@PathVariable("p") String param) {
-		return repo.procurarTudo(param);
-	}
+//	@RequestMapping(value = "/findbyall/{p}")
+//	public Iterable<Professor> findByAll(@PathVariable("p") String param) {
+//		return repo.procurarTudo(param);
+//	}
 
 }

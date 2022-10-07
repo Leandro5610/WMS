@@ -34,6 +34,7 @@ public class Aluno {
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;
+	@Column(unique = true)
 	private String email;
 	
 	public void setNome(String nome) {
