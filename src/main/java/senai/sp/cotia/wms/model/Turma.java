@@ -1,7 +1,9 @@
 package senai.sp.cotia.wms.model;
 
 import java.util.Calendar;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -32,11 +34,13 @@ public class Turma {
 	private Calendar dataFinal;
 	@Enumerated(EnumType.STRING)
 	private Periodo	periodo;
-
 	private int numParticipantes;
+	@OneToOne
+	private Professor prof;
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;
-
+	@OneToMany(mappedBy = "turma", cascade = CascadeType.ALL)
+	private List<Membros> membros;
 
 }

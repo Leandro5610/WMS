@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f26b3ec-8358-47f2-bfb8-bb0291cd37a5">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nome" class="java.lang.String"/>
+	<field name="codMatricula" class="java.lang.String"/>
+	<field name="turma.nome" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="141" height="30" uuid="9624195b-bc3c-4cef-94a3-e6aa92638300">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9121ae15-9a69-4de4-a851-efe7a12de4c9"/>
+				</reportElement>
+				<text><![CDATA[nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="0" width="138" height="30" uuid="811901aa-f8a8-42c6-9a26-d93ba882a555">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2bb8c2c6-475e-4e56-ac3b-1e97cd92636b"/>
+				</reportElement>
+				<text><![CDATA[codMatricula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="0" width="138" height="30" uuid="895378ff-f28c-44ce-9a0c-5f60a6f957a5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0be6c967-ecab-440c-a797-a8b9f06499d9"/>
+				</reportElement>
+				<text><![CDATA[turma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="138" height="30" uuid="1b7287ce-5cee-46b5-92e7-aaaebbffbf1b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="375995a1-1047-4d7d-9884-e43755190d76"/>
+				</reportElement>
+				<text><![CDATA[email]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="141" height="30" uuid="fd71b98b-6c75-4820-b21d-92db2cea727b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9121ae15-9a69-4de4-a851-efe7a12de4c9"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="0" width="138" height="30" uuid="c26f8c2c-d1c6-4069-b400-eb87621ad4e2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2bb8c2c6-475e-4e56-ac3b-1e97cd92636b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{codMatricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="0" width="138" height="30" uuid="ce64d388-4ed7-4342-b34d-cc13cd9107f1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0be6c967-ecab-440c-a797-a8b9f06499d9"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{turma.nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="0" width="138" height="30" uuid="edadeb3a-37f8-415a-bb05-d75544b5c918">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="375995a1-1047-4d7d-9884-e43755190d76"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.model.Membros;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.TurmaRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
@@ -88,6 +89,13 @@ public class TurmaRestController {
 				firebase.uploadFile(file, decodificada);
 				repo.save(turma);
 				fileInput.close();
+				
+				for (Membros membros : turma.getMembros()) {
+					membros.setTurma(turma);
+					membros.setAluno(membros.getAluno());
+					membros.setProfessor(turma.getProf());
+					
+				}
 				
 			}else {
 				// salvar o usuário no banco de dados

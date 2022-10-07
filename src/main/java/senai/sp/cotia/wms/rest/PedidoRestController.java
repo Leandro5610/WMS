@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -75,6 +77,8 @@ public class PedidoRestController {
 	private EnderecamentoRepository end;
 	@Autowired
 	private ProdutoRepository produtoRp;
+	
+	Long teste;
 
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
@@ -95,7 +99,10 @@ public class PedidoRestController {
 			pedido.setDataPedido(time.format(fmt));
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
+			
 			saveNotaFiscal(pedido);
+			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -227,7 +234,10 @@ public class PedidoRestController {
 				// item.setQuantidade(itens.getQuantidade());
 				itemNotaRepository.save(item);
 			}
-			Long idNota = nota.getCodigoNota();
+			System.out.println("Parou");
+			
+			
+			/*Long idNota = nota.getCodigoNota();
 			List<ItemNota> list = itemNotaRepository.pegarNota(idNota);
 			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 
@@ -237,12 +247,34 @@ public class PedidoRestController {
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Desktop\\teste.pdf");
-
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Desktop\\teste.pdf");*/
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().build();
 	}
+	public ResponseEntity<ItemNota> teste(Long numPedido) {
+		List<ItemNota> list = itemNotaRepository.pegarNota(numPedido);
+		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 
+		JasperReport report;
+		try {
+			report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
+			Map<String, Object> map = new HashMap<>();
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
+
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Desktop\\teste.pdf");
+
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		return ResponseEntity.ok().build();
+		
+	}
+	
 }

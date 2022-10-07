@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TesteBD" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="39f29b46-3a76-4529-b829-509812ecfb68">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM wms.item_nota where item_nota.nota_fiscal_codigo_nota ='13']]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item_nota"/>
+	</field>
+	<field name="quantidade" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="quantidade"/>
+		<property name="com.jaspersoft.studio.field.label" value="quantidade"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item_nota"/>
+	</field>
+	<field name="nota_fiscal_codigo_nota" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="nota_fiscal_codigo_nota"/>
+		<property name="com.jaspersoft.studio.field.label" value="nota_fiscal_codigo_nota"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item_nota"/>
+	</field>
+	<field name="pedido_num_pedido" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pedido_num_pedido"/>
+		<property name="com.jaspersoft.studio.field.label" value="pedido_num_pedido"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item_nota"/>
+	</field>
+	<field name="produto_cod_produto" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="produto_cod_produto"/>
+		<property name="com.jaspersoft.studio.field.label" value="produto_cod_produto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item_nota"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="111" height="30" uuid="897ff94e-d0b8-40f8-9e2a-7272ad9c21ba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5b5af349-4e73-48c9-aad1-a3b630928c12"/>
+				</reportElement>
+				<text><![CDATA[id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="0" width="111" height="30" uuid="f049d7dc-4c0f-4d7e-898f-3380f577d5b3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53627df6-4f02-4f1e-8c09-3b782fc9fbf4"/>
+				</reportElement>
+				<text><![CDATA[quantidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="0" width="111" height="30" uuid="b6b6d6de-378b-45f0-af99-e50eb738f603">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e532ca7a-c37d-4756-ab07-33ec5e2394ef"/>
+				</reportElement>
+				<text><![CDATA[nota_fiscal_codigo_nota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="0" width="111" height="30" uuid="b6669135-0c87-45f2-9da8-6c0d6fdc3d24">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad1fe0a2-e3f8-41bb-b279-1bfbe0303910"/>
+				</reportElement>
+				<text><![CDATA[pedido_num_pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="0" width="111" height="30" uuid="fc002779-600f-4970-a812-227a109c4601">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8909954-8909-4242-a61b-b5455f44bceb"/>
+				</reportElement>
+				<text><![CDATA[produto_cod_produto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="111" height="30" uuid="8d7a48b8-536f-45d1-8a58-574f5a3c9d8a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5b5af349-4e73-48c9-aad1-a3b630928c12"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="111" height="30" uuid="0e287751-d6fb-446c-9f29-4495a3aa5dec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53627df6-4f02-4f1e-8c09-3b782fc9fbf4"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="222" y="0" width="111" height="30" uuid="391b3d7f-cc7b-4e10-bb14-f6d9c515ca51">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e532ca7a-c37d-4756-ab07-33ec5e2394ef"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nota_fiscal_codigo_nota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="0" width="111" height="30" uuid="79bd9d53-92de-4eef-9678-a397bec4e72e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad1fe0a2-e3f8-41bb-b279-1bfbe0303910"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{pedido_num_pedido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="444" y="0" width="111" height="30" uuid="6fa9c532-4b5d-4b55-87cc-be2a9df72127">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8909954-8909-4242-a61b-b5455f44bceb"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto_cod_produto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

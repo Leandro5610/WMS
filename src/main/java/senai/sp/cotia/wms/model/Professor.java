@@ -25,8 +25,6 @@ public class Professor {
 	private String nif;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String senha;
-	@OneToOne
-	private Turma turma;
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;
