@@ -21,5 +21,7 @@ public interface MovimentacaoRepository extends PagingAndSortingRepository<Movim
 	//metodo para procurar itens no banco de dados por qualquer atributo
 	@Query("SELECT mov FROM Movimentacao mov WHERE mov.data LIKE %:p% OR mov.tipo LIKE %:p% " )
 	public List<Movimentacao> procurarTudo(@Param("p") String param);
+	
+	public List<Movimentacao> findAll();
  
 }

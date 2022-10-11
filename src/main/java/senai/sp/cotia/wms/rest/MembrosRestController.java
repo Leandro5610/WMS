@@ -39,7 +39,7 @@ public class MembrosRestController {
 
 	}
 	
-	@GetMapping( value = "teste/{id}")
+	@GetMapping(value = "teste/{id}")
 	public List<Membros> pegarMembros(@PathVariable("id") Long idTurma){
 		return membrosR.pegarMembro(idTurma);
 	}

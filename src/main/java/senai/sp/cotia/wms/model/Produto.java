@@ -46,12 +46,5 @@ public class Produto {
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;
-
-	/*
-	public Double setTotal() {
-		Double valorTotal = valorUnitario + ipi + cofins + icms + pis;
-		return valorTotal;
-	}
-	*/
 }
 

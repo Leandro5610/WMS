@@ -253,6 +253,7 @@ public class PedidoRestController {
 		}
 		return ResponseEntity.ok().build();
 	}
+	
 	public ResponseEntity<ItemNota> teste(Long numPedido) {
 		List<ItemNota> list = itemNotaRepository.pegarNota(numPedido);
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);

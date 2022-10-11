@@ -50,7 +50,7 @@ public class testeController {
 	private ItemNotaRepository itemRep;
 
 	@RequestMapping(value = "pdf", method = RequestMethod.GET)
-	public String generatedPdf() throws FileNotFoundException, JRException, DocumentException {
+	public String generatedPdf() throws FileNotFoundException, JRException {
 		Long idNota = (long) 23;
 		Iterable<ItemNota> list =itemRep.pegarNota(idNota);
 		
@@ -60,30 +60,7 @@ public class testeController {
 	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map,(Connection) list);
 		
 		JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Desktop\\teste.pdf");
-		
-		try{
-			
-		
-		/*Document document = new Document();
-		
-		PdfWriter arquivo = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\TecDevTarde\\Downloads\\teste.pdf"));
-		document.open();
-		
-		Barcode128 barcode = new Barcode128();
-		
-		barcode.setCode("1234567891234");
-		
-		Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
-
-		
-		img.scalePercent(200);
-		document.add(img);
-		document.close();*/
-		
-		return "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-		}catch (Exception e) {
-			return "nooooooooooooooooooooooooo";
-		}
+		return null;
 		
 		
 	}

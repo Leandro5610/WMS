@@ -2,17 +2,12 @@
 <!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="teste_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e8d1c96-77f8-4ada-bfe1-f5dd2eedea5a">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<parameter name="teste" class="java.lang.String"/>
-	<parameter name="data" class="java.lang.String"/>
-	<parameter name="item" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="codigoNota" class="java.lang.String"/>
-	<field name="valorTotal" class="java.lang.Long"/>
-	<field name="pedido" class="java.lang.String"/>
-	<field name="dataEmissao" class="java.lang.String"/>
-	<field name="quantidade" class="java.lang.String"/>
+	<field name="data" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="produto" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -33,41 +28,32 @@
 	<columnHeader>
 		<band height="65" splitType="Stretch">
 			<staticText>
-				<reportElement x="138" y="0" width="100" height="30" uuid="5db7585f-ef8d-4fd7-aa29-991dc81de7bd"/>
-				<text><![CDATA[valorTotal]]></text>
+				<reportElement x="110" y="5" width="100" height="30" uuid="cc8e234f-9b63-4fac-838d-92ca27e2a33e"/>
+				<text><![CDATA[data]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="338" y="0" width="100" height="30" uuid="0cc6c9f5-1206-48db-bdd7-cc94cd8eec3e"/>
-				<text><![CDATA[dataEmissao]]></text>
+				<reportElement x="227" y="5" width="100" height="30" uuid="c215f471-3584-4ff7-bed0-182fa8f3a3e5"/>
+				<text><![CDATA[tipo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="238" y="0" width="100" height="30" uuid="fb502d04-df7e-4f37-8564-c8907d2d3cb9"/>
-				<text><![CDATA[pedido]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="38" y="0" width="100" height="30" uuid="a435bc54-d827-4567-a0d9-04d8da23dc50"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[codigoNota]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="438" y="0" width="100" height="30" uuid="5f05ee2f-3052-49b3-91c5-55033d7c2290"/>
-				<text><![CDATA[quantidade]]></text>
+				<reportElement x="350" y="0" width="100" height="30" uuid="89392a75-29f4-4a40-8841-65e709699d96"/>
+				<text><![CDATA[produto]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="125" splitType="Stretch">
 			<textField>
-				<reportElement x="80" y="10" width="100" height="30" uuid="39a894f2-e90b-4b23-8c54-9915dca6d6c6"/>
-				<textFieldExpression><![CDATA[$P{teste}.toString()]]></textFieldExpression>
+				<reportElement x="213" y="16" width="100" height="30" uuid="2cbb068e-7f45-43bb-9246-fcc7a5be5e6c"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="10" width="100" height="30" uuid="7c4d494d-ce50-4c15-b9a5-19258001c5b6"/>
-				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+				<reportElement x="99" y="21" width="100" height="30" uuid="7b7d04b8-7ea0-4b86-95dd-e1db17e45e05"/>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="10" width="100" height="30" uuid="eb63af1e-aec6-494a-ad14-71a4d3b040f4"/>
-				<textFieldExpression><![CDATA[$P{item}.toString()]]></textFieldExpression>
+				<reportElement x="330" y="26" width="100" height="30" uuid="812b0693-96d4-4ec7-ba17-dc96306e0010"/>
+				<textFieldExpression><![CDATA[$F{produto}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="50"/>

@@ -60,11 +60,20 @@ public class ProdutoRestController {
 	
 	@Autowired
 	private ItemFornecedorRepository itemFornece;
+	
+	
 	// MÉTODO PARA SALVAR
-	@RequestMapping(value = "save")
+	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		try {
+			
+			
+			for (ItemFornecedor itens : produto.getFornecedores() ) {
+				itens.setProduto(produto);
+				itens.setFornecedor(itens.getFornecedor());
+				
+			}
 			
 		
 			if(produto.getImagem() != null) {
@@ -114,15 +123,12 @@ public class ProdutoRestController {
 			fire.uploadFile(file, decodificada);
 			fileInput.close();
 			
-			for (ItemFornecedor itens : produto.getFornecedores()) {
-				itens.setProduto(produto);
-				itens.setFornecedor(itens.getFornecedor());
-				itemFornece.save(itens);
-			}
+			
 		
 			prodRepo.save(produto);
 			Files.delete(pathFile);
 			}else {
+			prodRepo.save(produto);
 			return ResponseEntity.ok(HttpStatus.CREATED);
 			}
 
