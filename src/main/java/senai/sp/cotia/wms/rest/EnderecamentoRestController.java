@@ -1,6 +1,9 @@
 package senai.sp.cotia.wms.rest;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +16,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Pedido;
@@ -83,5 +94,26 @@ public class EnderecamentoRestController {
 	public Iterable<Enderecamento> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
-	
+	@GetMapping(value = "relatorio")
+	public ResponseEntity<Object> relatorioEstoque() {
+		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
+		
+		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
+		
+		try {
+			JasperReport report  = JasperCompileManager.compileReport("src/main/resources/Invoice.jrxml");
+			
+			Map<String, Object> map = new HashMap<>();
+			
+			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
+			
+			JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Desktop\\relatorio.pdf");
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.ok().build();
+		
+	}
 }

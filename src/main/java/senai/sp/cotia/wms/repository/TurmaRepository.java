@@ -13,4 +13,6 @@ public interface TurmaRepository extends PagingAndSortingRepository<Turma, Long>
 	@Query("SELECT turma FROM Turma turma WHERE turma.nome LIKE %:p% OR turma.dataInicio LIKE %:p% "
 			+ " OR turma.dataFinal LIKE %:p% OR turma.periodo LIKE %:p%" )
    public List<Turma> procurarTudo(@Param("p") String param);
+	
+	
 }
