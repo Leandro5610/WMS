@@ -28,7 +28,6 @@ public class MovimentacaoPdf {
 	
 	@Autowired
 	private MovimentacaoRepository movimentacaoRepository;
-
 	
 	@RequestMapping(value = "pdf", method = RequestMethod.GET)
 	public String generatedPdf() throws FileNotFoundException, JRException {
@@ -36,14 +35,31 @@ public class MovimentacaoPdf {
 		List<Movimentacao> list = movimentacaoRepository.findAll();
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		
-		JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
+		JasperReport report = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
 		HashMap<String, Object> map = new HashMap<>();
 		
 	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 		
-		JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\bruno\\Downloads\\teste.pdf");
+		JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
 		return "uauauau";
 		
 	}
 	
+	/*
+	@RequestMapping(value = "pdf/datas", method = RequestMethod.GET)
+	public String generatedPdfDatas() throws FileNotFoundException, JRException {
+
+		List<Movimentacao> list = movimentacaoRepository.procurarDatas();
+		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
+		
+		JasperReport report = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
+		HashMap<String, Object> map = new HashMap<>();
+		
+	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
+		
+		JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
+		return "uauauau2";
+		
+	}
+	*/
 }
