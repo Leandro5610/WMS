@@ -42,5 +42,5 @@ public class Turma {
 	private String imagem;
 	@OneToMany(mappedBy = "turma", cascade = CascadeType.ALL)
 	private List<Membros> membros;
-
-}
+	
+	}

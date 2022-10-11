@@ -94,12 +94,7 @@ public class TurmaRestController {
 				repo.save(turma);
 				fileInput.close();
 
-				for (Membros membros : turma.getMembros()) {
-					membros.setTurma(turma);
-					membros.setAluno(membros.getAluno());
-					memRep.save(membros);
-
-				}
+				
 
 			} else {
 				// salvar o usuário no banco de dados
@@ -136,6 +131,12 @@ public class TurmaRestController {
 		if (id != turma.getId()) {
 			throw new RuntimeException("id invalido");
 		}
+	 	for (Membros membros : turma.getMembros()) {
+			membros.setAluno(membros.getAluno());
+			membros.setTurma(turma);
+			memRep.save(membros);
+		}
+       	
 		repo.save(turma);
 		HttpHeaders header = new HttpHeaders();
 		header.setLocation(URI.create("/api/turma"));
@@ -153,5 +154,16 @@ public class TurmaRestController {
 	public Iterable<Turma> findByAll(@PathVariable("p") String param) {
 		return repo.procurarTudo(param);
 	}
+	
+	  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+	    public ResponseEntity<Void> colocarMemebros (@RequestBody Turma turma, @PathVariable("id") Long id) {
+	       
+	      
+	       	
+	       	repo.save(turma);
+	       	HttpHeaders header = new HttpHeaders();
+	        header.setLocation(URI.create("/api/turma"));
+	        return new ResponseEntity<Void>(header, HttpStatus.OK);
+	    }
 
 }
