@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Membros;
 import senai.sp.cotia.wms.repository.MembrosRepository;
@@ -27,9 +28,10 @@ public class MembrosRestController {
 	@Autowired
 	private MembrosRepository membrosR;
 	
-	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	/*@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveMembro(@RequestBody Membros membros) {
 		try {
+			
 			membrosR.save(membros);
 			return ResponseEntity.ok(HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -37,7 +39,7 @@ public class MembrosRestController {
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-	}
+	}*/
 	
 	@GetMapping(value = "teste/{id}")
 	public List<Membros> pegarMembros(@PathVariable("id") Long idTurma){
