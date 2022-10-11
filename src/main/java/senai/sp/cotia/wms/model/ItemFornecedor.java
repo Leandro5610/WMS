@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.Data;
 @Data
 @Entity
@@ -19,6 +22,7 @@ public class ItemFornecedor {
 	@ManyToOne
 	private Fornecedor fornecedor;
 	@ManyToOne
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private Produto produto;
 
 }

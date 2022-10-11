@@ -19,6 +19,8 @@ public interface ItemFornecedorRepository extends PagingAndSortingRepository<Ite
 	@Query("SELECT i FROM ItemFornecedor i WHERE i.fornecedor LIKE %:p% OR i.produto LIKE %:p% ")
 	public List<ItemFornecedor> procurarTudo(@Param("p") String param);
 	
+	@Query("SELECT i.fornecedores FROM Produto i WHERE i.codProduto = :cod")
+	public List<ItemFornecedor> pegarFornecedores(@Param("cod")Long param);
 
 }
 

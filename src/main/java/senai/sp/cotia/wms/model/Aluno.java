@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 import org.jasypt.util.text.BasicTextEncryptor;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Data;
+import senai.sp.cotia.wms.util.HashUtil;
 //import senai.sp.cotia.wms.util.HashUtil;
 
 
@@ -24,10 +26,12 @@ public class Aluno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotEmpty
 	private String nome;
 	@Column(unique = true)
 	private String codMatricula;
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@NotEmpty
 	private String senha;
 	@ManyToOne
 	private Turma turma;
@@ -67,14 +71,14 @@ public class Aluno {
 		return codMatriculaDecrip;
 	}
 	
-//	public void setSenha(String senha) {
-//	    this.senha = HashUtil.hash256(senha);
-//	 }
-//		
-//		public void setSenhaComHash(String hash) {
-//	        // seta o hash na senha
-//	        this.senha = hash;
-//		}
+	public void setSenha(String senha) {
+	    this.senha = HashUtil.hash256(senha);
+	 }
+		
+		public void setSenhaComHash(String hash) {
+	        // seta o hash na senha
+	        this.senha = hash;
+		}
 	
 	
 	

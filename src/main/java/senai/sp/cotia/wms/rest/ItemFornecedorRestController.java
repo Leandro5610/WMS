@@ -1,6 +1,7 @@
 package senai.sp.cotia.wms.rest;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,6 +80,11 @@ public class ItemFornecedorRestController {
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<ItemFornecedor> findByAll(@PathVariable("p") String param) {
 		return itensfornecedorRepository.procurarTudo(param);
+	}
+	
+	@GetMapping(value = "pega/{cod}")
+	public List<ItemFornecedor> pegarFornecedor(@PathVariable("cod") Long param){
+		return itensfornecedorRepository.pegarFornecedores(param);
 	}
 
 
