@@ -7,6 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,8 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Professor;
+import senai.sp.cotia.wms.model.TokenWms;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.ProfessorRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
@@ -38,6 +45,11 @@ public class ProfessorRestController {
 	@Autowired
 	private FireBaseUtil firebase;
 
+
+	public static final String EMISSOR = "Sen@i";
+	public static final String SECRET = "@msSenai";
+	
+	
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object cadastrarProfessor(@RequestBody Professor professor) {
 		try {
@@ -141,5 +153,26 @@ public class ProfessorRestController {
 //	public Iterable<Professor> findByAll(@PathVariable("p") String param) {
 //		return repo.procurarTudo(param);
 //	}
+	
+	public ResponseEntity<TokenWms> login(@RequestBody Professor professor){
+		professor = repo.findByNifAndSenha(professor.getNif(), professor.getSenha());
+		
+		if(professor != null) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("aluno_id", professor.getId());
+			map.put("aluno_codMatricula", professor.getNif());
+			
+			Calendar expiracao = Calendar.getInstance();
+			expiracao.add(Calendar.HOUR, 2);
+			
+			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
+			
+			TokenWms token = new TokenWms();
+			token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algoritimo));
+			return ResponseEntity.ok(token);
+		}else {
+			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
+		}
+	}
 
 }

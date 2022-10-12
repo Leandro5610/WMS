@@ -1,4 +1,4 @@
-	package senai.sp.cotia.wms.rest;
+package senai.sp.cotia.wms.rest;
 
 import java.io.FileInputStream;
 import java.net.URI;
@@ -38,6 +38,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import senai.sp.cotia.wms.annotation.Privado;
+import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Estoque;
@@ -77,10 +79,11 @@ public class PedidoRestController {
 	private EnderecamentoRepository end;
 	@Autowired
 	private ProdutoRepository produtoRp;
-	
+
 	Long teste;
 
 	// MÉTODO PARA SALVAR
+	
 	@RequestMapping(value = "save")
 	public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -98,23 +101,23 @@ public class PedidoRestController {
 			pedido.setDataPedido(time.format(fmt));
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
-			
+
 			saveNotaFiscal(pedido);
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().build();
 	}
-
+	
+	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Pedido> listarPedidos() {
 		return pedidoRepo.findAll();
 	}
 
 	// MÉTODO PARA BUSCAR PEDIDO NO BANCO
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Pedido> findPedido(@PathVariable("id") Long numPedido) {
 		// buscar pedido
@@ -129,6 +132,7 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA SALVAR ATUALIZAÇÃO
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarPedido(@RequestBody Pedido pedido, @PathVariable("id") Long idPedido) {
 		// validação de id
@@ -144,6 +148,7 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA DELETAR PEDIDO
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirPedido(@PathVariable("id") Long numPedido) {
 		pedidoRepo.deleteById(numPedido);
@@ -151,6 +156,7 @@ public class PedidoRestController {
 	}
 
 	// metodo para procurar uma reserva à partir de qualquer atributo
+	
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
 		return pedidoRepo.procurarTudo(param);
@@ -163,7 +169,7 @@ public class PedidoRestController {
 			movi.setProduto(itens.getProduto());
 			movi.setTipo(Tipo.ENTRADA);
 			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			movi.setData(time.format(fmt));
 			movRepo.save(movi);
 
@@ -233,27 +239,28 @@ public class PedidoRestController {
 				// item.setQuantidade(itens.getQuantidade());
 				itemNotaRepository.save(item);
 			}
-			System.out.println("Parou");
-			
-			
-			/*Long idNota = nota.getCodigoNota();
-			List<ItemNota> list = itemNotaRepository.pegarNota(idNota);
+
+			/*List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
+
+			Long idNota = nota.getCodigoNota();
 			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 
 			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 
 			Map<String, Object> map = new HashMap<>();
+			map.put("Produtos", bean);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Desktop\\teste.pdf");*/
-			
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Downloads\\teste.pdf");*/
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return ResponseEntity.ok().build();
 	}
-	
+
 	public ResponseEntity<ItemNota> teste(Long numPedido) {
 		List<ItemNota> list = itemNotaRepository.pegarNota(numPedido);
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
@@ -262,19 +269,17 @@ public class PedidoRestController {
 		try {
 			report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 			Map<String, Object> map = new HashMap<>();
-
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Desktop\\teste.pdf");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Downloads\\teste.pdf");
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		
 		return ResponseEntity.ok().build();
-		
+
 	}
-	
+
 }

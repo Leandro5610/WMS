@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.NotaFiscal;
 import senai.sp.cotia.wms.model.Pedido;
@@ -44,18 +45,21 @@ public class NotaFiscalRestController {
 		}
 		return ResponseEntity.ok().build();
 	}
-
+	
+	@Privado
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<NotaFiscal> getNotasFiscais() {
 		return nfRepo.findAll();
 	}
-
+	
+	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirNota(@PathVariable("id") Long idNota) {
 		nfRepo.deleteById(idNota);
 		return ResponseEntity.noContent().build();
 	}
-
+	
+	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<NotaFiscal> findPedido(@PathVariable("id") Long idNota) {
 		// buscar pedido

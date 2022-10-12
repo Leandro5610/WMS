@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.annotation.Privado;
+import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.ItemFornecedor;
 import senai.sp.cotia.wms.repository.ItemFornecedorRepository;
 
@@ -42,6 +43,7 @@ public class ItemFornecedorRestController {
 
 	}
 
+	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemFornecedor> findItensFornecedor(@PathVariable("id") Long idItens) {
 		// busca os itens
@@ -54,6 +56,7 @@ public class ItemFornecedorRestController {
 	}
 
 	// atualiza os itens recebendo o id
+	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarItens(@RequestBody ItemFornecedor itens, @PathVariable("id") Long id) {
 		// valida o ID
@@ -69,23 +72,24 @@ public class ItemFornecedorRestController {
 
 	}
 
+	@Privado
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirItensFornecedor(@PathVariable("id") Long idItens) {
 		itensfornecedorRepository.deleteById(idItens);
 		return ResponseEntity.noContent().build();
 	}
 
-	
 	// metodo para procurar um item à partir de qualquer atributo
+	@Publico
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<ItemFornecedor> findByAll(@PathVariable("p") String param) {
 		return itensfornecedorRepository.procurarTudo(param);
 	}
-	
+
+	@Privado
 	@GetMapping(value = "pega/{cod}")
-	public List<ItemFornecedor> pegarFornecedor(@PathVariable("cod") Long param){
+	public List<ItemFornecedor> pegarFornecedor(@PathVariable("cod") Long param) {
 		return itensfornecedorRepository.pegarFornecedores(param);
 	}
-
 
 }

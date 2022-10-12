@@ -24,7 +24,9 @@ public interface MovimentacaoRepository extends PagingAndSortingRepository<Movim
 	
 	public List<Movimentacao> findAll();
 	
-	@Query("SELECT data from Movimentacao mov WHERE mov.data = :p")
-	public List<Movimentacao> procurarDatas(@Param("p") String param); 
+	@Query("SELECT m FROM Movimentacao m WHERE m.data = :d")
+	public List<Movimentacao> procuraData(@Param("d") String data);
+	
+	
  
 }
