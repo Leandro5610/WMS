@@ -12,7 +12,7 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="quantidade" class="java.lang.Integer"/>
+	<field name="produto.sku" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -38,22 +38,8 @@
 				<reportElement x="227" y="0" width="100" height="30" uuid="1d8c55f4-f560-4eb7-98d8-dc912a989812">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8471f7ab-3029-4cee-9e17-d3c20f9d90fd"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{produto.sku}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="160" y="40" width="240" height="90" uuid="f0f9b2dc-40f3-47a6-9734-fe45a61d88f9"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset1" uuid="114b5105-1112-4148-8ebd-dbac5ff7fc72">
-						<connectionExpression><![CDATA[$]]></connectionExpression>
-					</datasetRun>
-					<jr:listContents height="90" width="240">
-						<textField>
-							<reportElement x="50" y="20" width="100" height="30" uuid="a6595f51-aafd-4516-b84e-4bda6d057bcc"/>
-							<textFieldExpression><![CDATA[$F{produto.nome}]]></textFieldExpression>
-						</textField>
-					</jr:listContents>
-				</jr:list>
-			</componentElement>
 		</band>
 	</detail>
 	<columnFooter>
