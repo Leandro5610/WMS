@@ -18,7 +18,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 
@@ -35,12 +34,17 @@ public class MovimentacaoPdf {
 		List<Movimentacao> list = movimentacaoRepository.findAll();
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		
-		JasperReport report = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/teste_A4.jrxml"));
+
+		JasperReport report =JasperCompileManager.compileReport(new FileInputStream("src/main/resources/Blank_A4.jrxml"));
+
 		HashMap<String, Object> map = new HashMap<>();
 		
 	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 		
+		JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\relatorioCurvaABC.pdf");
+
 		JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
+
 		return "uauauau";
 		
 	}

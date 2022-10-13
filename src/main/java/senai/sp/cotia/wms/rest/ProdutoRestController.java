@@ -1,6 +1,7 @@
 package senai.sp.cotia.wms.rest;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,7 +11,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,14 +39,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Fornecedor;
 import senai.sp.cotia.wms.model.ItemFornecedor;
+import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.ItemPedido;
+import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.FornecedorRepository;
 import senai.sp.cotia.wms.repository.ItemFornecedorRepository;
+import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
@@ -57,6 +73,9 @@ public class ProdutoRestController {
 	
 	@Autowired
 	private FireBaseUtil fire;
+	
+	@Autowired
+	private  MovimentacaoRepository movirepo;
 	
 	@Autowired
 	private ItemFornecedorRepository itemFornece;
@@ -179,6 +198,30 @@ public class ProdutoRestController {
 		prodRepo.deleteById(codProduto);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@GetMapping(value = "relatorio")
+    public ResponseEntity<Object> relatorioEstoque() {
+        List<Movimentacao> list = (List<Movimentacao>)movirepo.findAll();       
+        JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
+       
+        try {
+            JasperReport report  = JasperCompileManager.compileReport("src/main/resources/Blank_A4.jrxml");
+           
+            Map<String, Object> map = new HashMap<>();
+           
+            JasperPrint print = JasperFillManager.fillReport(report, map, dados);
+           
+            JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Desktop\\relatorio.pdf");
+        } catch (JRException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+        return ResponseEntity.ok().build();
+       
+    }
+	
+	
 
 	// metodo para procurar uma reserva à partir de qualquer atributo
 	/*@RequestMapping(value = "/findbyall/{p}")

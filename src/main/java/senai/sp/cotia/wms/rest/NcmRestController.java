@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Ncm;
 import senai.sp.cotia.wms.repository.NcmRepository;
@@ -30,6 +31,7 @@ public class NcmRestController {
 	@Autowired
 	private NcmRepository ncmRepo;
 	
+	
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public ResponseEntity<Object> saveNcm(@RequestBody Ncm ncm, HttpServletRequest request, 
 			HttpServletResponse response){
@@ -40,15 +42,21 @@ public class NcmRestController {
 			}
 		return ResponseEntity.ok().build();
 	}
+	
+	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public Iterable<Ncm> getNotasFiscais(){
 		return ncmRepo.findAll();
 	}
+	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirNota(@PathVariable("id") Long idNota){
 		ncmRepo.deleteById(idNota);
 		return ResponseEntity.noContent().build();
 	}
+	
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateNcm(@RequestBody Ncm ncm, @PathVariable("id" )Long id ){
 		if(id != ncm.getId()) {
@@ -60,6 +68,7 @@ public class NcmRestController {
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 		
 	}
+	
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Ncm> findAlunos(@PathVariable("id") Long idNcm, HttpServletRequest request, HttpServletResponse response){
