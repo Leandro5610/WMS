@@ -1,11 +1,23 @@
 package senai.sp.cotia.wms.rest;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.boot.model.naming.ImplicitTenantIdColumnNameSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.itextpdf.text.pdf.AcroFields.Item;
 
 import senai.sp.cotia.wms.annotation.Privado;
+import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Estoque;
 import senai.sp.cotia.wms.model.ItemFornecedor;
@@ -31,6 +44,7 @@ import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
+import senai.sp.cotia.wms.model.UnidadeMedida;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
 import senai.sp.cotia.wms.type.Tipo;
@@ -44,6 +58,18 @@ public class MovimentacaoRestController {
 	private MovimentacaoRepository movimentacaoRepository;
 
 	
+	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public Object cadastrarMovimentacao(@RequestBody Movimentacao mov) {
+		try {
+			// salvar o usuário no banco de dados
+			movimentacaoRepository.save(mov);
+			return ResponseEntity.ok(HttpStatus.CREATED);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+			
+	}
 
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

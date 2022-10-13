@@ -155,11 +155,10 @@ public class TurmaRestController {
 		return repo.procurarTudo(param);
 	}
 	
+	
 	  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
 	    public ResponseEntity<Void> colocarMemebros (@RequestBody Turma turma, @PathVariable("id") Long id) {
 	       
-	      
-	       	
 	       	repo.save(turma);
 	       	HttpHeaders header = new HttpHeaders();
 	        header.setLocation(URI.create("/api/turma"));
