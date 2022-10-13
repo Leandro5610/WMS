@@ -28,15 +28,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itextpdf.text.pdf.AcroFields.Item;
-
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Estoque;
 import senai.sp.cotia.wms.model.ItemFornecedor;
@@ -82,13 +83,22 @@ public class MovimentacaoRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
 	
-	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public Iterable<Movimentacao> listarMovimentacao(){	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public Iterable<Movimentacao> listarMovimentacao() {
 		return movimentacaoRepository.findAll();
+
+	}
+
+	
+	@GetMapping(value = "/findbydata/{d}")
+	public Iterable<Movimentacao> findAll(@PathVariable("d") String data) {
+		return movimentacaoRepository.procuraData(data);
 	}
 
 	// atualiza os itens recebendo o id
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarMovimentacao(@RequestBody Movimentacao movimentacao,
 			@PathVariable("id") Long id) {
@@ -105,6 +115,7 @@ public class MovimentacaoRestController {
 
 	}
 
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirMovimentacao(@PathVariable("id") Long idMovimentacao) {
 		movimentacaoRepository.deleteById(idMovimentacao);
@@ -112,42 +123,41 @@ public class MovimentacaoRestController {
 	}
 
 	// metodo para procurar um item à partir de qualquer atributo
+	
 	@RequestMapping(value = "/findbyall/{p}")
 	public List<Movimentacao> findByAll(@PathVariable("p") String param) {
 		return movimentacaoRepository.procurarTudo(param);
 	}
 
-	/*@RequestMapping(value = "teste", method = RequestMethod.GET)
-	public ResponseEntity<Object> realizarEntrada(Movimentacao mov) {
-		
-		LocalDateTime time = LocalDateTime.now();
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		mov.setData(time.format(fmt));
-		mov.setTipo(Tipo.ENTRADA);
-		return ResponseEntity.ok().build();
-	}*/
+	/*
+	 * @RequestMapping(value = "teste", method = RequestMethod.GET) public
+	 * ResponseEntity<Object> realizarEntrada(Movimentacao mov) {
+	 * 
+	 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+	 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	 * mov.setData(time.format(fmt)); mov.setTipo(Tipo.ENTRADA); return
+	 * ResponseEntity.ok().build(); }
+	 */
 
-	/*public Object realizarSaida(Movimentacao mov) {
-		
-		LocalDateTime time = LocalDateTime.now();
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-		mov.setData(time.format(fmt));
-		mov.setTipo(Tipo.SAIDA);
+	/*
+	 * public Object realizarSaida(Movimentacao mov) {
+	 * 
+	 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+	 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	 * mov.setData(time.format(fmt)); mov.setTipo(Tipo.SAIDA);
+	 * 
+	 * return mov;
+	 * 
+	 * }
+	 */
 
-		return mov;
-
-	}*/
-
-	
-
-	/*public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento enderecamento, Estoque est,
-			ItemPedido itens) {
-		int saldo = est.getSaldo();
-		//est.setDiponivel();
-		int qtd = itens.getQuantidade();
-		est.setSaldo(qtd);
-		return ResponseEntity.ok().build();
-
-	}*/
+	/*
+	 * public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento
+	 * enderecamento, Estoque est, ItemPedido itens) { int saldo = est.getSaldo();
+	 * //est.setDiponivel(); int qtd = itens.getQuantidade(); est.setSaldo(qtd);
+	 * return ResponseEntity.ok().build();
+	 * 
+	 * }
+	 */
 
 }

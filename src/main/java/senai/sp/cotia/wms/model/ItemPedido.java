@@ -19,8 +19,8 @@ public class ItemPedido {
 	private int quantidade;
 	@ManyToOne
 	private Produto produto;
-	@JsonProperty(access = Access.WRITE_ONLY)
 	@ManyToOne
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private Pedido pedido;
 	@ManyToOne
 	private Movimentacao movimentacao;

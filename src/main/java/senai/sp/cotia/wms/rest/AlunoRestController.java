@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,7 +33,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
+import senai.sp.cotia.wms.annotation.Privado;
+import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Aluno;
+import senai.sp.cotia.wms.model.TokenWms;
 import senai.sp.cotia.wms.repository.AlunoRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
@@ -43,69 +53,70 @@ public class AlunoRestController {
 	@Autowired
 	private FireBaseUtil fire;
 
+	public static final String EMISSOR = "Sen@i";
+	public static final String SECRET = "@msSenai";
+
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno alunoString, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException {
-		try{
-		if(alunoString.getImagem() != null) {
-			// variavel para guardar a imagem codificada Base64 que está vindo do front
-			String stringImagem = alunoString.getImagem();
+		try {
+			if (alunoString.getImagem() != null) {
+				// variavel para guardar a imagem codificada Base64 que está vindo do front
+				String stringImagem = alunoString.getImagem();
 
-			// variaveis para extrair o que está entre a / e o ;
-			int posicaoBarra = stringImagem.indexOf('/');
-			int posicaoPontoVirgula = stringImagem.indexOf(';');
+				// variaveis para extrair o que está entre a / e o ;
+				int posicaoBarra = stringImagem.indexOf('/');
+				int posicaoPontoVirgula = stringImagem.indexOf(';');
 
-			// variavel para retirar a / e o ; para pegar a extensão da imagem
-			String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
+				// variavel para retirar a / e o ; para pegar a extensão da imagem
+				String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
 
-			// variavel para retirar a / da extensão
-			String ex = extensao.replace("/", "");
+				// variavel para retirar a / da extensão
+				String ex = extensao.replace("/", "");
 
-			// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-			// base64 codificado do front-end
-			String base64ImageString = stringImagem.replace("data:image/" + ex + ";base64,", "");
+				// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
+				// base64 codificado do front-end
+				String base64ImageString = stringImagem.replace("data:image/" + ex + ";base64,", "");
 
-			// variavel para para decodificar o codigo base64 e converter em um vetor de
-			// bytes
-			byte[] decode = Base64.getDecoder().decode(base64ImageString);
+				// variavel para para decodificar o codigo base64 e converter em um vetor de
+				// bytes
+				byte[] decode = Base64.getDecoder().decode(base64ImageString);
 
-			// variavel para converter o vetor de bytes em um texto
-			String arquivoString = decode.toString();
+				// variavel para converter o vetor de bytes em um texto
+				String arquivoString = decode.toString();
 
-			// variavel para retirar o texto "[B@" da variavel arquivoString
-			String arquivo = arquivoString.replace("[B@", "");
+				// variavel para retirar o texto "[B@" da variavel arquivoString
+				String arquivo = arquivoString.replace("[B@", "");
 
-			// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-			String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + ex;
+				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
+				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + ex;
 
-			// variavel para guardar o nome do arquivo em um File
-			File file = new File(nomeArquivo);
+				// variavel para guardar o nome do arquivo em um File
+				File file = new File(nomeArquivo);
 
-			// variavel para converter em arquivo e armazenar no sistema do pc
-			FileOutputStream in = new FileOutputStream("temporaria/" + file);
+				// variavel para converter em arquivo e armazenar no sistema do pc
+				FileOutputStream in = new FileOutputStream("temporaria/" + file);
 
-			// variavel para escrever os bytes no arquivo
-			in.write(decode);
-			
-			Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-			
-			fire.uploadFile(file, decode);
-			in.close();
-			alunoString.setImagem(file.toString());
-			repository.save(alunoString);
-			Files.delete(pathFile);
-		}else {
-			repository.save(alunoString);
-		}
+				// variavel para escrever os bytes no arquivo
+				in.write(decode);
+
+				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
+
+				fire.uploadFile(file, decode);
+				in.close();
+				alunoString.setImagem(file.toString());
+				repository.save(alunoString);
+				Files.delete(pathFile);
+			} else {
+				repository.save(alunoString);
+			}
 		} catch (Exception e) {
 			// TODO: handle exceptionelse {
 			e.printStackTrace();
-			
-		}
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
 
-	
+		}
+		return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Aluno> findAluno(@PathVariable("id") Long idAluno, HttpServletRequest request,
@@ -149,6 +160,27 @@ public class AlunoRestController {
 	public Iterable<Aluno> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
-	
-	
+
+	public ResponseEntity<TokenWms> login(@RequestBody Aluno aluno) {
+		aluno = repository.findByCodMatriculaAndSenha(aluno.getCodMatricula(), aluno.getSenha());
+
+		if (aluno != null) {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("aluno_id", aluno.getId());
+			map.put("aluno_codMatricula", aluno.getCodMatricula());
+
+			Calendar expiracao = Calendar.getInstance();
+			expiracao.add(Calendar.HOUR, 2);
+
+			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
+
+			TokenWms token = new TokenWms();
+			token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
+					.sign(algoritimo));
+			return ResponseEntity.ok(token);
+		} else {
+			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
+		}
+	}
+
 }
