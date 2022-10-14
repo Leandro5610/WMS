@@ -89,7 +89,7 @@
 			<![CDATA[]]>
 		</queryString>
 		<field name="data" class="java.lang.String"/>
-		<field name="produto.nome" class="java.lang.String"/>
+		<field name="produto.sku" class="java.lang.String"/>
 		<field name="tipo" class="java.lang.Object"/>
 	</subDataset>
 	<parameter name="CollectionBeanParam" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
@@ -174,14 +174,12 @@
 							</staticText>
 						</jr:tableHeader>
 						<jr:tableFooter style="Table 1_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="80" height="30" uuid="2d412938-6c8d-4be0-acff-e718bd51e05a"/>
 								<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 							</textField>
-						</jr:columnHeader>
-						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="Table 1_TD" height="30"/>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="80" uuid="ba87156c-2268-4c4e-ac65-b310cd80e492">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
@@ -192,14 +190,12 @@
 							</staticText>
 						</jr:tableHeader>
 						<jr:tableFooter style="Table 1_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="80" height="30" uuid="cc04b663-e623-437b-aee3-764a22c99dd9"/>
-								<textFieldExpression><![CDATA[$F{produto.nome}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{produto.sku}]]></textFieldExpression>
 							</textField>
-						</jr:columnHeader>
-						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="Table 1_TD" height="30"/>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="80" uuid="60f44329-1cdb-4d5c-a7bc-9fdaa9929f06">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
@@ -210,14 +206,12 @@
 							</staticText>
 						</jr:tableHeader>
 						<jr:tableFooter style="Table 1_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="80" height="30" uuid="2bd2da16-22ae-4598-92a7-6f3d318d14fa"/>
 								<textFieldExpression><![CDATA[""+$F{tipo}]]></textFieldExpression>
 							</textField>
-						</jr:columnHeader>
-						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="Table 1_TD" height="30"/>
+						</jr:detailCell>
 					</jr:column>
 				</jr:table>
 			</componentElement>

@@ -51,10 +51,10 @@ public class MovimentacaoPdf {
 	}
 	
 	
-	@RequestMapping(value = "pdf/{p}", method = RequestMethod.GET)
-	public String generatedPdfDatas(@PathVariable("p") String param) throws FileNotFoundException, JRException {
+	@RequestMapping(value = "pdf/{a}&{c}&{e}", method = RequestMethod.GET)
+	public String generatedPdfDatas(@PathVariable("c") String dateStart,@PathVariable("e") String dateEnd, @PathVariable("a") String produto) throws FileNotFoundException, JRException {
 
-		List<Movimentacao> list = movimentacaoRepository.procurarDatas(param);
+		List<Movimentacao> list = movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
 		
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		

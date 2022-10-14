@@ -22,4 +22,5 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
 	
 	@Query("SELECT aluno FROM Aluno aluno WHERE aluno.turma = idTurma")
 	public List<Aluno> pegarTurma(@Param("idTurma") Long id);
+	
 }

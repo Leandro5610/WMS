@@ -5,9 +5,8 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import senai.sp.cotia.wms.model.EmailModel;
 import senai.sp.cotia.wms.repository.EmailRepository;
 import senai.sp.cotia.wms.type.StatusEmail;
@@ -22,8 +21,8 @@ public class EmailService {
 
  
 
-    @Autowired
-    private JavaMailSender emailSender;
+  //  @Autowired
+  //  private JavaMailSender emailSender;
 
  
 
@@ -36,7 +35,7 @@ public class EmailService {
             message.setTo(emailModel.getEmailTo());
             message.setSubject(emailModel.getSubject());
             message.setText(emailModel.getText());
-            emailSender.send(message);
+           // emailSender.send(message);
 
  
             //setando o status do email como enviado, se caso algo impedisse, avisa o erro

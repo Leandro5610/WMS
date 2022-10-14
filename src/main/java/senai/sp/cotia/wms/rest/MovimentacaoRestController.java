@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.itextpdf.text.pdf.AcroFields.Item;
 import senai.sp.cotia.wms.annotation.Privado;
@@ -50,6 +51,7 @@ import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
 import senai.sp.cotia.wms.type.Tipo;
 
+@RestController
 @CrossOrigin
 @Controller
 @RequestMapping("api/movimentacao")
@@ -91,12 +93,6 @@ public class MovimentacaoRestController {
 
 	}
 
-	
-	@GetMapping(value = "/findbydata/{d}")
-	public Iterable<Movimentacao> findAll(@PathVariable("d") String data) {
-		return movimentacaoRepository.procuraData(data);
-	}
-
 	// atualiza os itens recebendo o id
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -127,6 +123,11 @@ public class MovimentacaoRestController {
 	@RequestMapping(value = "/findbyall/{p}")
 	public List<Movimentacao> findByAll(@PathVariable("p") String param) {
 		return movimentacaoRepository.procurarTudo(param);
+	}
+	
+	@RequestMapping(value = "listar/{a}&{c}&{e}", method = RequestMethod.GET)
+	public List<Movimentacao> listMov(@PathVariable("c") String dateStart,@PathVariable("e") String dateEnd, @PathVariable("a") String produto) {
+		return movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
 	}
 
 	/*
