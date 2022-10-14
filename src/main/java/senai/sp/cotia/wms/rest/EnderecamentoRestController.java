@@ -127,9 +127,43 @@ public class EnderecamentoRestController {
 
 			map.put("year", year);
 			
-			String name = "C:\\Users\\Pichau\\Downloads\\relatorio.pdf";
+			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
 			
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
+
+			JasperExportManager.exportReportToPdfFile(print, name);
+
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return ResponseEntity.ok().build();
+
+	}
+	
+	@GetMapping(value = "relatorioo")
+	public ResponseEntity<Object> relatorioABC(HttpServletRequest request, HttpServletResponse reponse) {
+		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
+
+		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
+		Calendar calendar = Calendar.getInstance();
+
+		int yearInt = calendar.get(Calendar.YEAR);
+
+		try {
+			JasperReport report = JasperCompileManager.compileReport("src/main/resources/TesteABC.jrxml");
+
+			String year = yearInt + "";
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("CollectionData", dados);
+
+			map.put("year", year);
+			
+			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
+			
+			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
 
 			JasperExportManager.exportReportToPdfFile(print, name);
 

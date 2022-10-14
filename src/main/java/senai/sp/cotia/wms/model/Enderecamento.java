@@ -26,6 +26,7 @@ public class Enderecamento {
 	private String edificio;
 	private String andar;
 	private String modulo;
+	private int saldo;
 	@Enumerated(EnumType.STRING)
 	private Demanda demanda;
 	@OneToOne
