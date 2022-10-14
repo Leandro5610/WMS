@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Data;
 import senai.sp.cotia.wms.util.HashUtil;
+
 //import senai.sp.cotia.wms.util.HashUtil;
 
 

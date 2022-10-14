@@ -3,9 +3,13 @@ package senai.sp.cotia.wms.rest;
 import java.io.FileInputStream;
 import java.net.URI;
 import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -83,7 +87,7 @@ public class PedidoRestController {
 	Long teste;
 
 	// MÉTODO PARA SALVAR
-	
+
 	@RequestMapping(value = "save")
 	public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -95,29 +99,29 @@ public class PedidoRestController {
 			}
 
 			// pedido.setValor(total);
-
-			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			pedido.setDataPedido(time.format(fmt));
+			Calendar c = Calendar.getInstance();
+			SimpleDateFormat parse = new SimpleDateFormat("dd-MM-yyyy");
+			
+			String data = parse.format(c.getTime());
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 
-			saveNotaFiscal(pedido);
+			// saveNotaFiscal(pedido);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok().build();
 	}
-	
-	
+
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Pedido> listarPedidos() {
 		return pedidoRepo.findAll();
 	}
+	
 
 	// MÉTODO PARA BUSCAR PEDIDO NO BANCO
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Pedido> findPedido(@PathVariable("id") Long numPedido) {
 		// buscar pedido
@@ -132,7 +136,7 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA SALVAR ATUALIZAÇÃO
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarPedido(@RequestBody Pedido pedido, @PathVariable("id") Long idPedido) {
 		// validação de id
@@ -148,7 +152,7 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA DELETAR PEDIDO
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirPedido(@PathVariable("id") Long numPedido) {
 		pedidoRepo.deleteById(numPedido);
@@ -156,7 +160,7 @@ public class PedidoRestController {
 	}
 
 	// metodo para procurar uma reserva à partir de qualquer atributo
-	
+
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
 		return pedidoRepo.procurarTudo(param);
@@ -240,7 +244,7 @@ public class PedidoRestController {
 				itemNotaRepository.save(item);
 			}
 
-			/*List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
+			List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
 
 			Long idNota = nota.getCodigoNota();
 			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
@@ -248,16 +252,16 @@ public class PedidoRestController {
 			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 
 			Map<String, Object> map = new HashMap<>();
-			map.put("Produtos", bean);
+			//map.put("Produtos", bean);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Downloads\\teste.pdf");*/
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return ResponseEntity.ok().build();
 	}
 

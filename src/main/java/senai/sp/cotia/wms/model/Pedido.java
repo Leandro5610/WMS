@@ -1,4 +1,6 @@
 package senai.sp.cotia.wms.model;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -17,15 +19,13 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long numPedido;
 	private Double valor;
-	private String dataPedido;
+	private Date dataPedido;
 	@OneToOne
 	private Aluno aluno;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itens;
-	
-	
-	
 	private int totalItens;
+	
 	public Double totalPedido(Pedido pedido) {
 		double total = 0;
 		for (ItemPedido itens : pedido.getItens()) {
