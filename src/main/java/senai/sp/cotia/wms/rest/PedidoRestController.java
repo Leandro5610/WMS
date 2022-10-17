@@ -81,17 +81,20 @@ public class PedidoRestController {
 
 	@Autowired
 	private EnderecamentoRepository end;
+
 	@Autowired
 	private ProdutoRepository produtoRp;
 
 	Long teste;
 
 	// MÉTODO PARA SALVAR
-
 	@RequestMapping(value = "save")
-	public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
+	public Long savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
+
 		// double total = pedido.totalPedido(pedido);
+		Long cod = null;
+
 
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
@@ -101,17 +104,37 @@ public class PedidoRestController {
 			// pedido.setValor(total);
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat parse = new SimpleDateFormat("dd-MM-yyyy");
-			
+
 			String data = parse.format(c.getTime());
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 
 			// saveNotaFiscal(pedido);
-
+			
+			LocalDateTime time = LocalDateTime.now();
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+			NotaFiscal nota = new NotaFiscal();
+			nota.setDataEmissao(time.format(fmt));
+			// nota.setPedido(pedido);
+			nota.setValorTotal(pedido.getValor());
+			// nota.setQuantidade(pedido.getTotalItens());
+			nfRepo.save(nota);
+			for (ItemPedido itens : pedido.getItens()) {
+				ItemNota item = new ItemNota();
+				item.setNotaFiscal(nota);
+				item.setPedido(pedido);
+				item.setProduto(itens.getProduto());
+				// item.setQuantidade(itens.getQuantidade());
+				itemNotaRepository.save(item);
+			}
+			
+			cod =nota.getCodigoNota();
+			
+			return cod;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return ResponseEntity.ok().build();
+		return cod ;
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
@@ -121,7 +144,6 @@ public class PedidoRestController {
 	
 
 	// MÉTODO PARA BUSCAR PEDIDO NO BANCO
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Pedido> findPedido(@PathVariable("id") Long numPedido) {
 		// buscar pedido
@@ -136,7 +158,6 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA SALVAR ATUALIZAÇÃO
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarPedido(@RequestBody Pedido pedido, @PathVariable("id") Long idPedido) {
 		// validação de id
@@ -152,35 +173,16 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA DELETAR PEDIDO
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirPedido(@PathVariable("id") Long numPedido) {
 		pedidoRepo.deleteById(numPedido);
 		return ResponseEntity.noContent().build();
 	}
 
-	// metodo para procurar uma reserva à partir de qualquer atributo
-
+	// metodo para procurar um pedido à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
 		return pedidoRepo.procurarTudo(param);
-	}
-
-	public Object saveMovimentacao(Pedido pedido) {
-
-		for (ItemPedido itens : pedido.getItens()) {
-			Movimentacao movi = new Movimentacao();
-			movi.setProduto(itens.getProduto());
-			movi.setTipo(Tipo.ENTRADA);
-			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			movi.setData(time.format(fmt));
-			movRepo.save(movi);
-
-		}
-
-		return "deu certo";
-
 	}
 
 	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PUT)
@@ -224,6 +226,21 @@ public class PedidoRestController {
 
 	}
 
+	public Object saveMovimentacao(Pedido pedido) {
+		for(ItemPedido itens : pedido.getItens()) {
+		Movimentacao mov = new Movimentacao();
+		mov.setProduto(itens.getProduto());
+		mov.setTipo(Tipo.ENTRADA);
+		LocalDateTime time = LocalDateTime.now();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		mov.setData(time.format(fmt));
+		movRepo.save(mov);
+		
+		}
+
+		return "deu certo";
+	}
+
 	public ResponseEntity<Object> saveNotaFiscal(Pedido pedido) {
 		try {
 
@@ -244,7 +261,7 @@ public class PedidoRestController {
 				itemNotaRepository.save(item);
 			}
 
-			List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
+			/*List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
 
 			Long idNota = nota.getCodigoNota();
 			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
@@ -256,7 +273,7 @@ public class PedidoRestController {
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -264,18 +281,18 @@ public class PedidoRestController {
 
 		return ResponseEntity.ok().build();
 	}
-
-	public ResponseEntity<ItemNota> teste(Long numPedido) {
-		List<ItemNota> list = itemNotaRepository.pegarNota(numPedido);
+	@GetMapping(value = "teste/{id}")
+	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota) {
+		List<ItemNota> list = itemNotaRepository.pegarNota(nota);
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
-
+		Optional<NotaFiscal> notaToda = nfRepo.findById(nota);
 		JasperReport report;
 		try {
 			report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 			Map<String, Object> map = new HashMap<>();
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
-
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Pichau\\Downloads\\teste.pdf");
+			map.put("codigo", nota);
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block

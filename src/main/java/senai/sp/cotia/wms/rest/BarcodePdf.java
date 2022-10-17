@@ -27,12 +27,13 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import net.sf.jasperreports.engine.JRException;
 import senai.sp.cotia.wms.annotation.Privado;
+import senai.sp.cotia.wms.model.Movimentacao;
 
 @RestController
-@RequestMapping("api/barcode")
+@RequestMapping("api/pdf")
 public class BarcodePdf {
 	@Privado
-	@RequestMapping(value = "pdf/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "barcode/{id}", method = RequestMethod.GET)
 	public String generatedPdf(@PathVariable("id") Long idProduto, HttpServletRequest request,
 			HttpServletResponse response) throws FileNotFoundException, JRException, DocumentException {
 
@@ -65,6 +66,7 @@ public class BarcodePdf {
 		}
 
 	}
+	
 	@Privado
 	@RequestMapping(value = "qrcode/{id}", method = RequestMethod.GET)
 	public String generatedQrCode(@PathVariable("id") Long id, HttpServletRequest request,

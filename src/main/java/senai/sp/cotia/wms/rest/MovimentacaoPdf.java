@@ -62,7 +62,7 @@ public class MovimentacaoPdf {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CollectionBeanParam", bean);
 		
-		String name = "C:\\Users\\bruno\\Downloads\\relatorio.pdf";
+		String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
 		
 	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 		
