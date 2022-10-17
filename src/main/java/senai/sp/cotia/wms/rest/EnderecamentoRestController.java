@@ -127,10 +127,10 @@ public class EnderecamentoRestController {
 
 			map.put("year", year);
 			
-<<<<<<< HEAD
+
 			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
-=======
-			String name = "C:\\Users\\Mee\\Downloads\\relatorio.pdf";
+
+			
 			
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
@@ -164,7 +164,7 @@ public class EnderecamentoRestController {
 			map.put("year", year);
 			
 			String name = "C:\\Users\\Mee\\Downloads\\relatorio.pdf";
->>>>>>> cb902acaab0e93eb225b9ac1314e67e0a7974acd
+
 			
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
@@ -198,7 +198,7 @@ public class EnderecamentoRestController {
 
 			map.put("year", year);
 			
-			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
+			String name = "C:\\Users\\Mee\\Downloads\\relatorio.pdf";
 			
 			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
 

@@ -8,11 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import org.aspectj.weaver.patterns.IfPointcut.IfFalsePointcut;
-import org.jasypt.util.text.BasicTextEncryptor;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Data;
 import senai.sp.cotia.wms.type.Demanda;
@@ -26,7 +22,6 @@ public class Enderecamento {
 	private String edificio;
 	private String andar;
 	private String modulo;
-	private int saldo;
 	@Enumerated(EnumType.STRING)
 	private Demanda demanda;
 	@OneToOne
