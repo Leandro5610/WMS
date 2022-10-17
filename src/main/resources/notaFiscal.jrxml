@@ -7,8 +7,7 @@
 		</queryString>
 		<field name="produto.nome" class="java.lang.String"/>
 	</subDataset>
-	<parameter name="Produtos" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
-	<parameter name="Parameter2" class="java.lang.String"/>
+	<parameter name="codigo" class="java.lang.Long"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -39,6 +38,10 @@
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8471f7ab-3029-4cee-9e17-d3c20f9d90fd"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{produto.sku}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="75" width="100" height="30" uuid="704d4016-02ac-462f-8f7d-01b047693931"/>
+				<textFieldExpression><![CDATA[$P{codigo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
