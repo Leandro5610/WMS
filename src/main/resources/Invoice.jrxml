@@ -133,7 +133,6 @@
 	<field name="itens.sku" class="java.lang.String"/>
 	<field name="itens.nome" class="java.lang.String"/>
 	<field name="quantidade" class="java.lang.Integer"/>
-	<field name="total" class="java.lang.Integer"/>
 	<variable name="SALDO" class="java.lang.Integer" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{quantidade}]]></variableExpression>
 	</variable>
@@ -214,10 +213,6 @@
 	</columnHeader>
 	<detail>
 		<band height="274">
-			<staticText>
-				<reportElement x="50" y="150" width="100" height="30" uuid="00195b80-f66c-42a6-8b74-5d8c169ad59b"/>
-				<text><![CDATA[Saldo]]></text>
-			</staticText>
 			<componentElement>
 				<reportElement x="5" y="-40" width="539" height="156" uuid="9b1e4220-9459-4538-9cd2-8684a24ce3e8">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
@@ -341,12 +336,6 @@
 					</jr:column>
 				</jr:table>
 			</componentElement>
-			<textField>
-				<reportElement x="370" y="150" width="100" height="30" uuid="245927ad-f9b3-47e5-bfbe-1a1bf8101ff3">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37ba62ec-5f1e-44b5-b102-95c1af291d0c"/>
-				</reportElement>
-				<textFieldExpression><![CDATA[$V{SALDO}]]></textFieldExpression>
-			</textField>
 		</band>
 	</detail>
 	<lastPageFooter>
