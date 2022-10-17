@@ -140,6 +140,7 @@ public class PedidoRestController {
 	public Iterable<Pedido> listarPedidos() {
 		return pedidoRepo.findAll();
 	}
+	
 
 	// MÉTODO PARA BUSCAR PEDIDO NO BANCO
 
@@ -273,7 +274,7 @@ public class PedidoRestController {
 			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 
 			Map<String, Object> map = new HashMap<>();
-			map.put("Produtos", bean);
+			//map.put("Produtos", bean);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
