@@ -1,4 +1,4 @@
-		package senai.sp.cotia.wms.model;
+package senai.sp.cotia.wms.model;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

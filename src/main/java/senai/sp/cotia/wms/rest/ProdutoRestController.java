@@ -224,9 +224,9 @@ public class ProdutoRestController {
 	
 
 	// metodo para procurar uma reserva à partir de qualquer atributo
-	/*@RequestMapping(value = "/findbyall/{p}")
+	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Produto> findByAll(@PathVariable("p") String param) {
 		return prodRepo.procurarTudo(param);
-	}*/
+	}
 
 }

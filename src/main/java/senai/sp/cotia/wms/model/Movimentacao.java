@@ -3,6 +3,7 @@ package senai.sp.cotia.wms.model;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

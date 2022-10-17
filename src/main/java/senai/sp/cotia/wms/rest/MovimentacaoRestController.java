@@ -44,6 +44,27 @@ public class MovimentacaoRestController {
 
 	@Autowired
 	private MovimentacaoRepository movimentacaoRepository;
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
+	
+	/*
+	@RequestMapping(value = "save/{id}", method = RequestMethod.POST)
+	public Object saveMovimentacao(@PathVariable("id") Long idCode, Movimentacao movimentacao, Produto produto) {
+		
+		if (idCode != produto.getCodProduto()) {
+			throw new RuntimeException("ID Inválido");
+		}
+			movimentacao.setProduto(produto);
+			movimentacao.setTipo(Tipo.ENTRADA);
+			LocalDateTime time = LocalDateTime.now();
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			movimentacao.setData(time.format(fmt));
+			movimentacaoRepository.save(movimentacao);
+
+		return "deu certo";
+	}
+	*/
 
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

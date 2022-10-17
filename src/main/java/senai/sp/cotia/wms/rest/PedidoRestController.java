@@ -81,17 +81,16 @@ public class PedidoRestController {
 
 	@Autowired
 	private EnderecamentoRepository end;
+
 	@Autowired
 	private ProdutoRepository produtoRp;
 
 	Long teste;
 
 	// MÉTODO PARA SALVAR
-
 	@RequestMapping(value = "save")
 	public ResponseEntity<Object> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
-		// double total = pedido.totalPedido(pedido);
 
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
@@ -101,11 +100,10 @@ public class PedidoRestController {
 			// pedido.setValor(total);
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat parse = new SimpleDateFormat("dd-MM-yyyy");
-			
+
 			String data = parse.format(c.getTime());
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
-
 			// saveNotaFiscal(pedido);
 
 		} catch (Exception e) {
@@ -120,7 +118,6 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA BUSCAR PEDIDO NO BANCO
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Pedido> findPedido(@PathVariable("id") Long numPedido) {
 		// buscar pedido
@@ -135,7 +132,6 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA SALVAR ATUALIZAÇÃO
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarPedido(@RequestBody Pedido pedido, @PathVariable("id") Long idPedido) {
 		// validação de id
@@ -151,35 +147,16 @@ public class PedidoRestController {
 	}
 
 	// MÉTODO PARA DELETAR PEDIDO
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirPedido(@PathVariable("id") Long numPedido) {
 		pedidoRepo.deleteById(numPedido);
 		return ResponseEntity.noContent().build();
 	}
 
-	// metodo para procurar uma reserva à partir de qualquer atributo
-
+	// metodo para procurar um pedido à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
 		return pedidoRepo.procurarTudo(param);
-	}
-
-	public Object saveMovimentacao(Pedido pedido) {
-
-		for (ItemPedido itens : pedido.getItens()) {
-			Movimentacao movi = new Movimentacao();
-			movi.setProduto(itens.getProduto());
-			movi.setTipo(Tipo.ENTRADA);
-			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			movi.setData(time.format(fmt));
-			movRepo.save(movi);
-
-		}
-
-		return "deu certo";
-
 	}
 
 	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PUT)
@@ -221,6 +198,21 @@ public class PedidoRestController {
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+	}
+
+	public Object saveMovimentacao(Pedido pedido) {
+		for(ItemPedido itens : pedido.getItens()) {
+		Movimentacao mov = new Movimentacao();
+		mov.setProduto(itens.getProduto());
+		mov.setTipo(Tipo.ENTRADA);
+		LocalDateTime time = LocalDateTime.now();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		mov.setData(time.format(fmt));
+		movRepo.save(mov);
+		
+		}
+
+		return "deu certo";
 	}
 
 	public ResponseEntity<Object> saveNotaFiscal(Pedido pedido) {
