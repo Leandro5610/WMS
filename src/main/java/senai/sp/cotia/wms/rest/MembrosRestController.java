@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Membros;
+import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.MembrosRepository;
 
 @CrossOrigin
@@ -28,7 +29,7 @@ public class MembrosRestController {
 	@Autowired
 	private MembrosRepository membrosR;
 	
-	/*@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveMembro(@RequestBody Membros membros) {
 		try {
 			
@@ -39,7 +40,7 @@ public class MembrosRestController {
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-	}*/
+	}
 	
 	@GetMapping(value = "teste/{id}")
 	public List<Membros> pegarMembros(@PathVariable("id") Long idTurma){
@@ -55,6 +56,12 @@ public class MembrosRestController {
 		membrosR.deleteById(idMovimentacao);
 		return ResponseEntity.noContent().build();
 	}
+	
+	// metodo para procurar uma reserva à partir de qualquer atributo
+		@RequestMapping(value = "findbyall/{p}")
+		public Iterable<Membros> findByAll(@PathVariable("p") Long param) {
+			return membrosR.turmaAluno(param);
+		}
 	
 	
 

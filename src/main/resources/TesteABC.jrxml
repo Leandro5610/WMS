@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TesteABC" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e8e14d4-3d93-4025-a450-13e8804d1e75">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="itens.sku" class="java.lang.String"/>
+	<field name="quantidade" class="java.lang.Integer"/>
+	<variable name="tota" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{quantidade}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="130" y="20" width="100" height="30" uuid="8cc4a3b3-33db-422e-bad3-e94fbaed98ab">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="655958a4-f96a-4886-be86-41b04f6e88ea"/>
+				</reportElement>
+				<text><![CDATA[SKU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="20" width="100" height="30" uuid="60dbbce3-c5b2-4e6e-9a2c-fd4cb61d2b56">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="50a933ae-a1fa-4c40-ba95-dc8c8a8d6f8f"/>
+				</reportElement>
+				<text><![CDATA[Quantidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="20" width="100" height="30" uuid="1668f3b2-0342-4cfb-8b5b-a69738bd7887"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="120" y="10" width="100" height="30" uuid="3f6a268b-322b-4ab7-8843-d7e548361a0c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="655958a4-f96a-4886-be86-41b04f6e88ea"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{itens.sku}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="10" width="100" height="30" uuid="4af7c006-f49c-4ef9-8df5-3606b855a098">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="678be0f8-a1e3-449b-9627-95e97f8ad4d9"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="10" width="100" height="30" uuid="95b3afe6-a31d-4e71-8ae7-9378368701ba"/>
+				<textFieldExpression><![CDATA[$V{tota}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

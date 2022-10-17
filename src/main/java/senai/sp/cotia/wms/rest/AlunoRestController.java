@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -161,6 +162,7 @@ public class AlunoRestController {
 		return repository.procurarTudo(param);
 	}
 
+	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenWms> login(@RequestBody Aluno aluno) {
 		aluno = repository.findByCodMatriculaAndSenha(aluno.getCodMatricula(), aluno.getSenha());
 
@@ -181,6 +183,16 @@ public class AlunoRestController {
 		} else {
 			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
 		}
+	}
+	
+	
+	@RequestMapping(value = "recuperarSenha", method = RequestMethod.PUT)
+	public ResponseEntity<Aluno> recuperaSenha() {
+		
+		
+		
+		return null;
+		
 	}
 
 }

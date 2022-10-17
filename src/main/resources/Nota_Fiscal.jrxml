@@ -15,20 +15,16 @@
 		<band height="60" splitType="Stretch">
 			<staticText>
 				<reportElement x="230" y="20" width="100" height="30" uuid="572f4fe4-d832-447c-88ca-be9b8ac23df6"/>
-				<text><![CDATA[Static Text]]></text>
+				<text><![CDATA[produto]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="125" splitType="Stretch">
 			<textField>
-				<reportElement x="233" y="53" width="100" height="30" uuid="1b21dede-36f7-4e11-9e82-0d4f59338a82"/>
+				<reportElement x="231" y="40" width="100" height="30" uuid="542e36b8-f323-4208-a30e-2b9224ca3dc3"/>
 				<textFieldExpression><![CDATA[$F{produto.nome}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="133" y="53" width="100" height="30" uuid="b4e5a0ad-1d18-4c9c-aa0d-e8851aef43ab"/>
-				<text><![CDATA[produto.nome]]></text>
-			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

@@ -133,8 +133,12 @@
 	<field name="itens.sku" class="java.lang.String"/>
 	<field name="itens.nome" class="java.lang.String"/>
 	<field name="quantidade" class="java.lang.Integer"/>
+	<field name="total" class="java.lang.Integer"/>
+	<variable name="SALDO" class="java.lang.Integer" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{quantidade}]]></variableExpression>
+	</variable>
 	<title>
-		<band height="150" splitType="Stretch">
+		<band height="130" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="80" width="556" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -183,7 +187,7 @@
 				<text><![CDATA[Cotia-Sp 06708-280]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="100" width="236" height="30" uuid="95693302-966f-4135-b529-0b9fd3da360e"/>
+				<reportElement x="145" y="81" width="236" height="30" uuid="95693302-966f-4135-b529-0b9fd3da360e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="20"/>
 				</textElement>
@@ -199,12 +203,23 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="20"/>
+		<band height="20">
+			<staticText>
+				<reportElement x="435" y="0" width="100" height="20" uuid="4ee8e013-4a78-4298-b9e6-dfeb3df05a4b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37ba62ec-5f1e-44b5-b102-95c1af291d0c"/>
+				</reportElement>
+				<text><![CDATA[Field_1]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="549">
+		<band height="274">
+			<staticText>
+				<reportElement x="50" y="150" width="100" height="30" uuid="00195b80-f66c-42a6-8b74-5d8c169ad59b"/>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
 			<componentElement>
-				<reportElement x="9" y="0" width="539" height="156" uuid="9b1e4220-9459-4538-9cd2-8684a24ce3e8">
+				<reportElement x="5" y="-40" width="539" height="156" uuid="9b1e4220-9459-4538-9cd2-8684a24ce3e8">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 3_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 3_CH"/>
@@ -326,6 +341,12 @@
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<textField>
+				<reportElement x="370" y="150" width="100" height="30" uuid="245927ad-f9b3-47e5-bfbe-1a1bf8101ff3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37ba62ec-5f1e-44b5-b102-95c1af291d0c"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$V{SALDO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<lastPageFooter>
