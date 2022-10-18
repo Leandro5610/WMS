@@ -164,10 +164,10 @@ public class EnderecamentoRestController {
 
 			map.put("year", year);
 			
-			String name = "C:\\Users\\Mee\\Downloads\\relatorio.pdf";
+			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
 
 			
-			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
+			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
 
 			JasperExportManager.exportReportToPdfFile(print, name);
 
@@ -204,6 +204,8 @@ public class EnderecamentoRestController {
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 			JasperExportManager.exportReportToPdfFile(print, name);
+			
+			
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
