@@ -43,6 +43,7 @@ import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.TokenWms;
+import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.AlunoRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
@@ -165,6 +166,18 @@ public class AlunoRestController {
 		return repository.procurarTudo(param);
 	}
 	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
+        Aluno aluno = repository.findAlunoById(id);
+        aluno.setTurma(turma);
+        repository.save(aluno);
+        HttpHeaders header = new HttpHeaders();
+        header.setLocation(URI.create("/api/aluno"));
+        return new ResponseEntity<Void>(header, HttpStatus.OK);
+    }
+	
+	
+	
 
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenWms> login(@RequestBody Aluno aluno) {
@@ -197,9 +210,6 @@ public class AlunoRestController {
 	}
 	*/
 	
-	@RequestMapping(value = "/turma/{idTurma}", method = RequestMethod.GET)
-	public List<Aluno> findTurma(@PathVariable("idTurma") Long idTurma) {
-		return repository.pegarTurma(idTurma);
-	}
+	
 
 }

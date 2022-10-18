@@ -63,7 +63,7 @@ public class MovimentacaoRestController {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
-	/*
+	
 	@RequestMapping(value = "save/{id}", method = RequestMethod.POST)
 	public Object saveMovimentacao(@PathVariable("id") Long idCode, Movimentacao movimentacao, Produto produto) {
 		
@@ -79,7 +79,7 @@ public class MovimentacaoRestController {
 
 		return "deu certo";
 	}
-	*/
+	
 
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
