@@ -57,11 +57,6 @@ public class MembrosRestController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	// metodo para procurar uma reserva à partir de qualquer atributo
-		@RequestMapping(value = "findbyall/{p}")
-		public Iterable<Membros> findByAll(@PathVariable("p") Long param) {
-			return membrosR.turmaAluno(param);
-		}
 	
 	
 

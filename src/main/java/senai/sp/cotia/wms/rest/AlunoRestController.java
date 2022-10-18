@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -108,8 +109,10 @@ public class AlunoRestController {
 				alunoString.setImagem(file.toString());
 				repository.save(alunoString);
 				Files.delete(pathFile);
+				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			} else {
 				repository.save(alunoString);
+				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			}
 		} catch (Exception e) {
 			// TODO: handle exceptionelse {
@@ -161,6 +164,7 @@ public class AlunoRestController {
 	public Iterable<Aluno> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
+	
 
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenWms> login(@RequestBody Aluno aluno) {
@@ -185,14 +189,17 @@ public class AlunoRestController {
 		}
 	}
 	
-	
+	/*
 	@RequestMapping(value = "recuperarSenha", method = RequestMethod.PUT)
 	public ResponseEntity<Aluno> recuperaSenha() {
-		
-		
-		
 		return null;
 		
+	}
+	*/
+	
+	@RequestMapping(value = "/turma/{idTurma}", method = RequestMethod.GET)
+	public List<Aluno> findTurma(@PathVariable("idTurma") Long idTurma) {
+		return repository.pegarTurma(idTurma);
 	}
 
 }

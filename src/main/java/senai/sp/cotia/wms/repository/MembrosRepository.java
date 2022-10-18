@@ -12,6 +12,4 @@ public interface MembrosRepository extends PagingAndSortingRepository<Membros,Lo
 	@Query("SELECT turma.membros FROM Turma turma WHERE turma.id = :id")
     public List<Membros> pegarMembro(@Param("id") Long param);
 	
-	@Query("SELECT aluno.turma FROM Aluno aluno WHERE aluno.id = :id")
-	public List<Membros> turmaAluno(@Param("id") Long id);
 }

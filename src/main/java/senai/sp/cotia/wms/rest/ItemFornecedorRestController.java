@@ -88,8 +88,8 @@ public class ItemFornecedorRestController {
 
 	@Privado
 	@GetMapping(value = "pega/{cod}")
-	public List<ItemFornecedor> pegarFornecedor(@PathVariable("cod") Long param) {
-		return itensfornecedorRepository.pegarFornecedores(param);
+	public List<ItemFornecedor> pegarFornecedor(@PathVariable("cod") Long cod) {
+		return itensfornecedorRepository.pegarFornecedores(cod);
 	}
 
 }

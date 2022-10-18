@@ -128,7 +128,7 @@ public class PedidoRestController {
 				itemNotaRepository.save(item);
 			}
 			
-			cod =nota.getCodigoNota();
+			cod = nota.getCodigoNota();
 			
 			return cod;
 		} catch (Exception e) {
