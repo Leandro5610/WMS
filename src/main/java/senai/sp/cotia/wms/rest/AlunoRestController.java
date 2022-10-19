@@ -166,11 +166,18 @@ public class AlunoRestController {
 		return repository.procurarTudo(param);
 	}
 	
+<<<<<<< HEAD
 	/*
 	@RequestMapping(value = "/turma", method = RequestMethod.GET)
 	public Iterable<Aluno> findByTurma() {
 		return repository.findByTurma();
 	}*/
+=======
+//	@RequestMapping(value = "/turma", method = RequestMethod.GET)
+//	public Iterable<Aluno> findByTurma() {
+//		return repository.findByTurma();
+//	}
+>>>>>>> eb9d08ae542db56f9304b6c17e2726bd014ad270
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
