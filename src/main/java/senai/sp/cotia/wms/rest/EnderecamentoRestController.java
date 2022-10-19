@@ -33,6 +33,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Aluno;
@@ -165,8 +167,9 @@ public class EnderecamentoRestController {
 			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
 
 			JasperExportManager.exportReportToPdfFile(print, name);
-			
-					
+
+			JasperExportManager.exportReportToXmlFile(print, name, true);
+
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -197,9 +200,17 @@ public class EnderecamentoRestController {
 
 			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
 
+			String nameXml = "C:\\Users\\TecDevTarde\\Downloads\\relatorioabc.xml";
+
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 			JasperExportManager.exportReportToPdfFile(print, name);
+
+			JRXlsxExporter exporter = new JRXlsxExporter();
+
+			exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+			exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, nameXml);
+			exporter.exportReport();
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block

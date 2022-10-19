@@ -72,14 +72,14 @@ public class Aluno {
 //		return codMatriculaDecrip;
 //	}
 	
-	public void setSenha(String senha) {
-	    this.senha = HashUtil.hash256(senha);
-	 }
-		
-		public void setSenhaComHash(String hash) {
-	        // seta o hash na senha
-	        this.senha = hash;
-		}
+//	public void setSenha(String senha) {
+//	    this.senha = HashUtil.hash256(senha);
+//	 }
+//		
+//		public void setSenhaComHash(String hash) {
+//	        // seta o hash na senha
+//	        this.senha = hash;
+//		}
 	
 	
 	
