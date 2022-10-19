@@ -166,6 +166,11 @@ public class AlunoRestController {
 		return repository.procurarTudo(param);
 	}
 	
+	@RequestMapping(value = "/turma", method = RequestMethod.GET)
+	public Iterable<Aluno> findByTurma() {
+		return repository.findByTurma();
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
         Aluno aluno = repository.findAlunoById(id);
@@ -175,6 +180,17 @@ public class AlunoRestController {
         header.setLocation(URI.create("/api/aluno"));
         return new ResponseEntity<Void>(header, HttpStatus.OK);
     }
+	
+	@RequestMapping(value = "delete/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Void> deleteAlunoTurma(@PathVariable("id") Long id, @RequestBody Turma turma) {
+		Aluno aluno = repository.findAlunoById(id);
+		if (id != aluno.getId()) {
+			throw new RuntimeException("Id Inválido");
+		}
+		aluno.setTurma(null);
+		
+		return ResponseEntity.noContent().build();
+	}
 	
 	
 	
