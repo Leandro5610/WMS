@@ -20,7 +20,6 @@ import senai.sp.cotia.wms.util.HashUtil;
 
 //import senai.sp.cotia.wms.util.HashUtil;
 
-
 @Entity
 @Data
 public class Aluno {
@@ -41,7 +40,7 @@ public class Aluno {
 	private String imagem;
 	@Column(unique = true)
 	private String email;
-	
+
 //	public void setNome(String nome) {
 //		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 //		textEncriptor.setPasswordCharArray("chaves".toCharArray());
@@ -71,22 +70,15 @@ public class Aluno {
 //		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
 //		return codMatriculaDecrip;
 //	}
-	
-//	public void setSenha(String senha) {
-//	    this.senha = HashUtil.hash256(senha);
-//	 }
-//		
-//		public void setSenhaComHash(String hash) {
-//	        // seta o hash na senha
-//	        this.senha = hash;
-//		}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public void setSenha(String senha) {
+		this.senha = HashUtil.hash256(senha);
+	}
+
+	public void setSenhaComHash(String hash) {
+		// seta o hash na senha
+		this.senha = hash;
+	}
+
 	
 }

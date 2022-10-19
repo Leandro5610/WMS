@@ -166,10 +166,10 @@ public class AlunoRestController {
 		return repository.procurarTudo(param);
 	}
 	
-	@RequestMapping(value = "/turma", method = RequestMethod.GET)
-	public Iterable<Aluno> findByTurma() {
-		return repository.findByTurma();
-	}
+//	@RequestMapping(value = "/turma", method = RequestMethod.GET)
+//	public Iterable<Aluno> findByTurma() {
+//		return repository.findByTurma();
+//	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
