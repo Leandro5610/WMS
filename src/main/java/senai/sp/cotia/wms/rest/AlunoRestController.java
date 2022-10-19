@@ -166,10 +166,11 @@ public class AlunoRestController {
 		return repository.procurarTudo(param);
 	}
 	
+	/*
 	@RequestMapping(value = "/turma", method = RequestMethod.GET)
 	public Iterable<Aluno> findByTurma() {
 		return repository.findByTurma();
-	}
+	}*/
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
@@ -190,6 +191,19 @@ public class AlunoRestController {
 		aluno.setTurma(null);
 		
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Aluno> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
+		aluno = repository.findAlunoById(id);
+		if(id != aluno.getId()) {
+			throw new RuntimeException("Id Inválido");
+		}
+		
+		
+		
+		return null;
+		
 	}
 	
 	
@@ -218,13 +232,9 @@ public class AlunoRestController {
 		}
 	}
 	
-	/*
-	@RequestMapping(value = "recuperarSenha", method = RequestMethod.PUT)
-	public ResponseEntity<Aluno> recuperaSenha() {
-		return null;
-		
-	}
-	*/
+	
+	
+	
 	
 	
 

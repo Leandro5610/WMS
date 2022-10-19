@@ -17,9 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Data;
 import senai.sp.cotia.wms.util.HashUtil;
-
-//import senai.sp.cotia.wms.util.HashUtil;
-
+import senai.sp.cotia.wms.util.HashUtil;
 
 @Entity
 @Data
@@ -41,52 +39,45 @@ public class Aluno {
 	private String imagem;
 	@Column(unique = true)
 	private String email;
-	
-//	public void setNome(String nome) {
-//		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
-//		textEncriptor.setPasswordCharArray("chaves".toCharArray());
-//		String nomeCrip = textEncriptor.encrypt(nome);
-//		 this.nome = nomeCrip;
-//	}
-//	
-//	public void setCodMatricula(String codMatricula) {
-//		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
-//		textEncriptor.setPasswordCharArray("chaves".toCharArray());
-//		
-//		String codMatriculaCrip = textEncriptor.encrypt(codMatricula);
-//		this.codMatricula = codMatriculaCrip ;
-//	}
-//	
-//	public String getNome() {
-//		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
-//		textDecriptor.setPasswordCharArray("chaves".toCharArray());
-//		
-//		String nomeDecrip = textDecriptor.decrypt(nome);
-//		return nomeDecrip;
-//	}
-//	public String getCodMatricula() {
-//		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
-//		textDecriptor.setPasswordCharArray("chaves".toCharArray());
-//		
-//		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
-//		return codMatriculaDecrip;
-//	}
-	
+
+	public void setNome(String nome) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		String nomeCrip = textEncriptor.encrypt(nome);
+		this.nome = nomeCrip;
+	}
+
+	public void setCodMatricula(String codMatricula) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+
+		String codMatriculaCrip = textEncriptor.encrypt(codMatricula);
+		this.codMatricula = codMatriculaCrip;
+	}
+
+	public String getNome() {
+		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
+		textDecriptor.setPasswordCharArray("chaves".toCharArray());
+
+		String nomeDecrip = textDecriptor.decrypt(nome);
+		return nomeDecrip;
+	}
+
+	public String getCodMatricula() {
+		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
+		textDecriptor.setPasswordCharArray("chaves".toCharArray());
+
+		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
+		return codMatriculaDecrip;
+	}
+
 	public void setSenha(String senha) {
-	    this.senha = HashUtil.hash256(senha);
-	 }
-		
-		public void setSenhaComHash(String hash) {
-	        // seta o hash na senha
-	        this.senha = hash;
-		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		this.senha = HashUtil.hash256(senha);
+	}
+
+	public void setSenhaComHash(String hash) {
+		// seta o hash na senha
+		this.senha = hash;
+	}
+
 }

@@ -84,9 +84,6 @@ public class PedidoRestController {
 
 	@Autowired
 	private ProdutoRepository produtoRp;
-	
-	@Autowired
-    private EmailService emailService = new EmailService();
 
 	Long teste;
 
@@ -98,7 +95,6 @@ public class PedidoRestController {
 		// double total = pedido.totalPedido(pedido);
 		Long cod = null;
 		
-		//emailService.mandarEmail(pedido);
 
 
 		try {
