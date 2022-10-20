@@ -33,6 +33,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Aluno;
@@ -49,8 +51,7 @@ public class EnderecamentoRestController {
 	private EnderecamentoRepository repository;
 	@Autowired
 	private PedidoRepository pedidoRep;
-	
-	
+
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveEnderecameto(@RequestBody Enderecamento enderecamento, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
@@ -64,21 +65,18 @@ public class EnderecamentoRestController {
 		}
 
 	}
-	
-	
+
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Enderecamento> listEnderecamento() {
 		return repository.findAll();
 	}
-	
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> deleteEnderecamento(@PathVariable("id") Long idEnderecamento) {
 		repository.deleteById(idEnderecamento);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateEnderecamento(@RequestBody Enderecamento enderecamento,
 			@PathVariable("id") Long id) {
@@ -91,7 +89,7 @@ public class EnderecamentoRestController {
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Enderecamento> findAluno(@PathVariable("id") Long idEnderecamento, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -102,12 +100,12 @@ public class EnderecamentoRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Enderecamento> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
-	
+
 	@GetMapping(value = "relatorio")
 	public ResponseEntity<Object> relatorioEstoque(HttpServletRequest request, HttpServletResponse reponse) {
 		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
@@ -126,12 +124,9 @@ public class EnderecamentoRestController {
 			map.put("CollectionData", dados);
 
 			map.put("year", year);
-			
 
 			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
 
-			
-			
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 			JasperExportManager.exportReportToPdfFile(print, name);
@@ -139,12 +134,13 @@ public class EnderecamentoRestController {
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 		}
 
 		return ResponseEntity.ok().build();
 
 	}
+
 	@GetMapping(value = "relatoriooo")
 	public ResponseEntity<Object> relatorioEstoqueAbc(HttpServletRequest request, HttpServletResponse reponse) {
 		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
@@ -163,13 +159,16 @@ public class EnderecamentoRestController {
 			map.put("CollectionData", dados);
 
 			map.put("year", year);
-			
-			String name = "C:\\Users\\Mee\\Downloads\\relatorio.pdf";
 
-			
-			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
+			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
+
+			String nameXml = "C:\\Users\\TecDevTarde\\relatorio.xml";
+
+			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
 
 			JasperExportManager.exportReportToPdfFile(print, name);
+
+			JasperExportManager.exportReportToXmlFile(print, name, true);
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
@@ -179,7 +178,7 @@ public class EnderecamentoRestController {
 		return ResponseEntity.ok().build();
 
 	}
-	
+
 	@GetMapping(value = "relatorioo")
 	public ResponseEntity<Object> relatorioABC(HttpServletRequest request, HttpServletResponse reponse) {
 		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
@@ -198,12 +197,20 @@ public class EnderecamentoRestController {
 			map.put("CollectionData", dados);
 
 			map.put("year", year);
-			
+
 			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
-			
+
+			String nameXml = "C:\\Users\\TecDevTarde\\Downloads\\relatorioabc.xml";
+
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 			JasperExportManager.exportReportToPdfFile(print, name);
+
+			JRXlsxExporter exporter = new JRXlsxExporter();
+
+			exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, print);
+			exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, nameXml);
+			exporter.exportReport();
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block

@@ -43,6 +43,7 @@ import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.TokenWms;
+import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.AlunoRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
@@ -166,6 +167,43 @@ public class AlunoRestController {
 	}
 	
 
+	@RequestMapping(value = "/turma/{id}", method = RequestMethod.GET)
+	public Iterable<Aluno> findByTurma(@PathVariable("id") Long id) {
+		return repository.findByTurmaId(id);
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
+        Aluno aluno = repository.findAlunoById(id);
+        aluno.setTurma(turma);
+        repository.save(aluno);
+        HttpHeaders header = new HttpHeaders();
+        header.setLocation(URI.create("/api/aluno"));
+        return new ResponseEntity<Void>(header, HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "delete/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Void> deleteAlunoTurma(@PathVariable("id") Long id, @RequestBody Turma turma) {
+		Aluno aluno = repository.findAlunoById(id);
+		if (id != aluno.getId()) {
+			throw new RuntimeException("Id Inválido");
+		}
+		aluno.setTurma(null);
+		repository.save(aluno);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Aluno> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
+		aluno = repository.findAlunoById(id);
+		if(id != aluno.getId()) {
+			throw new RuntimeException("Id Inválido");
+		}
+		return null;
+	}
+	
+
+
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenWms> login(@RequestBody Aluno aluno) {
 		aluno = repository.findByCodMatriculaAndSenha(aluno.getCodMatricula(), aluno.getSenha());
@@ -189,17 +227,10 @@ public class AlunoRestController {
 		}
 	}
 	
-	/*
-	@RequestMapping(value = "recuperarSenha", method = RequestMethod.PUT)
-	public ResponseEntity<Aluno> recuperaSenha() {
-		return null;
-		
-	}
-	*/
 	
-	@RequestMapping(value = "/turma/{idTurma}", method = RequestMethod.GET)
-	public List<Aluno> findTurma(@PathVariable("idTurma") Long idTurma) {
-		return repository.pegarTurma(idTurma);
-	}
+	
+	
+	
+	
 
 }

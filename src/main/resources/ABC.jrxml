@@ -5,7 +5,6 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="quantidade" class="java.lang.Integer"/>
-	<field name="itens.sku" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -18,27 +17,19 @@
 	<columnHeader>
 		<band height="61" splitType="Stretch">
 			<staticText>
-				<reportElement x="320" y="20" width="100" height="30" uuid="86ae8b8f-aaef-44ee-9f64-a5932b0f80d9"/>
-				<text><![CDATA[Quantidade]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="200" y="20" width="100" height="30" uuid="70875a93-5089-42d3-aa02-f65742723a04">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c19afb2-4e1a-4f39-9a92-071c4f839f99"/>
+				<reportElement x="105" y="0" width="100" height="30" uuid="19f1ca5d-c314-4631-aab1-9a0008c55d0d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7443cafd-f02a-405b-8e34-c4d4a107b363"/>
 				</reportElement>
-				<text><![CDATA[SKU]]></text>
+				<text><![CDATA[quantidade]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="125" splitType="Stretch">
 			<textField>
-				<reportElement x="200" y="10" width="100" height="30" uuid="db681f62-9736-4866-8380-def5690b343f">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c19afb2-4e1a-4f39-9a92-071c4f839f99"/>
+				<reportElement x="105" y="21" width="100" height="30" uuid="303bfd89-ed1b-4ae1-8655-63bc3fa34a0c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7443cafd-f02a-405b-8e34-c4d4a107b363"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{itens.sku}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="320" y="10" width="100" height="30" uuid="20f21162-f854-49b5-8afe-1f00e18edec0"/>
 				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
 			</textField>
 		</band>

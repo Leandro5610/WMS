@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Data;
 import senai.sp.cotia.wms.type.Periodo;
@@ -40,7 +42,8 @@ public class Turma {
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;
-	@OneToMany(mappedBy = "turma", cascade = CascadeType.ALL)
-	private List<Membros> membros;
+	@OneToMany
+	@JsonProperty(access = Access.WRITE_ONLY)
+	private List<Aluno> alunos;
 	
 	}

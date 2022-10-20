@@ -6,6 +6,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,9 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
-import senai.sp.cotia.wms.model.Membros;
+
 import senai.sp.cotia.wms.model.Turma;
-import senai.sp.cotia.wms.repository.MembrosRepository;
+
 import senai.sp.cotia.wms.repository.TurmaRepository;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
@@ -40,8 +41,6 @@ public class TurmaRestController {
 	@Autowired
 	private FireBaseUtil firebase;
 
-	@Autowired
-	private MembrosRepository memRep;
 
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object cadastrarMedida(@RequestBody Turma turma, HttpServletRequest request, HttpServletResponse response) {
@@ -126,23 +125,7 @@ public class TurmaRestController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> atualizaTurma(@PathVariable("id") Long id, @RequestBody Turma turma) {
-		if (id != turma.getId()) {
-			throw new RuntimeException("id invalido");
-		}
-	 	for (Membros membros : turma.getMembros()) {
-			membros.setAluno(membros.getAluno());
-			membros.setTurma(turma);
-			memRep.save(membros);
-		}
-       	
-		repo.save(turma);
-		HttpHeaders header = new HttpHeaders();
-		header.setLocation(URI.create("/api/turma"));
-		return new ResponseEntity<Void>(header, HttpStatus.OK);
-
-	}
+	
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Turma> listAluno() {
@@ -164,5 +147,7 @@ public class TurmaRestController {
 	        header.setLocation(URI.create("/api/turma"));
 	        return new ResponseEntity<Void>(header, HttpStatus.OK);
 	    }
+	  
+	 
 
 }
