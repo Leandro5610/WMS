@@ -53,8 +53,12 @@ import senai.sp.cotia.wms.util.FireBaseUtil;
 public class AlunoRestController {
 	@Autowired
 	private AlunoRepository repository;
+	
 	@Autowired
 	private FireBaseUtil fire;
+	
+	@Autowired
+    private EmailService service = new EmailService();
 
 	public static final String EMISSOR = "Sen@i";
 	public static final String SECRET = "@msSenai";
@@ -171,6 +175,36 @@ public class AlunoRestController {
 	public Iterable<Aluno> findByTurma(@PathVariable("id") Long id) {
 		return repository.findByTurmaId(id);
 	}
+	/*
+	@RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET)
+	public Aluno findByTurma(@PathVariable("p") String email) {
+		return repository.findByEmail(email);
+	}*/
+	
+	/*
+	@RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET)
+	public Aluno confirmaEmail(@PathVariable("p") String email) {
+		Aluno alnEmail = repository.findByEmail(email); 
+		String emailAln = alnEmail.getEmail(); 
+		if (emailAln.equals(email)) {
+			return alnEmail;
+		}
+		throw new RuntimeException("Email não encontrado");
+	}*/
+	
+	@RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET)
+	public Aluno enviarEmail(@PathVariable("p") String email) {
+		Aluno alunoEmail = repository.findByEmail(email);
+		String emailAln = alunoEmail.getEmail();
+		if (emailAln.equals(email)) {
+			service.mandarEmail(alunoEmail, email);
+			System.out.println(email);
+			System.out.println(alunoEmail);
+			return alunoEmail;
+		}
+		
+		throw new RuntimeException("Email não encontrado");
+	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
@@ -194,12 +228,15 @@ public class AlunoRestController {
 	}
 	
 	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
-	public ResponseEntity<Aluno> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
+	public ResponseEntity<Void> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
 		aluno = repository.findAlunoById(id);
 		if(id != aluno.getId()) {
 			throw new RuntimeException("Id Inválido");
 		}
-		return null;
+		repository.save(aluno);
+        HttpHeaders header = new HttpHeaders();
+        header.setLocation(URI.create("/api/aluno"));
+        return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
 	
 

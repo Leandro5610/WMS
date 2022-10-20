@@ -16,7 +16,7 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
 	
 	//public List<Aluno> findAll();
 	
-	public Aluno findByEmail(@Param("email") String email);
+	public Aluno findByEmail(@Param("p") String email);
 	
 	public Aluno findByCodMatriculaAndSenha(String matricula, String senha);
 	

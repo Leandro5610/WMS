@@ -26,7 +26,7 @@ public class EmailService {
 	@Autowired
 	private AlunoRepository repositoryAluno;
 
-		public static void mandarEmail(Aluno aluno) {
+		public void mandarEmail(Aluno aluno, String email) {
 			Properties props = new Properties();
 			/** Parâmetros de conexão com servidor Yahoo */
 			/** Parâmetros de conexão com servidor Yahoo */
@@ -54,33 +54,21 @@ public class EmailService {
 				Message message = new MimeMessage(session);
 				message.setFrom(new InternetAddress("joao.silva1764321@yahoo.com")); // Remetente
 				System.out.println("AQUIII");
-				message.setSubject("JOAOOOOO");// Assunto
-				message.setText("OIIII EMAAAAIIILL");
+				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email)); // Destinatário(s)
+				message.setSubject("opa");// Assunto
+				message.setText("beleza");
 
-				/*List<Aluno> listUser = repositoryUser.findAll();
-
-				System.out.println("LISTA DE USUARIOS:" + listUser);
-
-				InternetAddress[] emails = new InternetAddress[listUser.size()];
-
-				for (int i = 0; i < listUser.size(); i++) {
-
-					emails[i] = new InternetAddress();
-
-					emails[i].setAddress(listUser.get(i).getEmail());
-
-				}
-
-				message.setRecipients(Message.RecipientType.TO, emails); // Destinatário(s)
-				
 				/** Método para enviar a mensagem criada */
+				System.out.println("TRANSPORTE");
 				Transport.send(message);
 
+				System.out.println("Feito!!!");
 
 			} catch (MessagingException e) {
 				System.out.println("ENTREI NO CATCH");
 				throw new RuntimeException(e);
 
 			}
+			
 		}
 }    
