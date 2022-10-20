@@ -89,13 +89,16 @@ public class PedidoRestController {
 
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
-	public Long savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
+	public ResponseEntity<Pedido> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		// double total = pedido.totalPedido(pedido);
+<<<<<<< HEAD
+=======
 		Long cod = null;
 		
 
+>>>>>>> 2c09346e0fc99200f971cc816f7d0da2fded640b
 
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
@@ -110,39 +113,27 @@ public class PedidoRestController {
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 
-			// saveNotaFiscal(pedido);
-			
-			LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-			NotaFiscal nota = new NotaFiscal();
-			nota.setDataEmissao(time.format(fmt));
-			// nota.setPedido(pedido);
-			nota.setValorTotal(pedido.getValor());
-			// nota.setQuantidade(pedido.getTotalItens());
-			nfRepo.save(nota);
-			for (ItemPedido itens : pedido.getItens()) {
-				ItemNota item = new ItemNota();
-				item.setNotaFiscal(nota);
-				item.setPedido(pedido);
-				item.setProduto(itens.getProduto());
-				// item.setQuantidade(itens.getQuantidade());
-				itemNotaRepository.save(item);
-			}
-			
-			cod = nota.getCodigoNota();
-			
-			return cod;
+			/*
+			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+			 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"); NotaFiscal nota = new
+			 * NotaFiscal(); nota.setDataEmissao(time.format(fmt)); //
+			 * nota.setPedido(pedido); nota.setValorTotal(pedido.getValor()); //
+			 * nota.setQuantidade(pedido.getTotalItens()); nfRepo.save(nota); for
+			 * (ItemPedido itens : pedido.getItens()) { ItemNota item = new ItemNota();
+			 * item.setNotaFiscal(nota); item.setPedido(pedido);
+			 * item.setProduto(itens.getProduto()); //
+			 * item.setQuantidade(itens.getQuantidade()); itemNotaRepository.save(item); }
+			 */
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return cod ;
+		return ResponseEntity.ok().build();
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Pedido> listarPedidos() {
 		return pedidoRepo.findAll();
 	}
-	
 
 	// MÉTODO PARA BUSCAR PEDIDO NO BANCO
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -228,15 +219,15 @@ public class PedidoRestController {
 	}
 
 	public Object saveMovimentacao(Pedido pedido) {
-		for(ItemPedido itens : pedido.getItens()) {
-		Movimentacao mov = new Movimentacao();
-		mov.setProduto(itens.getProduto());
-		mov.setTipo(Tipo.ENTRADA);
-		LocalDateTime time = LocalDateTime.now();
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		mov.setData(time.format(fmt));
-		movRepo.save(mov);
-		
+		for (ItemPedido itens : pedido.getItens()) {
+			Movimentacao mov = new Movimentacao();
+			mov.setProduto(itens.getProduto());
+			mov.setTipo(Tipo.ENTRADA);
+			LocalDateTime time = LocalDateTime.now();
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			mov.setData(time.format(fmt));
+			movRepo.save(mov);
+
 		}
 
 		return "deu certo";
@@ -262,19 +253,18 @@ public class PedidoRestController {
 				itemNotaRepository.save(item);
 			}
 
-			/*List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
+			List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
 
-			Long idNota = nota.getCodigoNota();
 			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 
 			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 
 			Map<String, Object> map = new HashMap<>();
-			//map.put("Produtos", bean);
+			// map.put("Produtos", bean);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");*/
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -282,6 +272,7 @@ public class PedidoRestController {
 
 		return ResponseEntity.ok().build();
 	}
+
 	@GetMapping(value = "teste/{id}")
 	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota) {
 		List<ItemNota> list = itemNotaRepository.pegarNota(nota);
@@ -291,9 +282,10 @@ public class PedidoRestController {
 		try {
 			report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 			Map<String, Object> map = new HashMap<>();
+			map.put("ItensPedido", bean);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
-			map.put("codigo", nota);
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
+			
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\notaFiscal.pdf");
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
