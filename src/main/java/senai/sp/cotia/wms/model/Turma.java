@@ -43,6 +43,7 @@ public class Turma {
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;
 	@OneToMany
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private List<Aluno> alunos;
 	
 	}

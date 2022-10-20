@@ -24,11 +24,6 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
 	
 	public List<Aluno> findAll();
 	
-	
-<<<<<<< HEAD
-	public List<Aluno> findByTurmaId();
-=======
-	//public List<Aluno> findByTurma();
->>>>>>> eb9d08ae542db56f9304b6c17e2726bd014ad270
-	
+	public List<Aluno> findByTurmaId(long id);
+
 }
