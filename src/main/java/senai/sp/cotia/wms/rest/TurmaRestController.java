@@ -6,6 +6,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
-
+import senai.sp.cotia.wms.model.Erro;
 import senai.sp.cotia.wms.model.Turma;
 
 import senai.sp.cotia.wms.repository.TurmaRepository;
@@ -44,6 +45,29 @@ public class TurmaRestController {
 
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object cadastrarMedida(@RequestBody Turma turma, HttpServletRequest request, HttpServletResponse response) {
+		
+		Erro erro = new Erro();
+		Calendar dataAtual = Calendar.getInstance();
+		
+		// verificar se a data final é antes da data de inicio
+		if(turma.getDataFinal().before(turma.getDataInicio())) {
+			return ResponseEntity.badRequest().build();	
+		}
+		// verificar se a data de inicio está entre uma data de outra turma 
+		else if(repo.between(turma.getDataInicio()) != null) {
+			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+		}
+		// verificar se a data de inicio é no domingo
+		else if(turma.getDataInicio().get(Calendar.DAY_OF_WEEK) == 1) {
+			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+		}
+		// verificar se a data de inicio é antes da data atual
+		else if(turma.getDataInicio().before(dataAtual)) {
+			return ResponseEntity.badRequest().build();
+		}
+		else if(turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
+			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+		}
 
 		try {
 			if (turma.getImagem() != null) {

@@ -94,7 +94,10 @@ public class PedidoRestController {
 
 		// double total = pedido.totalPedido(pedido);
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> b6990e9ab8a67104af10b15b2241bb60397889dd
 		Long cod = null;
 		
 

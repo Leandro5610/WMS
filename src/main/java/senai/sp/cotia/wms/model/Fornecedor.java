@@ -1,4 +1,3 @@
-
 package senai.sp.cotia.wms.model;
 
 import java.util.List;
