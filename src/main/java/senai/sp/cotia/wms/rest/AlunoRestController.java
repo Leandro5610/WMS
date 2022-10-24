@@ -37,7 +37,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.annotation.Publico;
@@ -53,12 +56,12 @@ import senai.sp.cotia.wms.util.FireBaseUtil;
 public class AlunoRestController {
 	@Autowired
 	private AlunoRepository repository;
-	
+
 	@Autowired
 	private FireBaseUtil fire;
-	
+
 	@Autowired
-    private EmailService service = new EmailService();
+	private EmailService service = new EmailService();
 
 	public static final String EMISSOR = "Sen@i";
 	public static final String SECRET = "@msSenai";
@@ -169,29 +172,25 @@ public class AlunoRestController {
 	public Iterable<Aluno> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
-	
 
 	@RequestMapping(value = "/turma/{id}", method = RequestMethod.GET)
 	public Iterable<Aluno> findByTurma(@PathVariable("id") Long id) {
 		return repository.findByTurmaId(id);
 	}
 	/*
-	@RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET)
-	public Aluno findByTurma(@PathVariable("p") String email) {
-		return repository.findByEmail(email);
-	}*/
-	
+	 * @RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET) public
+	 * Aluno findByTurma(@PathVariable("p") String email) { return
+	 * repository.findByEmail(email); }
+	 */
+
 	/*
-	@RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET)
-	public Aluno confirmaEmail(@PathVariable("p") String email) {
-		Aluno alnEmail = repository.findByEmail(email); 
-		String emailAln = alnEmail.getEmail(); 
-		if (emailAln.equals(email)) {
-			return alnEmail;
-		}
-		throw new RuntimeException("Email não encontrado");
-	}*/
-	
+	 * @RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET) public
+	 * Aluno confirmaEmail(@PathVariable("p") String email) { Aluno alnEmail =
+	 * repository.findByEmail(email); String emailAln = alnEmail.getEmail(); if
+	 * (emailAln.equals(email)) { return alnEmail; } throw new
+	 * RuntimeException("Email não encontrado"); }
+	 */
+
 	@RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET)
 	public Aluno enviarEmail(@PathVariable("p") String email) {
 		Aluno alunoEmail = repository.findByEmail(email);
@@ -202,20 +201,20 @@ public class AlunoRestController {
 			System.out.println(alunoEmail);
 			return alunoEmail;
 		}
-		
+
 		throw new RuntimeException("Email não encontrado");
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
-        Aluno aluno = repository.findAlunoById(id);
-        aluno.setTurma(turma);
-        repository.save(aluno);
-        HttpHeaders header = new HttpHeaders();
-        header.setLocation(URI.create("/api/aluno"));
-        return new ResponseEntity<Void>(header, HttpStatus.OK);
-    }
-	
+	public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
+		Aluno aluno = repository.findAlunoById(id);
+		aluno.setTurma(turma);
+		repository.save(aluno);
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/aluno"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> deleteAlunoTurma(@PathVariable("id") Long id, @RequestBody Turma turma) {
 		Aluno aluno = repository.findAlunoById(id);
@@ -226,20 +225,18 @@ public class AlunoRestController {
 		repository.save(aluno);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
 		aluno = repository.findAlunoById(id);
-		if(id != aluno.getId()) {
+		if (id != aluno.getId()) {
 			throw new RuntimeException("Id Inválido");
 		}
 		repository.save(aluno);
-        HttpHeaders header = new HttpHeaders();
-        header.setLocation(URI.create("/api/aluno"));
-        return new ResponseEntity<Void>(header, HttpStatus.OK);
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/aluno"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
-	
-
 
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenWms> login(@RequestBody Aluno aluno) {
@@ -263,11 +260,25 @@ public class AlunoRestController {
 			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
 		}
 	}
-	
-	
-	
-	
-	
-	
+
+	// decoda o token para pegar o id do usuário que está logado na sessão
+	@Privado
+	@RequestMapping(value = "sendId", method = RequestMethod.GET)
+	public ResponseEntity<Long> decoda(HttpServletRequest request, HttpServletResponse response) {
+		String token = null;
+		// obtem o token da request
+		token = request.getHeader("Authorization");
+		// algoritimo para descriptografar
+		Algorithm algoritimo = Algorithm.HMAC256(AlunoRestController.SECRET);
+		// objeto para verificar o token
+		JWTVerifier verifier = JWT.require(algoritimo).withIssuer(AlunoRestController.EMISSOR).build();
+		// validar o token
+		DecodedJWT decoded = verifier.verify(token);
+		// extrair os dados do payload
+		Map<String, Claim> payload = decoded.getClaims();
+		String id = payload.get("usuario_id").toString();
+		Long idl = Long.parseLong(id);
+		return ResponseEntity.ok(idl);
+	}
 
 }

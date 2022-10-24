@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,8 +29,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
+import senai.sp.cotia.wms.annotation.Privado;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.TokenWms;
@@ -45,15 +52,13 @@ public class ProfessorRestController {
 	@Autowired
 	private FireBaseUtil firebase;
 
-
 	public static final String EMISSOR = "Sen@i";
 	public static final String SECRET = "@msSenai";
-	
-	
+
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object cadastrarProfessor(@RequestBody Professor professor) {
 		try {
-			if(professor.getImagem() != null) {
+			if (professor.getImagem() != null) {
 				// variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = professor.getImagem();
 
@@ -101,12 +106,12 @@ public class ProfessorRestController {
 				// salvar o usuário no banco de dados
 				repo.save(professor);
 				Files.delete(pathFile);
-			}else {
+			} else {
 				repo.save(professor);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -153,26 +158,48 @@ public class ProfessorRestController {
 //	public Iterable<Professor> findByAll(@PathVariable("p") String param) {
 //		return repo.procurarTudo(param);
 //	}
-	
-	public ResponseEntity<TokenWms> login(@RequestBody Professor professor){
+
+	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<TokenWms> login(@RequestBody Professor professor) {
 		professor = repo.findByNifAndSenha(professor.getNif(), professor.getSenha());
-		
-		if(professor != null) {
+
+		if (professor != null) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("aluno_id", professor.getId());
-			map.put("aluno_codMatricula", professor.getNif());
-			
+			map.put("professor_id", professor.getId());
+			map.put("professor_nif", professor.getNif());
+
 			Calendar expiracao = Calendar.getInstance();
 			expiracao.add(Calendar.HOUR, 2);
-			
+
 			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
-			
+
 			TokenWms token = new TokenWms();
-			token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime()).sign(algoritimo));
+			token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
+					.sign(algoritimo));
 			return ResponseEntity.ok(token);
-		}else {
+		} else {
 			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
 		}
+	}
+
+	// decoda o token para pegar o id do usuário que está logado na sessão
+	@Privado
+	@RequestMapping(value = "sendId", method = RequestMethod.GET)
+	public ResponseEntity<Long> decoda(HttpServletRequest request, HttpServletResponse response) {
+		String token = null;
+		// obtem o token da request
+		token = request.getHeader("Authorization");
+		// algoritimo para descriptografar
+		Algorithm algoritimo = Algorithm.HMAC256(ProfessorRestController.SECRET);
+		// objeto para verificar o token
+		JWTVerifier verifier = JWT.require(algoritimo).withIssuer(ProfessorRestController.EMISSOR).build();
+		// validar o token
+		DecodedJWT decoded = verifier.verify(token);
+		// extrair os dados do payload
+		Map<String, Claim> payload = decoded.getClaims();
+		String id = payload.get("usuario_id").toString();
+		Long idl = Long.parseLong(id);
+		return ResponseEntity.ok(idl);
 	}
 
 }

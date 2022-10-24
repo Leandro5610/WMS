@@ -93,12 +93,11 @@ public class PedidoRestController {
 			HttpServletResponse response) {
 
 		// double total = pedido.totalPedido(pedido);
-<<<<<<< HEAD
-=======
+
 		Long cod = null;
 		
 
->>>>>>> 2c09346e0fc99200f971cc816f7d0da2fded640b
+
 
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
