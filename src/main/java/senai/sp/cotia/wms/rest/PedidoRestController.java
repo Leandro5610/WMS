@@ -276,14 +276,23 @@ public class PedidoRestController {
 	@GetMapping(value = "teste/{id}")
 	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota) {
 		List<ItemNota> list = itemNotaRepository.pegarNota(nota);
+		System.out.println(list.size());
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		Optional<NotaFiscal> notaToda = nfRepo.findById(nota);
+		
 		JasperReport report;
 		try {
+			
+			LocalDateTime time = LocalDateTime.now();
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			String dataFmt = fmt.toString();
 			report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 			Map<String, Object> map = new HashMap<>();
 			map.put("ItensPedido", bean);
-			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
+			map.put("dataEmissao", dataFmt);
+			
+			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
+			
 			
 			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\notaFiscal.pdf");
 
