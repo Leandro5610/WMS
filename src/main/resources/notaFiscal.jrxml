@@ -49,6 +49,7 @@
 		</variable>
 	</subDataset>
 	<parameter name="ItensPedido" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="dataEmissao" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -61,34 +62,69 @@
 	<field name="produto.pis" class="java.lang.Double"/>
 	<field name="produto.cofins" class="java.lang.Double"/>
 	<field name="produto.icms" class="java.lang.Double"/>
+	<field name="notaFiscal.dataEmissao" class="java.lang.String"/>
+	<field name="notaFiscal.codigoNota" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="131" splitType="Stretch">
-			<rectangle radius="25">
-				<reportElement x="20" y="10" width="525" height="110" uuid="6c717226-d172-4df4-97d1-d81f96a35272"/>
+		<band height="147" splitType="Stretch">
+			<rectangle>
+				<reportElement x="10" y="0" width="210" height="78" uuid="5f0d1566-242c-4cbc-8747-62d9104ff22d"/>
 			</rectangle>
+			<image hAlign="Center">
+				<reportElement x="10" y="18" width="65" height="60" uuid="5bec5ba5-dc36-4b79-b738-00778b7e5b01"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="17" y="0" width="130" height="30" uuid="5af048f6-e270-4447-af9c-0dca322c76a0"/>
+				<text><![CDATA[Identificação do emitente]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="220" y="0" width="160" height="78" uuid="80beb977-37b9-4078-867f-af4b443cb1d8"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="230" y="0" width="80" height="19" uuid="4bf537bb-2c08-4928-abcf-0258b139bc32"/>
+				<text><![CDATA[0- ENTRADA    ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="19" width="100" height="20" uuid="83f85c0c-a164-41b4-9e2a-7f6bcb2d0528"/>
+				<text><![CDATA[1- SAIDA   ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="348" y="18" width="22" height="30" uuid="18a617bc-9f98-44ae-b4ef-eb95524374e1"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="358" y="25" width="12" height="20" uuid="b0cb3692-2880-4c72-ac0f-f51429808fc2"/>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="100" width="100" height="30" uuid="2a2a4440-5500-4d05-8476-5c2f90019f41"/>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="25" width="139" height="46" uuid="bf7b4e36-5b3d-4c4e-acf1-5ce3c82b9bd5"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Gerenciamento de armazém nunca foi tão fácil]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="440" y="117" width="100" height="30" uuid="78f118ae-fdf6-4865-b86a-6e8350e8e41c"/>
+				<textFieldExpression><![CDATA[$F{notaFiscal.codigoNota}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="41" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="10" width="100" height="30" uuid="55139125-e74f-4d9d-bd1c-1165ba08526e"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Data Emissão:]]></text>
-			</staticText>
-		</band>
+		<band height="100" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="30" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="248" splitType="Stretch">
+		<band height="250" splitType="Stretch">
 			<componentElement>
-				<reportElement x="30" y="18" width="520" height="180" uuid="e77087b6-f5de-484a-ba98-64cccb6a4537">
+				<reportElement x="25" y="-20" width="520" height="180" uuid="e77087b6-f5de-484a-ba98-64cccb6a4537">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
