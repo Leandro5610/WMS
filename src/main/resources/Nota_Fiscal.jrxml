@@ -20,13 +20,13 @@
 	<pageHeader>
 		<band height="60" splitType="Stretch">
 			<staticText>
-<<<<<<< HEAD
+
 				<reportElement x="224" y="30" width="100" height="30" uuid="2e783d31-d7fc-4c93-bcc8-d9a64d2e5d48"/>
 				<text><![CDATA[produto.nome]]></text>
-=======
+
 				<reportElement x="230" y="20" width="100" height="30" uuid="572f4fe4-d832-447c-88ca-be9b8ac23df6"/>
 				<text><![CDATA[produto]]></text>
->>>>>>> 6ddf8753774bb766673e17c2c7c9f1a9a7275f3b
+
 			</staticText>
 		</band>
 	</pageHeader>
