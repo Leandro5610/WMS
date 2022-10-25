@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.Data;
 import senai.sp.cotia.wms.type.Demanda;
 @Data
@@ -46,5 +49,10 @@ public class Produto {
 	@Lob
 	@Column(columnDefinition = "MEDIUMBLOB")
 	private String imagem;
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@OneToMany
+	private List<Movimentacao> movimentacoes;
+	
+	
 }
 

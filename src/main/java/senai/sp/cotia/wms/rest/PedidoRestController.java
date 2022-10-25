@@ -94,14 +94,8 @@ public class PedidoRestController {
 
 		// double total = pedido.totalPedido(pedido);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> b6990e9ab8a67104af10b15b2241bb60397889dd
 		Long cod = null;
 		
-
-
 
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
@@ -115,6 +109,7 @@ public class PedidoRestController {
 			String data = parse.format(c.getTime());
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
+			
 
 			/*
 			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
@@ -180,7 +175,7 @@ public class PedidoRestController {
 		return pedidoRepo.procurarTudo(param);
 	}
 
-	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> debitar(@PathVariable("id") Long idEndereco, @RequestBody Enderecamento endereco) {
 		if (idEndereco != endereco.getId()) {
 			throw new RuntimeException("ID inválido");

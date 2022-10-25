@@ -26,8 +26,7 @@ public class Enderecamento {
 	private Demanda demanda;
 	@OneToOne
 	private Produto itens;
-	private int quantidade;	 
-	
+	private int quantidade; 	 
 	
 	
 }
