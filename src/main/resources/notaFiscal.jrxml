@@ -73,53 +73,6 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Table 3_TH" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table 3_CH" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table 3_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<subDataset name="Dataset2" uuid="f0b2ef8c-fc2a-4eca-bc59-1ae26a4c8f9f">
-		<queryString>
-			<![CDATA[]]>
-		</queryString>
-		<field name="produto.sku" class="java.lang.String"/>
-		<field name="produto.nome" class="java.lang.String"/>
-		<field name="produto.descricao" class="java.lang.String"/>
-		<field name="produto.valorUnitario" class="java.lang.Double"/>
-		<field name="quantidade" class="java.lang.Integer"/>
-		<field name="produto.medida.sigla" class="java.lang.String"/>
-		<field name="produto.icms" class="java.lang.Double"/>
-		<field name="produto.cofins" class="java.lang.Double"/>
-		<field name="produto.pis" class="java.lang.Double"/>
-		<variable name="totalProdutos" class="java.lang.Double" calculation="Sum">
-			<variableExpression><![CDATA[$F{produto.valorUnitario}+$F{produto.icms}+$F{produto.cofins}+$F{produto.pis}]]></variableExpression>
-		</variable>
-		<variable name="multiQuanti" class="java.lang.Double">
-			<variableExpression><![CDATA[$V{totalProdutos}*$F{quantidade}]]></variableExpression>
-		</variable>
-	</subDataset>
 	<parameter name="ItensPedido" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="dataEmissao" class="java.lang.String"/>
 	<parameter name="codNota" class="java.lang.Long"/>
@@ -136,14 +89,18 @@
 	<field name="produto.pis" class="java.lang.Double"/>
 	<field name="produto.cofins" class="java.lang.Double"/>
 	<field name="produto.icms" class="java.lang.Double"/>
-	<variable name="totalicms" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{produto.icms}]]></variableExpression>
+	<field name="produto.ipi" class="java.lang.Double"/>
+	<variable name="totalProdutos" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{produto.valorUnitario}+$F{produto.pis}+$F{produto.cofins}+$F{produto.icms}+$F{produto.ipi}]]></variableExpression>
+	</variable>
+	<variable name="multiQuanti" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{totalProdutos}*$F{quantidade}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="231" splitType="Stretch">
+		<band height="256" splitType="Stretch">
 			<rectangle>
 				<reportElement x="10" y="0" width="210" height="78" uuid="5f0d1566-242c-4cbc-8747-62d9104ff22d"/>
 			</rectangle>
@@ -385,184 +342,284 @@
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Dados do Produto]]></text>
+				<text><![CDATA[Calculo dos impostos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="13" y="220" width="100" height="32" uuid="6226396a-2c57-4faf-b8fe-ca286b21a4dd"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="13" y="220" width="88" height="20" uuid="5f39593f-45e6-4ad7-9ee0-5e62ae9f4591"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor do ICMS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="110" y="220" width="100" height="32" uuid="f5110e13-c400-49aa-8338-9ce2b6089908"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="113" y="220" width="88" height="20" uuid="3478dbd3-0a63-4e2b-8ea6-bc2388380970"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor do IPI]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="210" y="220" width="100" height="32" uuid="27e0c6f2-980d-4982-83e9-6bfbaa3574e1"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="216" y="220" width="88" height="20" uuid="d36aa9c9-9f4a-4ec5-a53f-37ff0ed29e71"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor do COFINS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="304" y="220" width="100" height="32" uuid="92825248-d698-49c9-8b59-03c396e06d18"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="310" y="220" width="88" height="20" uuid="4e1e5051-5a15-4bdc-8b47-c72853a0b1dc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor do PIS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="404" y="220" width="100" height="32" uuid="ea930e45-e359-4e49-ab46-e0d971bef535"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="410" y="220" width="88" height="20" uuid="0280e6b9-0be5-4ffd-ad9f-965bb503bbf3"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor total dos impostos]]></text>
 			</staticText>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="41" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
-		<band height="14" splitType="Stretch"/>
+		<band height="90" splitType="Stretch">
+			<rectangle>
+				<reportElement x="13" y="-5" width="97" height="32" uuid="ea0951bf-6fdd-4158-a924-08535466979b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="13" y="-5" width="88" height="20" uuid="2b6ceabb-d537-4af6-b899-d798b6759133"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor total dos produtos]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="110" y="-5" width="100" height="32" uuid="e0d14f74-3760-4b21-82ca-76d07f6e7e4c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="116" y="-5" width="88" height="20" uuid="0191b02f-27bd-4b4d-8e48-badb0e21b170"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor total da nota]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="210" y="-5" width="94" height="32" uuid="e5ffb46b-c317-483a-8917-d4b7b98e572e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="304" y="-5" width="100" height="32" uuid="49e3b03d-ccb5-45c8-98ac-71c445d57d20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="404" y="-5" width="100" height="32" uuid="6c0296b5-8989-49eb-b2c7-4c7f847c607e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="216" y="-5" width="88" height="20" uuid="360caefe-19a0-4ac7-91c4-8d03e73b1d25"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descontos ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="-5" width="88" height="20" uuid="736a66e6-5044-49a6-a264-9836e59ac28e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor do frete]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="-5" width="88" height="20" uuid="c7881d36-be54-4dce-b984-1352422b12e6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor do seguro ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="55" width="30" height="30" uuid="c52f344a-d4e0-4552-ab6c-151e4c16aa32"/>
+				<text><![CDATA[SKU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="55" width="30" height="30" uuid="ba058fad-cda7-4bcb-9c1a-87909d70767b"/>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="55" width="60" height="30" uuid="0a57b423-0723-47ea-bc52-b284bf7aee7a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="145" y="55" width="60" height="30" uuid="653f8ab0-73bd-400b-8de1-7c81f4697f0d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[VALOR UNI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="55" width="60" height="30" uuid="fbcb00f0-fc9e-4db8-9bff-be306730826f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[QUANTIDADE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="55" width="60" height="30" uuid="21367da7-da15-4416-9e1d-24e35508c572"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[UNI MEDIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="55" width="60" height="30" uuid="2fcf02b1-986e-454b-ac5d-747a60c9d8a7"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[PIS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="341" y="55" width="60" height="30" uuid="6feffe39-8e09-4d9f-93bb-b0d3f2e8aaad"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[COFINS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="55" width="60" height="30" uuid="8e42fece-eace-4988-bbd4-3358c361f952"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ICMS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="55" width="60" height="30" uuid="f82c7497-893d-40a3-855d-c9d362de9d17"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[IPI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="55" width="89" height="30" uuid="19dd7a0c-d9e1-4504-afbc-f882657af145"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL IMPOSTOS]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="210" splitType="Stretch">
-			<componentElement>
-				<reportElement x="20" y="0" width="520" height="140" uuid="e77087b6-f5de-484a-ba98-64cccb6a4537">
-					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 3_TH"/>
-					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 3_CH"/>
-					<property name="com.jaspersoft.studio.table.style.detail" value="Table 3_TD"/>
+		<band height="56" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="9" width="44" height="33" uuid="f7ede1cb-e9e4-401a-9700-bb00ff863259"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="9" width="43" height="30" uuid="b4dbd115-ead2-4946-a413-411d2984d830">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a2f1c93b-9ed2-49df-9d8a-5a1ac011d5cd"/>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Dataset2" uuid="89b2a8ef-af52-498b-a810-8cea527b2aff">
-						<dataSourceExpression><![CDATA[$P{ItensPedido}]]></dataSourceExpression>
-					</datasetRun>
-					<jr:column width="40" uuid="4db3a744-7765-4cb8-a113-827878f4fa2a">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="40" height="30" uuid="db650d48-58de-4477-916e-19027adcd3f8"/>
-								<textFieldExpression><![CDATA[$F{produto.sku}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="40" height="30" uuid="e64c96a7-73dc-4ce0-b78f-9dd49b2d40c6"/>
-								<text><![CDATA[SKU]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="40" uuid="f4202fb4-b378-4499-be63-27f0c833bf4a">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="40" height="30" uuid="3e10b60a-b131-4604-8d9d-fe6347392d7f"/>
-								<textFieldExpression><![CDATA[$F{produto.nome}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="40" height="30" uuid="4f88fd46-2754-4115-b461-3d155dad39a7"/>
-								<text><![CDATA[NOME]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="60" uuid="dc2f51d9-ee35-48d9-9db1-cb8717d9477c">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="60" height="30" uuid="4d14576f-6b60-46b9-8d78-fc2813a6dd14"/>
-								<textFieldExpression><![CDATA[$F{produto.descricao}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="60" height="30" uuid="39e76682-356f-4787-8ade-0bc18e2ba990"/>
-								<text><![CDATA[DESCRIÇÃO]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="60" uuid="cf642182-9d47-44ee-93cb-abfd57a13051">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="60" height="30" uuid="5b4b5d73-e894-4acb-8ca9-c60003d6755c"/>
-								<textFieldExpression><![CDATA[$F{produto.valorUnitario}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="60" height="30" uuid="57363814-2606-4897-b207-69b9bfd8b6b5"/>
-								<text><![CDATA[VALOR UNITARIO]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="70" uuid="2c642a43-b0eb-4b26-b131-64e7f7c8de5c">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="70" height="30" uuid="299b5225-278d-46b5-9e77-8f0efe38d311"/>
-								<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="70" height="30" uuid="57ac5c49-ab83-4b0e-aed3-3748ac73dd77"/>
-								<text><![CDATA[QUANTIDADE]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="50" uuid="e08c877f-7f28-498d-8191-b92e7c45a16a">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="50" height="30" uuid="635794ff-7806-4768-8164-d124fc7bf4c7"/>
-								<textFieldExpression><![CDATA[$F{produto.medida.sigla}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="50" height="30" uuid="fb11349d-5827-4a3d-a011-c8821bfa0db3"/>
-								<text><![CDATA[UNI]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="40" uuid="974bc9a6-6b76-41f2-b699-3c4a32da7589">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="40" height="30" uuid="ef2b8ec3-ba73-4f4d-abb2-5a3bbb39f9a4"/>
-								<textFieldExpression><![CDATA[$F{produto.icms}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="40" height="30" uuid="1f583a6a-04bc-4ed4-aa85-9215bba9a5af"/>
-								<text><![CDATA[ICMS]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="40" uuid="78661c1f-4a26-4037-917c-686919faf74d">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="40" height="30" uuid="94e90a0c-69b3-4fa4-9ea1-6616ef2aeddc"/>
-								<textFieldExpression><![CDATA[$F{produto.cofins}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="40" height="30" uuid="0dc73d27-475f-4253-827e-69ba0aefea03"/>
-								<text><![CDATA[COFINS]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-					<jr:column width="40" uuid="b0302c66-a109-45a1-985d-b673392f89bf">
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
-						<jr:tableFooter style="Table 3_TH" height="30" rowSpan="1">
-							<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="40" height="30" uuid="abded68e-94b9-46b8-a4d5-68933898496a"/>
-								<textFieldExpression><![CDATA[$F{produto.cofins}]]></textFieldExpression>
-							</textField>
-						</jr:tableFooter>
-						<jr:columnHeader style="Table 3_CH" height="30" rowSpan="1"/>
-						<jr:columnFooter style="Table 3_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="40" height="30" uuid="cb3e1153-05b2-4c31-9c12-9427644a27e7"/>
-								<text><![CDATA[PIS]]></text>
-							</staticText>
-						</jr:columnFooter>
-						<jr:detailCell style="Table 3_TD" height="30"/>
-					</jr:column>
-				</jr:table>
-			</componentElement>
+				<textFieldExpression><![CDATA[$F{produto.sku}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="41" y="9" width="44" height="33" uuid="83fb9e34-8bfa-4df7-af68-5f678cdaa2f4"/>
+			</rectangle>
+			<textField>
+				<reportElement x="44" y="10" width="40" height="30" uuid="1d0642ba-aed8-41c2-ba6a-886b26f7e263">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0d5f701f-233e-46be-b338-5e7319542133"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.nome}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="84" y="9" width="44" height="33" uuid="841b39ca-d8cf-4905-81b5-9d3240743d1e"/>
+			</rectangle>
+			<textField>
+				<reportElement x="88" y="12" width="36" height="30" uuid="10a92d8f-5ccf-4a67-961a-cca7b1001228">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5acf3f75-d84e-4b82-94a5-928afb27ee26"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.descricao}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="124" y="9" width="44" height="33" uuid="3ec56e2e-4d19-4371-a1f0-7b6f629b4071"/>
+			</rectangle>
+			<textField>
+				<reportElement x="124" y="10" width="45" height="30" uuid="9825890e-8053-4a38-ac18-f83721473be3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4d505343-9dea-4866-a016-ef0321266dde"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.valorUnitario}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="168" y="9" width="44" height="33" uuid="eb03b64b-6fd8-4b5b-84a3-3915214bc27a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="298" y="9" width="44" height="33" uuid="26188cb7-6f3a-4145-bd41-9a222ea66038"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="210" y="9" width="44" height="33" uuid="14fdfc21-676b-4879-b748-9c8289485a77"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="254" y="9" width="44" height="33" uuid="064572f0-7209-4864-89fd-e26c1417d6e4"/>
+			</rectangle>
+			<textField>
+				<reportElement x="168" y="10" width="40" height="30" uuid="20ec2204-99c3-4586-a162-7bf8cdfafbf8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9822288-db48-4e7a-bab0-02bacf5a4883"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="216" y="10" width="34" height="30" uuid="cbb79a3b-6e87-44dc-adca-40bd3c1a77b5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2eaea69-2065-4be3-8bb1-50ca5532f4db"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.medida.sigla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="255" y="9" width="42" height="30" uuid="b4cbb42a-824d-45ac-b938-3a7dc7834a23">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="091ef615-a793-4752-8e56-39b4b737c8be"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.pis}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="301" y="12" width="38" height="30" uuid="1a3b5053-1e56-47aa-be55-507d1830ec85">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="265eba72-e54c-47ce-aef8-d1cc32336d67"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.cofins}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="340" y="9" width="44" height="33" uuid="760693be-b1d0-4176-9b4d-d3fd60f3b091"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="384" y="9" width="44" height="33" uuid="4d81712d-25cd-40b7-8aaa-188225681b72"/>
+			</rectangle>
+			<textField>
+				<reportElement x="341" y="12" width="42" height="30" uuid="32c51e0b-cbce-4e2d-8dfc-8673d26c9eec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc5039e1-826f-422d-af1f-a53dec4856d6"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.icms}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="386" y="9" width="42" height="30" uuid="e0b8159e-2c49-4c0d-8596-c4bc7220b313">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82cca644-4ea4-4b10-90f1-afb21da715a1"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{produto.ipi}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="428" y="9" width="44" height="33" uuid="ad7baa39-ca77-4b3f-9024-ca924edd4c02"/>
+			</rectangle>
+			<textField>
+				<reportElement x="453" y="25" width="100" height="30" uuid="00d5bbd9-5a58-4b8d-8bc8-dd22e57e39d5"/>
+				<textFieldExpression><![CDATA[$V{multiQuanti}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -571,7 +628,4 @@
 	<pageFooter>
 		<band splitType="Stretch"/>
 	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

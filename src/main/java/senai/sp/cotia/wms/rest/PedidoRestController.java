@@ -95,11 +95,6 @@ public class PedidoRestController {
 		// double total = pedido.totalPedido(pedido);
 
 		Long cod = null;
-<<<<<<< HEAD
-=======
-		
->>>>>>> 3f5feddeeda654d215878dcf309da359ba05d3fd
-
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
@@ -113,11 +108,9 @@ public class PedidoRestController {
 			pedido.setDataPedido(data);
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
-<<<<<<< HEAD
 			saveNotaFiscal(pedido);
-=======
-			
->>>>>>> 3f5feddeeda654d215878dcf309da359ba05d3fd
+
+
 
 			/*
 			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
@@ -286,13 +279,11 @@ public class PedidoRestController {
 			String horaEntrada = dataEmission.substring(11);
 			String dataFmt = dataEmission.substring(0, 11);
 			map.put("codNota", notaToda.get().getCodigoNota());
-			map.put("ItensPedido", bean);
 			map.put("dataEmissao", dataFmt);
 			map.put("horaEntrada", horaEntrada);
 
-			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
-
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\notaFiscal.pdf");
+			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Mee\\Downloads\\notaFiscal.pdf");
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
