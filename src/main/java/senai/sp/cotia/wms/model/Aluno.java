@@ -35,7 +35,7 @@ public class Aluno {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Turma turma;
 	@Lob
-	@Column(columnDefinition = "MEDIUMBLOB")
+	
 	private String imagem;
 	@Column(unique = true)
 	private String email;

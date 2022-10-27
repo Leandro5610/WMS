@@ -9,6 +9,8 @@ import javax.persistence.Id;
 
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Data;
 import senai.sp.cotia.wms.type.Tipo;
@@ -22,6 +24,8 @@ public class Movimentacao {
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 	@OneToOne
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private Produto produto;
+	private int quantidade; 
 	
 }

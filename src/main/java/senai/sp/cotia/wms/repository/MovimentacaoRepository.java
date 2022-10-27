@@ -28,11 +28,10 @@ public interface MovimentacaoRepository extends PagingAndSortingRepository<Movim
 	@Query("SELECT m FROM Movimentacao m WHERE m.produto.sku = :a AND m.data BETWEEN :c AND :e")
 	public List<Movimentacao> dataProduto(@Param("a") String produto,@Param("c") String dateStart,@Param("e") String dateEnd);
  
-	@Query("SELECT m FROM Movimentacao m WHERE m.produto = :p")
-	public List<Movimentacao> findByTipoEntrada(@Param("p") Long produto);
 	
-	@Query("SELECT m FROM Movimentacao m WHERE m.tipo = 'SAIDA' AND m.produto = :p")
-	public List<Movimentacao> findByTipoSaida(@Param("p") Long produto);
+	
+	@Query("SELECT m FROM Movimentacao m WHERE m.produto = :p")
+	public List<Movimentacao> saldo(@Param("p") Long produto);
 	
 	
 }

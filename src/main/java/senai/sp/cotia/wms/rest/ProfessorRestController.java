@@ -104,6 +104,7 @@ public class ProfessorRestController {
 				firebase.uploadFile(file, decodificada);
 				fileInput.close();
 				// salvar o usuário no banco de dados
+				professor.setImagem(file.toString());
 				repo.save(professor);
 				Files.delete(pathFile);
 			} else {
