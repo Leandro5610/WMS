@@ -273,7 +273,7 @@ public class PedidoRestController {
 			/*LocalDateTime time = LocalDateTime.now();
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			String dataFmt = fmt+"";*/
-			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
+			 JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/relatorios/notaFiscal.jrxml"));
 			Map<String, Object> map = new HashMap<>();
 			String dataEmission = notaToda.get().getDataEmissao();
 			String horaEntrada = dataEmission.substring(11);
@@ -283,7 +283,7 @@ public class PedidoRestController {
 			map.put("horaEntrada", horaEntrada);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Mee\\Downloads\\notaFiscal.pdf");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\notaFiscal.pdf");
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
