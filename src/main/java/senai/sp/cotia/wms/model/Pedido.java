@@ -19,7 +19,7 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long numPedido;
 	private Double valor;
-	private Date dataPedido;
+	private String dataPedido;
 	@OneToOne
 	private Aluno aluno;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)

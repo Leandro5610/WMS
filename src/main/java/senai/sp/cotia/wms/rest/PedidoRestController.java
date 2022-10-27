@@ -95,8 +95,6 @@ public class PedidoRestController {
 		// double total = pedido.totalPedido(pedido);
 
 		Long cod = null;
-		
-
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
@@ -107,9 +105,12 @@ public class PedidoRestController {
 			SimpleDateFormat parse = new SimpleDateFormat("dd-MM-yyyy");
 
 			String data = parse.format(c.getTime());
+			pedido.setDataPedido(data);
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
-			
+			saveNotaFiscal(pedido);
+
+
 
 			/*
 			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
@@ -251,19 +252,6 @@ public class PedidoRestController {
 				itemNotaRepository.save(item);
 			}
 
-			List<ItemNota> list = itemNotaRepository.pegarNota(nota.getCodigoNota());
-
-			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
-
-			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
-
-			Map<String, Object> map = new HashMap<>();
-			// map.put("Produtos", bean);
-
-			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
-
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\teste.pdf");
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -277,22 +265,25 @@ public class PedidoRestController {
 		System.out.println(list.size());
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		Optional<NotaFiscal> notaToda = nfRepo.findById(nota);
+		notaToda.get().getCodigoNota();
+
 		
-		JasperReport report;
 		try {
-			
-			LocalDateTime time = LocalDateTime.now();
+
+			/*LocalDateTime time = LocalDateTime.now();
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			String dataFmt = fmt.toString();
-			report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
+			String dataFmt = fmt+"";*/
+			JasperReport report = JasperCompileManager.compileReport("src/main/resources/notaFiscal.jrxml");
 			Map<String, Object> map = new HashMap<>();
-			map.put("ItensPedido", bean);
+			String dataEmission = notaToda.get().getDataEmissao();
+			String horaEntrada = dataEmission.substring(11);
+			String dataFmt = dataEmission.substring(0, 11);
+			map.put("codNota", notaToda.get().getCodigoNota());
 			map.put("dataEmissao", dataFmt);
-			
-			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
-			
-			
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\notaFiscal.pdf");
+			map.put("horaEntrada", horaEntrada);
+
+			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
+			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\Mee\\Downloads\\notaFiscal.pdf");
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
