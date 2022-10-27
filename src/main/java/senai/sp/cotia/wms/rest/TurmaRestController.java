@@ -42,32 +42,11 @@ public class TurmaRestController {
 	@Autowired
 	private FireBaseUtil firebase;
 
-
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object cadastrarMedida(@RequestBody Turma turma, HttpServletRequest request, HttpServletResponse response) {
-		
+
 		Erro erro = new Erro();
 		Calendar dataAtual = Calendar.getInstance();
-		
-		// verificar se a data final é antes da data de inicio
-		if(turma.getDataFinal().before(turma.getDataInicio())) {
-			return ResponseEntity.badRequest().build();	
-		}
-		// verificar se a data de inicio está entre uma data de outra turma 
-		else if(repo.between(turma.getDataInicio()) != null) {
-			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-		}
-		// verificar se a data de inicio é no domingo
-		else if(turma.getDataInicio().get(Calendar.DAY_OF_WEEK) == 1) {
-			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-		}
-		// verificar se a data de inicio é antes da data atual
-		else if(turma.getDataInicio().before(dataAtual)) {
-			return ResponseEntity.badRequest().build();
-		}
-		else if(turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
-			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-		}
 
 		try {
 			if (turma.getImagem() != null) {
@@ -103,7 +82,6 @@ public class TurmaRestController {
 
 				// variavel para guardar o nome do arquivo em um File
 				File file = new File(nomeArquivo);
-			
 
 				// variavel para converter em arquivo e armazenar no sistema do pc
 				FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
@@ -116,15 +94,29 @@ public class TurmaRestController {
 				firebase.uploadFile(file, decodificada);
 				repo.save(turma);
 				fileInput.close();
-
-				
-
-			} else {
+			}
+			// verificar se a data final é antes da data de inicio
+			else if (turma.getDataFinal().before(turma.getDataInicio())) {
+				return ResponseEntity.badRequest().build();
+			}
+			// verificar se a data de inicio está entre uma data de outra turma
+			else if (repo.between(turma.getDataInicio()) != null) {
+				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+			}
+			// verificar se a data de inicio é no domingo
+			else if (turma.getDataInicio().get(Calendar.DAY_OF_WEEK) == 1) {
+				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+			}
+			// verificar se a data de inicio é antes da data atual
+			else if (turma.getDataInicio().before(dataAtual)) {
+				return ResponseEntity.badRequest().build();
+			} else if (turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
+				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+			}else {
 				// salvar o usuário no banco de dados
 				repo.save(turma);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -149,8 +141,6 @@ public class TurmaRestController {
 		return ResponseEntity.noContent().build();
 	}
 
-	
-
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Turma> listAluno() {
 		return repo.findAll();
@@ -161,17 +151,14 @@ public class TurmaRestController {
 	public Iterable<Turma> findByAll(@PathVariable("p") String param) {
 		return repo.procurarTudo(param);
 	}
-	
-	
-	  @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
-	    public ResponseEntity<Void> colocarMemebros (@RequestBody Turma turma, @PathVariable("id") Long id) {
-	       
-	       	repo.save(turma);
-	       	HttpHeaders header = new HttpHeaders();
-	        header.setLocation(URI.create("/api/turma"));
-	        return new ResponseEntity<Void>(header, HttpStatus.OK);
-	    }
-	  
-	 
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Void> colocarMemebros(@RequestBody Turma turma, @PathVariable("id") Long id) {
+
+		repo.save(turma);
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/turma"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
+	}
 
 }
