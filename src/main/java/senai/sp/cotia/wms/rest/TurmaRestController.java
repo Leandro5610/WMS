@@ -3,6 +3,7 @@ package senai.sp.cotia.wms.rest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -49,7 +50,7 @@ public class TurmaRestController {
 		Erro erro = new Erro();
 		Calendar dataAtual = Calendar.getInstance();
 		
-		// verificar se a data final é antes da data de inicio
+	/*	// verificar se a data final é antes da data de inicio
 		if(turma.getDataFinal().before(turma.getDataInicio())) {
 			return ResponseEntity.badRequest().build();	
 		}
@@ -67,7 +68,7 @@ public class TurmaRestController {
 		}
 		else if(turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
 			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-		}
+		}*/
 
 		try {
 			if (turma.getImagem() != null) {
@@ -114,11 +115,10 @@ public class TurmaRestController {
 				// variavel para pegar o caminho da pasta com o arquivo da imagem
 				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
 				firebase.uploadFile(file, decodificada);
-				repo.save(turma);
 				fileInput.close();
-
-				
-
+				turma.setImagem(file.toString());
+				repo.save(turma);
+				Files.delete(pathFile);
 			} else {
 				// salvar o usuário no banco de dados
 				repo.save(turma);

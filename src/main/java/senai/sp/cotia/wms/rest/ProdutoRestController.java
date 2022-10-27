@@ -141,10 +141,8 @@ public class ProdutoRestController {
 			
 			fire.uploadFile(file, decodificada);
 			fileInput.close();
-			
-			
-		
-			prodRepo.save(produto);
+			produto.setImagem(file.toString());
+			prodRepo.save(produto);	
 			Files.delete(pathFile);
 			}else {
 			prodRepo.save(produto);

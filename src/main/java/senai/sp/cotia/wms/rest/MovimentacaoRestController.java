@@ -183,7 +183,7 @@ public class MovimentacaoRestController {
 	 * }
 	 */
 	
-	@RequestMapping(value = "saldo/{p}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "saldo/{p}", method = RequestMethod.GET)
 	public int getSaldo(@PathVariable("p") Long produto) {
 		int total = 0;
 		for (int i = 0; i < movimentacaoRepository.findByTipoEntrada(produto).size(); i++) {
@@ -200,13 +200,14 @@ public class MovimentacaoRestController {
 		}
 		
 		return total;
-	}
+	}*/
 	
 	
 
-	@RequestMapping(value = "/mostraSaldo/{p}")
-	public List<Movimentacao> saldo(@PathVariable("p") Long produto) {
-		return movimentacaoRepository.findByTipoEntrada(produto);
+	@GetMapping(value = "/mostraSaldo" )
+	public int  saldo() {
+		Produto p = new Produto();
+		return p.getSaldo();
 	}
 	
 	

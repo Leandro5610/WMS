@@ -109,20 +109,7 @@ public class PedidoRestController {
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
-
-
-
-			/*
-			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
-			 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"); NotaFiscal nota = new
-			 * NotaFiscal(); nota.setDataEmissao(time.format(fmt)); //
-			 * nota.setPedido(pedido); nota.setValorTotal(pedido.getValor()); //
-			 * nota.setQuantidade(pedido.getTotalItens()); nfRepo.save(nota); for
-			 * (ItemPedido itens : pedido.getItens()) { ItemNota item = new ItemNota();
-			 * item.setNotaFiscal(nota); item.setPedido(pedido);
-			 * item.setProduto(itens.getProduto()); //
-			 * item.setQuantidade(itens.getQuantidade()); itemNotaRepository.save(item); }
-			 */
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -223,9 +210,12 @@ public class PedidoRestController {
 			mov.setProduto(itens.getProduto());
 			mov.setTipo(Tipo.ENTRADA);
 			LocalDateTime time = LocalDateTime.now();
+			
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			mov.setData(time.format(fmt));
+			mov.setQuantidade(itens.getQuantidade());
 			movRepo.save(mov);
+		
 
 		}
 
@@ -260,13 +250,16 @@ public class PedidoRestController {
 	}
 
 	@GetMapping(value = "teste/{id}")
-	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota) {
+	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota,HttpServletRequest request,
+			HttpServletResponse response) {
 		List<ItemNota> list = itemNotaRepository.pegarNota(nota);
 		System.out.println(list.size());
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		Optional<NotaFiscal> notaToda = nfRepo.findById(nota);
 		notaToda.get().getCodigoNota();
+		response.setContentType("apllication/pdf");
 
+		response.addHeader("Content-Disposition", "inline; filename=" + "codigo.pdf");
 		
 		try {
 
