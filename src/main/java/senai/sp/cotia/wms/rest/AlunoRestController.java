@@ -49,6 +49,7 @@ import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.TokenWms;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.AlunoRepository;
+import senai.sp.cotia.wms.serevices.EmailService;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
 @CrossOrigin
@@ -201,7 +202,7 @@ public class AlunoRestController {
 	 * RuntimeException("Email não encontrado"); }
 	 */
 
-	@RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET)
 	public Aluno enviarEmail(@PathVariable("p") String email) {
 		Aluno alunoEmail = repository.findByEmail(email);
 		String emailAln = alunoEmail.getEmail();
@@ -213,7 +214,7 @@ public class AlunoRestController {
 		}
 
 		throw new RuntimeException("Email não encontrado");
-	}
+	}*/
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
@@ -248,15 +249,16 @@ public class AlunoRestController {
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TokenWms> login(@RequestBody Aluno aluno) {
+	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+	public Object login(@RequestBody Aluno aluno) {
 		aluno = repository.findByCodMatriculaAndSenha(aluno.getCodMatricula(), aluno.getSenha());
+		
 
 		if (aluno != null) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("aluno_id", aluno.getId());
+			//map.put("aluno_id", aluno.getId());
 			map.put("aluno_codMatricula", aluno.getCodMatricula());
-
+			map.put("aluno_id", aluno.getId());
 			Calendar expiracao = Calendar.getInstance();
 
 			//tempo de expiração do token 12 horas
@@ -272,7 +274,7 @@ public class AlunoRestController {
 			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
 		}
 	}
-
+	
 	// decoda o token para pegar o id do usuário que está logado na sessão
 	@Privado
 	@RequestMapping(value = "sendId", method = RequestMethod.GET)

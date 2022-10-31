@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +32,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
-
+@CrossOrigin
 @RestController
 @RequestMapping("api/movimentacao/")
 public class MovimentacaoPdf {
@@ -40,7 +41,7 @@ public class MovimentacaoPdf {
 	private MovimentacaoRepository movimentacaoRepository;
 
 	// METODO PARA GERAR RELATORIO DE TODAS AS MOVIMENTAÇÕES
-	@RequestMapping(value = "pdf", method = RequestMethod.GET)
+	@RequestMapping(value = "teste", method = RequestMethod.GET)
 	public String generatedPdf(HttpServletRequest request, HttpServletResponse response)
 			throws JRException, IOException {
 		// lista de todas as movimentações
@@ -59,7 +60,7 @@ public class MovimentacaoPdf {
 		// report
 		map.put("CollectionBeanParam", bean);
 		// nome do arquivo
-		String name = "/relatorio.pdf";
+		String name = "relatorio.pdf";
 
 		// preenchendo o relatório com as informações das movimentações
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
@@ -81,20 +82,21 @@ public class MovimentacaoPdf {
 			@PathVariable("a") String produto) throws FileNotFoundException, JRException {
 		// lista de movimentações de acordo com a data e o produto especificado
 		List<Movimentacao> list = movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
-		
+
 		// Instanciando uma coleção de dados a partir do lista de movimentações
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
-		
+
 		// compilando o arquivo de layout do relatório
 		JasperReport report = JasperCompileManager
 				.compileReport(new FileInputStream("src/main/java/relatorios/moviDatas.jrxml"));
 		HashMap<String, Object> map = new HashMap<>();
-		// passando a coleção de dados para o parameter CollectionBeanParm do jasper report
+		// passando a coleção de dados para o parameter CollectionBeanParm do jasper
+		// report
 		map.put("CollectionBeanParam", bean);
-		
+
 		// nome do arquivo
 		String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
-		
+
 		// preenchendo o relatório com as informações das movimentações
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
@@ -129,11 +131,12 @@ public class MovimentacaoPdf {
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 		JasperExportManager.exportReportToPdfFile(jasperPrint, name);
-		
-		//NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
-		/*File arquivo = new File(name);
-		OutputStream output = response.getOutputStream();
-		Files.copy(arquivo, output);*/
+
+		// NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
+		/*
+		 * File arquivo = new File(name); OutputStream output =
+		 * response.getOutputStream(); Files.copy(arquivo, output);
+		 */
 		return list;
 
 	}

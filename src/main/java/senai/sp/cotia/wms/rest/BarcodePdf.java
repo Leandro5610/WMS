@@ -69,11 +69,25 @@ public class BarcodePdf {
 
 			Random geradorNumero = new Random();
 			// gera um numero aleatório até 10
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 87ceed7c06f111a30ac97a14f7277f0777f94ae8
 			//double numeroAletorio = geradorNumero.nextDouble(10);
 			// formata o numero com 9 casas decimais
 			//String numeroFormatado = String.format("%.9f", numeroAletorio);
 			// retira a vircula do número
 			//String mascaraCodigo = numeroFormatado.replace(",", "");
+<<<<<<< HEAD
+=======
+=======
+			// double numeroAletorio arquivo= geradorNumero.nextDouble(10);
+			// formata o numero com 9 casas decimais
+			// String numeroFormatado = String.format("%.9f", numeroAletorio);
+			// retira a vircula do número
+			// String mascaraCodigo = numeroFormatado.replace(",", "");
+>>>>>>> f0e73fc357a1aa99407349514ab3685552b297a1
+>>>>>>> 87ceed7c06f111a30ac97a14f7277f0777f94ae8
 			// três primeiros digitos do codigo de barras brasileiro GTIN-13
 			String padraoBr = "789";
 
@@ -81,7 +95,15 @@ public class BarcodePdf {
 
 			paragrafo.add("Codigo de Barras do " + nomeProduto);
 			// gerar o codigo de barras com a mascara e o identificador do produto
+<<<<<<< HEAD
 			//barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+=======
+<<<<<<< HEAD
+		//	barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+=======
+			// barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+>>>>>>> f0e73fc357a1aa99407349514ab3685552b297a1
+>>>>>>> 87ceed7c06f111a30ac97a14f7277f0777f94ae8
 			Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
 
 			// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " +
@@ -139,60 +161,139 @@ public class BarcodePdf {
 	}
 
 	@RequestMapping(value = "/teste", method = RequestMethod.GET)
+<<<<<<< HEAD
 	public String generatedPdfA(String[]idProduto, HttpServletRequest request,
 			HttpServletResponse response) throws FileNotFoundException, JRException, DocumentException {
+=======
+	public String generatedPdfA(String[] idProduto, HttpServletRequest request, HttpServletResponse response)
+			throws FileNotFoundException, JRException, DocumentException {
 
+>>>>>>> f0e73fc357a1aa99407349514ab3685552b297a1
 		try {
 
 			Document document = new Document();
 
-			//response.setContentType("apllication/pdf");
+			// response.setContentType("apllication/pdf");
 
-			//response.addHeader("Content-Disposition", "inline; filename=" + "codigo.pdf");
+			// response.addHeader("Content-Disposition", "inline; filename=" +
+			// "codigo.pdf");
 
-			PdfWriter arquivo = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\Pichau\\Desktop\\teste.pdf"));
+			PdfWriter arquivo = PdfWriter.getInstance(document,
+					new FileOutputStream("C:\\Users\\Pichau\\Desktop\\teste.pdf"));
 			document.open();
 
 			Barcode128 barcode = new Barcode128();
 
-			
+<<<<<<< HEAD
 			for (String id: idProduto) {
+=======
+			for (String id : idProduto) {
+>>>>>>> f0e73fc357a1aa99407349514ab3685552b297a1
 				Random geradorNumero = new Random();
-				
+
 				// gera um numero aleatório até 10
+<<<<<<< HEAD
 				//double numeroAletorio = geradorNumero.nextDouble(10);
 				
 				// formata o numero com 9 casas decimais
 				//String numeroFormatado = String.format("%.9f", numeroAletorio);
+=======
+<<<<<<< HEAD
+			//	double numeroAletorio = geradorNumero.nextDouble(10);
+				
+				// formata o numero com 9 casas decimais
+			//	String numeroFormatado = String.format("%.9f", numeroAletorio);
+>>>>>>> 87ceed7c06f111a30ac97a14f7277f0777f94ae8
 				
 				// retira a vircula do número
 				//String mascaraCodigo = numeroFormatado.replace(",", "");
 				
+=======
+				// double numeroAletorio = geradorNumero.nextDouble(10);
+
+				// formata o numero com 9 casas decimais
+				// String numeroFormatado = String.format("%.9f", numeroAletorio);
+
+				// retira a vircula do número
+				// String mascaraCodigo = numeroFormatado.replace(",", "");
+
+>>>>>>> f0e73fc357a1aa99407349514ab3685552b297a1
 				// três primeiros digitos do codigo de barras brasileiro GTIN-13
 				String padraoBr = "789";
-				
+
 				Paragraph paragrafo = new Paragraph();
 
 				paragrafo.add("Codigo de Barras do ");
 				// gerar o codigo de barras com a mascara e o identificador do produto
+<<<<<<< HEAD
 				//barcode.setCode(padraoBr + mascaraCodigo+id);
+=======
+<<<<<<< HEAD
+				//barcode.setCode(padraoBr + mascaraCodigo+id);
+=======
+				// barcode.setCode(padraoBr + mascaraCodigo+id);
+>>>>>>> f0e73fc357a1aa99407349514ab3685552b297a1
+>>>>>>> 87ceed7c06f111a30ac97a14f7277f0777f94ae8
 				Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK,
 						BaseColor.BLACK);
 				img.scalePercent(200);
 				document.add(paragrafo);
 				document.add(img);
+<<<<<<< HEAD
 				
 				 //BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " , 300, 300, null);
-				
-			
+=======
+
+				// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " , 300, 300,
+				// null);
+>>>>>>> f0e73fc357a1aa99407349514ab3685552b297a1
+
 			}
-			 document.close();
-		
+			document.close();
 
 			return "funcionou";
 		} catch (Exception e) {
 			return e.toString();
 		}
+
+	}
+
+	@RequestMapping(value = "qrCodes", method = RequestMethod.GET)
+	public String generatedQrCodes(String[] ids, HttpServletRequest request, HttpServletResponse response)
+			throws FileNotFoundException, JRException, DocumentException {
+
+		Document document = new Document(new Rectangle(PageSize.A4));
+		try {
+			// coloca na reposta o formato do arquivo
+			response.setContentType("apllication/pdf");
+			// cria o arquivo com o nome qrCode
+			response.addHeader("Content-Disposition", "inline; filename=" + "qrCode.pdf");
+
+			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+
+			document.open();
+
+			// QR Code Barcode
+			for (String string : ids) {
+				BarcodeQRCode qrcode = new BarcodeQRCode(ids + "", 200, 200, null);
+
+				Image image = qrcode.getImage();
+
+				// Add Barcode to PDF document
+				document.add(image);
+
+			}
+
+			document.close();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "certo";
 
 	}
 
