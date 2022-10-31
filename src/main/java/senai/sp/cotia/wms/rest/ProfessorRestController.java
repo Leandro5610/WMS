@@ -100,12 +100,14 @@ public class ProfessorRestController {
 
 				// variavel para pegar o caminho da pasta com o arquivo da imagem
 				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-
+				
+				//fazer o upload da imagem no fire base
 				firebase.uploadFile(file, decodificada);
 				fileInput.close();
-				// salvar o usuário no banco de dados
+				//inserir o nome da imagem no professor
 				professor.setImagem(file.toString());
 				repo.save(professor);
+				//excluir imagem depois de salvar o professor 
 				Files.delete(pathFile);
 			} else {
 				repo.save(professor);
@@ -170,7 +172,7 @@ public class ProfessorRestController {
 			map.put("professor_nif", professor.getNif());
 
 			Calendar expiracao = Calendar.getInstance();
-			expiracao.add(Calendar.HOUR, 2);
+			expiracao.add(Calendar.HOUR, 12);
 
 			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
 

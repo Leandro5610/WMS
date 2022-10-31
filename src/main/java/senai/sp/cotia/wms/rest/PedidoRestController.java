@@ -56,6 +56,7 @@ import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.EnderecamentoRepository;
 import senai.sp.cotia.wms.repository.EstoqueRepository;
 import senai.sp.cotia.wms.repository.ItemNotaRepository;
+import senai.sp.cotia.wms.repository.ItemPedidoRepository;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.NotaFiscalRepository;
 import senai.sp.cotia.wms.repository.PedidoRepository;
@@ -85,8 +86,9 @@ public class PedidoRestController {
 	@Autowired
 	private ProdutoRepository produtoRp;
 
-	Long teste;
-
+	@Autowired
+	private ItemPedidoRepository itemPedidoRep;
+	
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
 	public ResponseEntity<Pedido> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
@@ -286,5 +288,9 @@ public class PedidoRestController {
 		return ResponseEntity.ok().build();
 
 	}
+	@RequestMapping(value = "/findbypedido/{codigo}")
+    public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {
+        return itemPedidoRep.pegarItens(param);
+    }
 
 }

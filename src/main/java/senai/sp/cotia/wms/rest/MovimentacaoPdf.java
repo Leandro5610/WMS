@@ -1,16 +1,25 @@
 package senai.sp.cotia.wms.rest;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.io.Files;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -26,49 +35,107 @@ import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 @RestController
 @RequestMapping("api/movimentacao/")
 public class MovimentacaoPdf {
-	
+
 	@Autowired
 	private MovimentacaoRepository movimentacaoRepository;
-	
-	@RequestMapping(value = "pdf", method = RequestMethod.GET)
-	public String generatedPdf() throws FileNotFoundException, JRException {
 
+	// METODO PARA GERAR RELATORIO DE TODAS AS MOVIMENTAÇÕES
+	@RequestMapping(value = "pdf", method = RequestMethod.GET)
+	public String generatedPdf(HttpServletRequest request, HttpServletResponse response)
+			throws JRException, IOException {
+		// lista de todas as movimentações
 		List<Movimentacao> list = movimentacaoRepository.findAll();
-		
+
+		// Instanciando uma coleção de dados a partir do lista de movimentações
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
-		
-		JasperReport report = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/movimentacao.jrxml"));
+
+		// compilando o arquivo de layout do relatório
+		JasperReport report = JasperCompileManager
+				.compileReport(new FileInputStream("src/main/java/relatorios/movimentacao.jrxml"));
+
 		HashMap<String, Object> map = new HashMap<>();
+
+		// passando a coleção de dados para o parameter CollectionBeanParm do jasper
+		// report
 		map.put("CollectionBeanParam", bean);
-		
-		String name = "C:\\Users\\bruno\\Downloads\\relatorio.pdf";
-	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
+		// nome do arquivo
+		String name = "/relatorio.pdf";
+
+		// preenchendo o relatório com as informações das movimentações
+		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 		JasperExportManager.exportReportToPdfFile(jasperPrint, name);
 
-		return "uauauau";
-		
-	}
-	
-	
-	@RequestMapping(value = "pdf/{a}&{c}&{e}", method = RequestMethod.GET)
-	public String generatedPdfDatas(@PathVariable("c") String dateStart,@PathVariable("e") String dateEnd, @PathVariable("a") String produto) throws FileNotFoundException, JRException {
+		File arquivo = new File(name);
 
+		OutputStream output = response.getOutputStream();
+		Files.copy(arquivo, output);
+		return "eee";
+
+	}
+
+	// METODO PARA GERAR RELATÓRIO DAS MOVIMENTAÇÕES
+	// A PATIR DE UMA DATA E UM PRODUTO ESPECIFICO
+	@RequestMapping(value = "pdf/{a}&{c}&{e}", method = RequestMethod.GET)
+	public String generatedPdfDatasProdutos(@PathVariable("c") String dateStart, @PathVariable("e") String dateEnd,
+			@PathVariable("a") String produto) throws FileNotFoundException, JRException {
+		// lista de movimentações de acordo com a data e o produto especificado
 		List<Movimentacao> list = movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
 		
+		// Instanciando uma coleção de dados a partir do lista de movimentações
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		
-		JasperReport report = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/moviDatas.jrxml"));
+		// compilando o arquivo de layout do relatório
+		JasperReport report = JasperCompileManager
+				.compileReport(new FileInputStream("src/main/java/relatorios/moviDatas.jrxml"));
 		HashMap<String, Object> map = new HashMap<>();
+		// passando a coleção de dados para o parameter CollectionBeanParm do jasper report
 		map.put("CollectionBeanParam", bean);
 		
+		// nome do arquivo
 		String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
 		
-	    JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
-		
+		// preenchendo o relatório com as informações das movimentações
+		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
+
 		JasperExportManager.exportReportToPdfFile(jasperPrint, name);
+
+		// NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
+		/*
+		 * File arquivo = new File(name); OutputStream output =
+		 * response.getOutputStream(); Files.copy(arquivo, output);
+		 */
 		return "uauauau2";
-		
+
 	}
-	
+
+	// METODO PARA GERAR RELATÓRIO DE MOVIMENTAÇÕES
+	// A PATIR DE UMA DATA ESPECIFICA
+	@RequestMapping(value = "pdf/data/{s}&{e}", method = RequestMethod.GET)
+	public List<Movimentacao> generatedPdfDatas(@PathVariable("s") String dateStart, @PathVariable("e") String dateEnd)
+			throws FileNotFoundException, JRException {
+
+		List<Movimentacao> list = movimentacaoRepository.buscarMovimentacoesPorData(dateEnd, dateEnd);
+
+		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
+
+		JasperReport report = JasperCompileManager
+				.compileReport(new FileInputStream("src/main/java/relatorios/moviDatas.jrxml"));
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("CollectionBeanParam", bean);
+
+		String name = "C:\\Users\\Pichau\\Downloads\\relatorio.pdf";
+
+		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
+
+		JasperExportManager.exportReportToPdfFile(jasperPrint, name);
+		
+		//NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
+		/*File arquivo = new File(name);
+		OutputStream output = response.getOutputStream();
+		Files.copy(arquivo, output);*/
+		return list;
+
+	}
+
 }

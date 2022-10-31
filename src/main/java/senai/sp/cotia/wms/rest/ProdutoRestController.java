@@ -67,86 +67,88 @@ public class ProdutoRestController {
 
 	@Autowired
 	private ProdutoRepository prodRepo;
-	
+
 	@Autowired
 	private FornecedorRepository fornRepo;
-	
+
 	@Autowired
 	private FireBaseUtil fire;
-	
+
 	@Autowired
-	private  MovimentacaoRepository movirepo;
-	
+	private MovimentacaoRepository movirepo;
+
 	@Autowired
 	private ItemFornecedorRepository itemFornece;
-	
-	
+
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		try {
-			
-			
-			for (ItemFornecedor itens : produto.getFornecedores() ) {
+
+			// percorrer os itens do fornecerdor e iserir o produto
+			for (ItemFornecedor itens : produto.getFornecedores()) {
 				itens.setProduto(produto);
 				itens.setFornecedor(itens.getFornecedor());
-				
+
 			}
-			
-		
-			if(produto.getImagem() != null) {
-			// variavel para guardar a imagem codificada Base64 que está vindo do front
-			String stringImagem = produto.getImagem();
-			
-			// variaveis para extrair o que está entre a / e o ;
-			int posicaoBarra = stringImagem.indexOf('/');
-			int posicaoPontoVirgula = stringImagem.indexOf(';');
-			
-			// variavel para retirar a / e o ; para pegar a extensão da imagem
-			String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
-			
-			// variavel para retirar a / da extensão
-			String extensaoOriginal = extensao.replace("/", "");
-			
-			// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-			// base64 codificado do front-end
-			String base64ImagemString  = stringImagem.replace("data:image/"+extensaoOriginal+ ";base64,", "");
-			
-			// variavel para para decodificar o codigo base64 e converter em um vetor de
-			// bytes
-			byte[] decodificada = Base64.getDecoder().decode(base64ImagemString);
-			
-			// variavel para converter o vetor de bytes em um texto
-			String arquivoString = decodificada.toString();
-			
-			// variavel para retirar o texto "[B@" da variavel arquivoString
-			String arquivo = arquivoString.replace("[B@", "");
-			
-			// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-			String nomeArquivo = UUID.randomUUID().toString() + arquivo +"."+extensaoOriginal;
-			
-			// variavel para guardar o nome do arquivo em um File
-			File file = new File(nomeArquivo);
-			
-			// variavel para converter em arquivo e armazenar no sistema do pc
-			FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
-			
-			
-			// variavel para escrever os bytes no arquivo
-			fileInput.write(decodificada);
-			
-			//variavel para pegar o caminho da pasta com o arquivo da imagem
-			Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-			
-			fire.uploadFile(file, decodificada);
-			fileInput.close();
-			produto.setImagem(file.toString());
-			prodRepo.save(produto);	
-			Files.delete(pathFile);
-			}else {
-			prodRepo.save(produto);
-			return ResponseEntity.ok(HttpStatus.CREATED);
+
+			// verificar se o produto tem imagem
+			if (produto.getImagem() != null) {
+				// variavel para guardar a imagem codificada Base64 que está vindo do front
+				String stringImagem = produto.getImagem();
+
+				// variaveis para extrair o que está entre a / e o ;
+				int posicaoBarra = stringImagem.indexOf('/');
+				int posicaoPontoVirgula = stringImagem.indexOf(';');
+
+				// variavel para retirar a / e o ; para pegar a extensão da imagem
+				String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
+
+				// variavel para retirar a / da extensão
+				String extensaoOriginal = extensao.replace("/", "");
+
+				// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
+				// base64 codificado do front-end
+				String base64ImagemString = stringImagem.replace("data:image/" + extensaoOriginal + ";base64,", "");
+
+				// variavel para para decodificar o codigo base64 e converter em um vetor de
+				// bytes
+				byte[] decodificada = Base64.getDecoder().decode(base64ImagemString);
+
+				// variavel para converter o vetor de bytes em um texto
+				String arquivoString = decodificada.toString();
+
+				// variavel para retirar o texto "[B@" da variavel arquivoString
+				String arquivo = arquivoString.replace("[B@", "");
+
+				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
+				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensaoOriginal;
+
+				// variavel para guardar o nome do arquivo em um File
+				File file = new File(nomeArquivo);
+
+				// variavel para converter em arquivo e armazenar no sistema do pc
+				FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
+
+				// variavel para escrever os bytes no arquivo
+				fileInput.write(decodificada);
+
+				// variavel para pegar o caminho da pasta com o arquivo da imagem
+				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
+
+				// fazer o upload da imagem para fire base
+				fire.uploadFile(file, decodificada);
+				fileInput.close();
+				// inserir imagem nome da imagem no produto
+				produto.setImagem(file.toString());
+				prodRepo.save(produto);
+
+				// excluir imagem da pasta temporaria
+				Files.delete(pathFile);
+			} else {
+				prodRepo.save(produto);
+				return ResponseEntity.ok(HttpStatus.CREATED);
 			}
 
 		} catch (Exception e) {
@@ -196,30 +198,28 @@ public class ProdutoRestController {
 		prodRepo.deleteById(codProduto);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@GetMapping(value = "relatorio")
-    public ResponseEntity<Object> relatorioEstoque() {
-        List<Movimentacao> list = (List<Movimentacao>)movirepo.findAll();       
-        JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
-       
-        try {
-            JasperReport report  = JasperCompileManager.compileReport("src/main/resources/Blank_A4.jrxml");
-           
-            Map<String, Object> map = new HashMap<>();
-           
-            JasperPrint print = JasperFillManager.fillReport(report, map, dados);
-           
-            JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Desktop\\relatorio.pdf");
-        } catch (JRException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-       
-        return ResponseEntity.ok().build();
-       
-    }
-	
-	
+	public ResponseEntity<Object> relatorioEstoque() {
+		List<Movimentacao> list = (List<Movimentacao>) movirepo.findAll();
+		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
+
+		try {
+			JasperReport report = JasperCompileManager.compileReport("src/main/java/relatorio/Blank_A4.jrxml");
+
+			Map<String, Object> map = new HashMap<>();
+
+			JasperPrint print = JasperFillManager.fillReport(report, map, dados);
+
+			JasperExportManager.exportReportToPdfFile(print, "C:\\Users\\TecDevTarde\\Desktop\\relatorio.pdf");
+		} catch (JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return ResponseEntity.ok().build();
+
+	}
 
 	// metodo para procurar uma reserva à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
