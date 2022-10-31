@@ -48,7 +48,7 @@ public class TurmaRestController {
 
 		Erro erro = new Erro();
 		Calendar dataAtual = Calendar.getInstance();
-<<<<<<< HEAD
+
 		
 	/*	// verificar se a data final é antes da data de inicio
 		if(turma.getDataFinal().before(turma.getDataInicio())) {
@@ -69,8 +69,7 @@ public class TurmaRestController {
 		else if(turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
 			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
 		}*/
-=======
->>>>>>> 7374d47440e0e2cb1afe3d98c9d5f1d29fe840c7
+
 
 		try {
 			if (turma.getImagem() != null) {
@@ -117,13 +116,11 @@ public class TurmaRestController {
 				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
 				firebase.uploadFile(file, decodificada);
 				fileInput.close();
-<<<<<<< HEAD
+
 				turma.setImagem(file.toString());
 				repo.save(turma);
 				Files.delete(pathFile);
-			} else {
-=======
-			}
+			} 
 			// verificar se a data final é antes da data de inicio
 			else if (turma.getDataFinal().before(turma.getDataInicio())) {
 				return ResponseEntity.badRequest().build();
@@ -142,7 +139,7 @@ public class TurmaRestController {
 			} else if (turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
 				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
 			}else {
->>>>>>> 7374d47440e0e2cb1afe3d98c9d5f1d29fe840c7
+
 				// salvar o usuário no banco de dados
 				repo.save(turma);
 				return ResponseEntity.ok(HttpStatus.CREATED);
