@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +32,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
-
+@CrossOrigin
 @RestController
 @RequestMapping("api/movimentacao/")
 public class MovimentacaoPdf {
@@ -40,7 +41,7 @@ public class MovimentacaoPdf {
 	private MovimentacaoRepository movimentacaoRepository;
 
 	// METODO PARA GERAR RELATORIO DE TODAS AS MOVIMENTAÇÕES
-	@RequestMapping(value = "pdf", method = RequestMethod.GET)
+	@RequestMapping(value = "teste", method = RequestMethod.GET)
 	public String generatedPdf(HttpServletRequest request, HttpServletResponse response)
 			throws JRException, IOException {
 		// lista de todas as movimentações
@@ -59,7 +60,7 @@ public class MovimentacaoPdf {
 		// report
 		map.put("CollectionBeanParam", bean);
 		// nome do arquivo
-		String name = "/relatorio.pdf";
+		String name = "relatorio.pdf";
 
 		// preenchendo o relatório com as informações das movimentações
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());

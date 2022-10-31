@@ -69,11 +69,11 @@ public class BarcodePdf {
 
 			Random geradorNumero = new Random();
 			// gera um numero aleatório até 10
-			double numeroAletorio = geradorNumero.nextDouble(10);
+			// double numeroAletorio arquivo= geradorNumero.nextDouble(10);
 			// formata o numero com 9 casas decimais
-			String numeroFormatado = String.format("%.9f", numeroAletorio);
+			// String numeroFormatado = String.format("%.9f", numeroAletorio);
 			// retira a vircula do número
-			String mascaraCodigo = numeroFormatado.replace(",", "");
+			// String mascaraCodigo = numeroFormatado.replace(",", "");
 			// três primeiros digitos do codigo de barras brasileiro GTIN-13
 			String padraoBr = "789";
 
@@ -81,7 +81,7 @@ public class BarcodePdf {
 
 			paragrafo.add("Codigo de Barras do " + nomeProduto);
 			// gerar o codigo de barras com a mascara e o identificador do produto
-			barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+			// barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
 			Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
 
 			// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " +
@@ -139,60 +139,99 @@ public class BarcodePdf {
 	}
 
 	@RequestMapping(value = "/teste", method = RequestMethod.GET)
-	public String generatedPdfA(String[]idProduto, HttpServletRequest request,
-			HttpServletResponse response) throws FileNotFoundException, JRException, DocumentException {
+	public String generatedPdfA(String[] idProduto, HttpServletRequest request, HttpServletResponse response)
+			throws FileNotFoundException, JRException, DocumentException {
 
 		try {
 
 			Document document = new Document();
 
-			//response.setContentType("apllication/pdf");
+			// response.setContentType("apllication/pdf");
 
-			//response.addHeader("Content-Disposition", "inline; filename=" + "codigo.pdf");
+			// response.addHeader("Content-Disposition", "inline; filename=" +
+			// "codigo.pdf");
 
-			PdfWriter arquivo = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\Pichau\\Desktop\\teste.pdf"));
+			PdfWriter arquivo = PdfWriter.getInstance(document,
+					new FileOutputStream("C:\\Users\\Pichau\\Desktop\\teste.pdf"));
 			document.open();
 
 			Barcode128 barcode = new Barcode128();
 
-			
-			for (String id: idProduto) {
+			for (String id : idProduto) {
 				Random geradorNumero = new Random();
-				
+
 				// gera um numero aleatório até 10
-				double numeroAletorio = geradorNumero.nextDouble(10);
-				
+				// double numeroAletorio = geradorNumero.nextDouble(10);
+
 				// formata o numero com 9 casas decimais
-				String numeroFormatado = String.format("%.9f", numeroAletorio);
-				
+				// String numeroFormatado = String.format("%.9f", numeroAletorio);
+
 				// retira a vircula do número
-				String mascaraCodigo = numeroFormatado.replace(",", "");
-				
+				// String mascaraCodigo = numeroFormatado.replace(",", "");
+
 				// três primeiros digitos do codigo de barras brasileiro GTIN-13
 				String padraoBr = "789";
-				
+
 				Paragraph paragrafo = new Paragraph();
 
 				paragrafo.add("Codigo de Barras do ");
 				// gerar o codigo de barras com a mascara e o identificador do produto
-				barcode.setCode(padraoBr + mascaraCodigo+id);
+				// barcode.setCode(padraoBr + mascaraCodigo+id);
 				Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK,
 						BaseColor.BLACK);
 				img.scalePercent(200);
 				document.add(paragrafo);
 				document.add(img);
-				
-				 //BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " , 300, 300, null);
-				
-			
+
+				// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " , 300, 300,
+				// null);
+
 			}
-			 document.close();
-		
+			document.close();
 
 			return "funcionou";
 		} catch (Exception e) {
 			return e.toString();
 		}
+
+	}
+
+	@RequestMapping(value = "qrCodes", method = RequestMethod.GET)
+	public String generatedQrCodes(String[] ids, HttpServletRequest request, HttpServletResponse response)
+			throws FileNotFoundException, JRException, DocumentException {
+
+		Document document = new Document(new Rectangle(PageSize.A4));
+		try {
+			// coloca na reposta o formato do arquivo
+			response.setContentType("apllication/pdf");
+			// cria o arquivo com o nome qrCode
+			response.addHeader("Content-Disposition", "inline; filename=" + "qrCode.pdf");
+
+			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+
+			document.open();
+
+			// QR Code Barcode
+			for (String string : ids) {
+				BarcodeQRCode qrcode = new BarcodeQRCode(ids + "", 200, 200, null);
+
+				Image image = qrcode.getImage();
+
+				// Add Barcode to PDF document
+				document.add(image);
+
+			}
+
+			document.close();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "certo";
 
 	}
 
