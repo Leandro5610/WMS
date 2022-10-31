@@ -116,7 +116,7 @@ public class EnderecamentoRestController {
 		int yearInt = calendar.get(Calendar.YEAR);
 
 		try {
-			JasperReport report = JasperCompileManager.compileReport("src/main/resources/Invoice.jrxml");
+			JasperReport report = JasperCompileManager.compileReport("src/main/java/relatorios/Invoice.jrxml");
 
 			String year = yearInt + "";
 
@@ -151,7 +151,7 @@ public class EnderecamentoRestController {
 		int yearInt = calendar.get(Calendar.YEAR);
 
 		try {
-			JasperReport report = JasperCompileManager.compileReport("src/main/resources/ABC.jrxml");
+			JasperReport report = JasperCompileManager.compileReport("src/main/java/relatorios/ABC.jrxml");
 
 			String year = yearInt + "";
 
@@ -189,7 +189,7 @@ public class EnderecamentoRestController {
 		int yearInt = calendar.get(Calendar.YEAR);
 
 		try {
-			JasperReport report = JasperCompileManager.compileReport("src/main/resources/TesteABC.jrxml");
+			JasperReport report = JasperCompileManager.compileReport("src/main/java/relatorios/TesteABC.jrxml");
 
 			String year = yearInt + "";
 
@@ -220,4 +220,15 @@ public class EnderecamentoRestController {
 		return ResponseEntity.ok().build();
 
 	}
+
+	@RequestMapping(value = "armazenar/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Void> guardaItens(@RequestBody Enderecamento enderecamento, 
+			@PathVariable("id")Long idEnderecamento){
+		//verefica se existe o enderecamento 
+		repository.save(enderecamento);
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/enderecamento"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
+	}
+		
 }

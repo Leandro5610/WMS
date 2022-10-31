@@ -90,6 +90,9 @@ public class ItemPedidoRestController {
 			return itemPedidoRepository.procurarTudo(param);
 		}
 		
-	
+		@RequestMapping(value = "/findbypedido/{codigo}")
+	    public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {
+	        return itemPedidoRepository.pegarItens(param);
+	    }
 	
 }

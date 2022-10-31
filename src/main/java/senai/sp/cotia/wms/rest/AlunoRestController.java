@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.print.attribute.standard.Media;
@@ -67,12 +68,13 @@ public class AlunoRestController {
 	public static final String SECRET = "@msSenai";
 
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Object> saveAluno(@RequestBody Aluno alunoString, HttpServletRequest request,
+	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException {
 		try {
-			if (alunoString.getImagem() != null) {
+			// verificar se o aluno tem uma imagem
+			if (aluno.getImagem() != null) {
 				// variavel para guardar a imagem codificada Base64 que está vindo do front
-				String stringImagem = alunoString.getImagem();
+				String stringImagem = aluno.getImagem();
 
 				// variaveis para extrair o que está entre a / e o ;
 				int posicaoBarra = stringImagem.indexOf('/');
@@ -104,30 +106,38 @@ public class AlunoRestController {
 				// variavel para guardar o nome do arquivo em um File
 				File file = new File(nomeArquivo);
 
-				// variavel para converter em arquivo e armazenar no sistema do pc
+				// variavel para converter em arquivo e armazenar na pasta da raiz da aplicação
 				FileOutputStream in = new FileOutputStream("temporaria/" + file);
 
 				// variavel para escrever os bytes no arquivo
 				in.write(decode);
 
+				// pegar o arquivo que foi salvo na pasta temporaria
 				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
 
+				// fazer o upload do arquivo no Fire Base (nuvem)
 				fire.uploadFile(file, decode);
+
 				in.close();
-				alunoString.setImagem(file.toString());
-				repository.save(alunoString);
+				// inserir nome da imagem no aluno que está vindo do Front
+				aluno.setImagem(file.toString());
+
+				// salva o aluno Banco de Dados
+				repository.save(aluno);
+
+				// excluir imagem da pasta temporaria depois de salvar o aluno
 				Files.delete(pathFile);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			} else {
-				repository.save(alunoString);
+				
+				repository.save(aluno);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			}
 		} catch (Exception e) {
 			// TODO: handle exceptionelse {
 			e.printStackTrace();
-
+			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -248,7 +258,9 @@ public class AlunoRestController {
 			map.put("aluno_codMatricula", aluno.getCodMatricula());
 
 			Calendar expiracao = Calendar.getInstance();
-			expiracao.add(Calendar.HOUR, 2);
+
+			//tempo de expiração do token 12 horas
+			expiracao.add(Calendar.HOUR, 12);
 
 			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
 

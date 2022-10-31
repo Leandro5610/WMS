@@ -1,5 +1,6 @@
 package senai.sp.cotia.wms.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +22,6 @@ public interface ProdutoRepository extends PagingAndSortingRepository<Produto, L
 	
 	/*@Query("SELECT pro FROM Produto pro WHERE pro.nome")
 	public Produto pegarNome(@Param("p")Long id);*/
-
+	
+	
 }
