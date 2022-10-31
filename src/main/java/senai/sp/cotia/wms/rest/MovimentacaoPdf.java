@@ -59,7 +59,7 @@ public class MovimentacaoPdf {
 		// report
 		map.put("CollectionBeanParam", bean);
 		// nome do arquivo
-		String name = "/relatorio.pdf";
+		String name = "relatorio.pdf";
 
 		// preenchendo o relatório com as informações das movimentações
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
@@ -81,20 +81,21 @@ public class MovimentacaoPdf {
 			@PathVariable("a") String produto) throws FileNotFoundException, JRException {
 		// lista de movimentações de acordo com a data e o produto especificado
 		List<Movimentacao> list = movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
-		
+
 		// Instanciando uma coleção de dados a partir do lista de movimentações
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
-		
+
 		// compilando o arquivo de layout do relatório
 		JasperReport report = JasperCompileManager
 				.compileReport(new FileInputStream("src/main/java/relatorios/moviDatas.jrxml"));
 		HashMap<String, Object> map = new HashMap<>();
-		// passando a coleção de dados para o parameter CollectionBeanParm do jasper report
+		// passando a coleção de dados para o parameter CollectionBeanParm do jasper
+		// report
 		map.put("CollectionBeanParam", bean);
-		
+
 		// nome do arquivo
 		String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
-		
+
 		// preenchendo o relatório com as informações das movimentações
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
@@ -129,11 +130,12 @@ public class MovimentacaoPdf {
 		JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 		JasperExportManager.exportReportToPdfFile(jasperPrint, name);
-		
-		//NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
-		/*File arquivo = new File(name);
-		OutputStream output = response.getOutputStream();
-		Files.copy(arquivo, output);*/
+
+		// NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
+		/*
+		 * File arquivo = new File(name); OutputStream output =
+		 * response.getOutputStream(); Files.copy(arquivo, output);
+		 */
 		return list;
 
 	}

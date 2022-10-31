@@ -86,7 +86,7 @@ public class ProdutoRestController {
 			HttpServletResponse response) throws IOException {
 		try {
 
-			// percorrer os itens do fornecerdor e iserir o produto
+			// percorrer os itens do fornecerdor e inserir o produto
 			for (ItemFornecedor itens : produto.getFornecedores()) {
 				itens.setProduto(produto);
 				itens.setFornecedor(itens.getFornecedor());
