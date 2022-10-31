@@ -69,11 +69,11 @@ public class BarcodePdf {
 
 			Random geradorNumero = new Random();
 			// gera um numero aleatório até 10
-			double numeroAletorio = geradorNumero.nextDouble(10);
+			//double numeroAletorio = geradorNumero.nextDouble(10);
 			// formata o numero com 9 casas decimais
-			String numeroFormatado = String.format("%.9f", numeroAletorio);
+			//String numeroFormatado = String.format("%.9f", numeroAletorio);
 			// retira a vircula do número
-			String mascaraCodigo = numeroFormatado.replace(",", "");
+			//String mascaraCodigo = numeroFormatado.replace(",", "");
 			// três primeiros digitos do codigo de barras brasileiro GTIN-13
 			String padraoBr = "789";
 
@@ -81,7 +81,7 @@ public class BarcodePdf {
 
 			paragrafo.add("Codigo de Barras do " + nomeProduto);
 			// gerar o codigo de barras com a mascara e o identificador do produto
-			barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+			//barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
 			Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
 
 			// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " +
@@ -160,13 +160,13 @@ public class BarcodePdf {
 				Random geradorNumero = new Random();
 				
 				// gera um numero aleatório até 10
-				double numeroAletorio = geradorNumero.nextDouble(10);
+				//double numeroAletorio = geradorNumero.nextDouble(10);
 				
 				// formata o numero com 9 casas decimais
-				String numeroFormatado = String.format("%.9f", numeroAletorio);
+				//String numeroFormatado = String.format("%.9f", numeroAletorio);
 				
 				// retira a vircula do número
-				String mascaraCodigo = numeroFormatado.replace(",", "");
+				//String mascaraCodigo = numeroFormatado.replace(",", "");
 				
 				// três primeiros digitos do codigo de barras brasileiro GTIN-13
 				String padraoBr = "789";
@@ -175,7 +175,7 @@ public class BarcodePdf {
 
 				paragrafo.add("Codigo de Barras do ");
 				// gerar o codigo de barras com a mascara e o identificador do produto
-				barcode.setCode(padraoBr + mascaraCodigo+id);
+				//barcode.setCode(padraoBr + mascaraCodigo+id);
 				Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK,
 						BaseColor.BLACK);
 				img.scalePercent(200);
