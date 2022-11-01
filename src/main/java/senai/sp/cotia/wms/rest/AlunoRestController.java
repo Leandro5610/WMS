@@ -296,4 +296,15 @@ public class AlunoRestController {
 		return ResponseEntity.ok(idl);
 	}
 
+    @RequestMapping(value = "/login/{codMatricula}")
+    public ResponseEntity<Aluno> findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula, HttpServletRequest request,
+            HttpServletResponse response) {
+        Optional<Aluno> aluno = repository.findByCodMatricula(codMatricula);
+        if (aluno.isPresent()) {
+            return ResponseEntity.ok(aluno.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

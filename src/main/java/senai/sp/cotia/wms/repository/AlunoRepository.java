@@ -26,4 +26,5 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
 	
 	public List<Aluno> findByTurmaId(long id);
 
+	public Optional<Aluno> findByCodMatricula(String matricula);
 }
