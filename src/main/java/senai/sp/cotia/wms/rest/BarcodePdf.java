@@ -69,11 +69,27 @@ public class BarcodePdf {
 
 			Random geradorNumero = new Random();
 			// gera um numero aleatório até 10
+
+<<<<<<< HEAD
+			//double numeroAletorio = geradorNumero.nextDouble(10);
+=======
+			double numeroAletorio = geradorNumero.nextDouble(10);
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
+			// formata o numero com 9 casas decimais
+			String numeroFormatado = String.format("%.9f", numeroAletorio);
+			// retira a vircula do número
+<<<<<<< HEAD
+			//String mascaraCodigo = numeroFormatado.replace(",", "");
+
 			// double numeroAletorio arquivo= geradorNumero.nextDouble(10);
 			// formata o numero com 9 casas decimais
 			// String numeroFormatado = String.format("%.9f", numeroAletorio);
 			// retira a vircula do número
 			// String mascaraCodigo = numeroFormatado.replace(",", "");
+=======
+			String mascaraCodigo = numeroFormatado.replace(",", "");
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
+
 			// três primeiros digitos do codigo de barras brasileiro GTIN-13
 			String padraoBr = "789";
 
@@ -81,7 +97,15 @@ public class BarcodePdf {
 
 			paragrafo.add("Codigo de Barras do " + nomeProduto);
 			// gerar o codigo de barras com a mascara e o identificador do produto
+
+<<<<<<< HEAD
+		//	barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+
 			// barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+=======
+			barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
+
 			Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
 
 			// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " +
@@ -138,9 +162,16 @@ public class BarcodePdf {
 
 	}
 
+<<<<<<< HEAD
 	@RequestMapping(value = "/teste", method = RequestMethod.GET)
+	public String generatedPdfA(String[]idProduto, HttpServletRequest request,
+			HttpServletResponse response) throws FileNotFoundException, JRException, DocumentException {
+=======
+	@RequestMapping(value = "/barCodes", method = RequestMethod.GET)
+
 	public String generatedPdfA(String[] idProduto, HttpServletRequest request, HttpServletResponse response)
 			throws FileNotFoundException, JRException, DocumentException {
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
 
 		try {
 
@@ -157,18 +188,42 @@ public class BarcodePdf {
 
 			Barcode128 barcode = new Barcode128();
 
+<<<<<<< HEAD
+
+			for (String id: idProduto) {
+=======
 			for (String id : idProduto) {
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
+
 				Random geradorNumero = new Random();
 
 				// gera um numero aleatório até 10
+
+<<<<<<< HEAD
+			//	double numeroAletorio = geradorNumero.nextDouble(10);
+				
+				// formata o numero com 9 casas decimais
+			//	String numeroFormatado = String.format("%.9f", numeroAletorio);
+				
+				// retira a vircula do número
+				//String mascaraCodigo = numeroFormatado.replace(",", "");
+				
+
 				// double numeroAletorio = geradorNumero.nextDouble(10);
+=======
+				double numeroAletorio = geradorNumero.nextDouble(10);
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
 
 				// formata o numero com 9 casas decimais
-				// String numeroFormatado = String.format("%.9f", numeroAletorio);
+				String numeroFormatado = String.format("%.9f", numeroAletorio);
 
 				// retira a vircula do número
-				// String mascaraCodigo = numeroFormatado.replace(",", "");
+				String mascaraCodigo = numeroFormatado.replace(",", "");
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
 				// três primeiros digitos do codigo de barras brasileiro GTIN-13
 				String padraoBr = "789";
 
@@ -176,17 +231,37 @@ public class BarcodePdf {
 
 				paragrafo.add("Codigo de Barras do ");
 				// gerar o codigo de barras com a mascara e o identificador do produto
+<<<<<<< HEAD
+
+				//barcode.setCode(padraoBr + mascaraCodigo+id);
+
 				// barcode.setCode(padraoBr + mascaraCodigo+id);
+=======
+				 barcode.setCode(padraoBr + mascaraCodigo+id);
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
+
 				Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK,
 						BaseColor.BLACK);
 				img.scalePercent(200);
 				document.add(paragrafo);
 				document.add(img);
+<<<<<<< HEAD
+
+				
+				 //BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " , 300, 300, null);
+
 
 				// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " , 300, 300,
 				// null);
 
+
+=======
+
+				// BarcodeQRCode qrCode = new BarcodeQRCode("Código de Barras do " , 300, 300,
+				// null);
+>>>>>>> 0427d4434f9af570ec2299c4f4c365d097371c6d
 			}
+
 			document.close();
 
 			return "funcionou";

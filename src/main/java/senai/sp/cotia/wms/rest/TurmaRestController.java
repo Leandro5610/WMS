@@ -49,30 +49,23 @@ public class TurmaRestController {
 		Erro erro = new Erro();
 		Calendar dataAtual = Calendar.getInstance();
 
-		
-	/*	// verificar se a data final é antes da data de inicio
-		if(turma.getDataFinal().before(turma.getDataInicio())) {
-			return ResponseEntity.badRequest().build();	
-		}
-		// verificar se a data de inicio está entre uma data de outra turma 
-		else if(repo.between(turma.getDataInicio()) != null) {
-			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-		}
-		// verificar se a data de inicio é no domingo
-		else if(turma.getDataInicio().get(Calendar.DAY_OF_WEEK) == 1) {
-			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-		}
-		// verificar se a data de inicio é antes da data atual
-		else if(turma.getDataInicio().before(dataAtual)) {
-			return ResponseEntity.badRequest().build();
-		}
-		else if(turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
-			return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-		}*/
-
-
 		try {
-			if (turma.getImagem() != null) {
+			// verificar se a data final é antes da data de inicio
+			if (turma.getDataFinal().before(turma.getDataInicio())) {
+				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+			}
+			// verificar se a data de inicio é no domingo
+			else if (turma.getDataInicio().get(Calendar.DAY_OF_WEEK) == 1) {
+				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+			}
+			// verificar se a data de inicio é antes da data atual
+			else if (turma.getDataInicio().before(dataAtual)) {
+				return ResponseEntity.badRequest().build();
+				
+			} else if (turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
+				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
+				
+			} else if (turma.getImagem() != null) {
 				// variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = turma.getImagem();
 
@@ -120,35 +113,17 @@ public class TurmaRestController {
 				turma.setImagem(file.toString());
 				repo.save(turma);
 				Files.delete(pathFile);
-			} 
-			// verificar se a data final é antes da data de inicio
-			else if (turma.getDataFinal().before(turma.getDataInicio())) {
-				return ResponseEntity.badRequest().build();
-			}
-			// verificar se a data de inicio está entre uma data de outra turma
-			else if (repo.between(turma.getDataInicio()) != null) {
-				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-			}
-			// verificar se a data de inicio é no domingo
-			else if (turma.getDataInicio().get(Calendar.DAY_OF_WEEK) == 1) {
-				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-			}
-			// verificar se a data de inicio é antes da data atual
-			else if (turma.getDataInicio().before(dataAtual)) {
-				return ResponseEntity.badRequest().build();
-			} else if (turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
-				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-			}else {
-
+				return ResponseEntity.ok(HttpStatus.CREATED);
+			} else {
 				// salvar o usuário no banco de dados
 				repo.save(turma);
 				return ResponseEntity.ok(HttpStatus.CREATED);
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<Object>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 
 	}
 

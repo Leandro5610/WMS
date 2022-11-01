@@ -1,5 +1,7 @@
 package senai.sp.cotia.wms.rest;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.io.Files;
 
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -107,7 +111,7 @@ public class EnderecamentoRestController {
 	}
 
 	@GetMapping(value = "relatorio")
-	public ResponseEntity<Object> relatorioEstoque(HttpServletRequest request, HttpServletResponse reponse) {
+	public ResponseEntity<Object> relatorioEstoque(HttpServletRequest request, HttpServletResponse response) {
 		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
 
 		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
@@ -125,19 +129,20 @@ public class EnderecamentoRestController {
 
 			map.put("year", year);
 
-			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
+			String name = "relatorio.pdf";
 
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 			JasperExportManager.exportReportToPdfFile(print, name);
-
-		} catch (JRException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
+			 File arquivo = new File(name); OutputStream output =
+			response.getOutputStream();
+			 Files.copy(arquivo, output);
+			 return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			 return ResponseEntity.badRequest().build();
 		}
 
-		return ResponseEntity.ok().build();
+		
 
 	}
 

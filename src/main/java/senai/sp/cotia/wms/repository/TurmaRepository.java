@@ -18,7 +18,7 @@ public interface TurmaRepository extends PagingAndSortingRepository<Turma, Long>
 	public List<Turma> procurarTudo(@Param("p") String param);
 
 	
-	@Query("SELECT turma from Turma turma WHERE :t BETWEEN turma.dataInicio and turma.dataFinal")
-	public Turma between(@Param("t") Calendar dataInicio);
+	/*@Query("SELECT turma from Turma turma WHERE :t BETWEEN turma.dataInicio and turma.dataFinal")
+	public Turma between(@Param("t") Calendar dataInicio);*/
 
 }
