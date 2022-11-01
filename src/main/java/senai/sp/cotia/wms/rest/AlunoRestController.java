@@ -72,11 +72,12 @@ public class AlunoRestController {
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException {
 		try {
+			
 			// verificar se o aluno tem uma imagem
 			if (aluno.getImagem() != null) {
 				// variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = aluno.getImagem();
-
+				
 				// variaveis para extrair o que está entre a / e o ;
 				int posicaoBarra = stringImagem.indexOf('/');
 				int posicaoPontoVirgula = stringImagem.indexOf(';');
