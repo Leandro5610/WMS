@@ -131,7 +131,7 @@ public class AlunoRestController {
 				Files.delete(pathFile);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			} else {
-				
+				//se o usuario não tiver foto ele salva mesmo assim
 				repository.save(aluno);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			}
@@ -146,6 +146,7 @@ public class AlunoRestController {
 	public ResponseEntity<Aluno> findAluno(@PathVariable("id") Long idAluno, HttpServletRequest request,
 			HttpServletResponse response) {
 		Optional<Aluno> aluno = repository.findById(idAluno);
+		//verifica se o aluno existe
 		if (aluno.isPresent()) {
 			return ResponseEntity.ok(aluno.get());
 		} else {
@@ -155,9 +156,11 @@ public class AlunoRestController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> updateAluno(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
+		//verfica se o id da requição existe no banco de dados
 		if (id != aluno.getId()) {
 			throw new RuntimeException("Id Inválido");
 		}
+		//salva o aluno com as alteraçoes 
 		repository.save(aluno);
 		HttpHeaders header = new HttpHeaders();
 		header.setLocation(URI.create("/api/aluno"));
@@ -179,12 +182,13 @@ public class AlunoRestController {
 		return repository.findAll();
 	}
 
-	// metodo para procurar uma reserva à partir de qualquer atributo
+	// metodo para procurar um aluno à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Aluno> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
-
+	
+	//METODO PARA PROCURAR O ALUNO PELA TURMA
 	@RequestMapping(value = "/turma/{id}", method = RequestMethod.GET)
 	public Iterable<Aluno> findByTurma(@PathVariable("id") Long id) {
 		return repository.findByTurmaId(id);
@@ -216,7 +220,8 @@ public class AlunoRestController {
 
 		throw new RuntimeException("Email não encontrado");
 	}*/
-
+	
+	//METODO PARA INSERIR A TURMA NO ALUNO
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
 		Aluno aluno = repository.findAlunoById(id);
@@ -227,6 +232,7 @@ public class AlunoRestController {
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
 
+	//METODO PARA RETIRAR O ALUNO DA TURMA
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> deleteAlunoTurma(@PathVariable("id") Long id, @RequestBody Turma turma) {
 		Aluno aluno = repository.findAlunoById(id);
@@ -237,7 +243,8 @@ public class AlunoRestController {
 		repository.save(aluno);
 		return ResponseEntity.noContent().build();
 	}
-
+	
+	//METODO PARA RECUPERAR A SENHA
 	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
 		aluno = repository.findAlunoById(id);
@@ -253,13 +260,13 @@ public class AlunoRestController {
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public Object login(@RequestBody Aluno aluno) {
 		aluno = repository.findByCodMatriculaAndSenha(aluno.getCodMatricula(), aluno.getSenha());
-		
-
+		//verifica se o aluno existe
 		if (aluno != null) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			//map.put("aluno_id", aluno.getId());
+			//guarda o código de matricula e id no payload
 			map.put("aluno_codMatricula", aluno.getCodMatricula());
 			map.put("aluno_id", aluno.getId());
+			
 			Calendar expiracao = Calendar.getInstance();
 
 			//tempo de expiração do token 12 horas
@@ -276,8 +283,7 @@ public class AlunoRestController {
 		}
 	}
 	
-	// decoda o token para pegar o id do usuário que está logado na sessão
-	@Privado
+	// decoda o token para pegar o id do aluno que está logado na sessão
 	@RequestMapping(value = "sendId", method = RequestMethod.GET)
 	public ResponseEntity<Long> decoda(HttpServletRequest request, HttpServletResponse response) {
 		String token = null;
@@ -291,7 +297,7 @@ public class AlunoRestController {
 		DecodedJWT decoded = verifier.verify(token);
 		// extrair os dados do payload
 		Map<String, Claim> payload = decoded.getClaims();
-		String id = payload.get("usuario_id").toString();
+		String id = payload.get("aluno_id").toString();
 		Long idl = Long.parseLong(id);
 		return ResponseEntity.ok(idl);
 	}

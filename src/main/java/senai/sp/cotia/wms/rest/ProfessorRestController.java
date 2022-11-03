@@ -200,7 +200,7 @@ public class ProfessorRestController {
 		DecodedJWT decoded = verifier.verify(token);
 		// extrair os dados do payload
 		Map<String, Claim> payload = decoded.getClaims();
-		String id = payload.get("usuario_id").toString();
+		String id = payload.get("professor_id").toString();
 		Long idl = Long.parseLong(id);
 		return ResponseEntity.ok(idl);
 	}

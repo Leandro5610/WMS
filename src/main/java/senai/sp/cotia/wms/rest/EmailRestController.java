@@ -36,29 +36,38 @@ public class EmailRestController {
 
 	@Autowired
 	private AlunoRepository repository;
-
+	
+	//METODO PARA ENVIAR O EMAIL PARA RECUPERAR SENHA
 	@RequestMapping(value = "sending-email", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> sendingEmail(String email) {
+		
 		Aluno aluno = repository.findByEmail(email);
-		System.out.println(aluno.getNome());
+		//Verifica se o aluno existe a partir do email
 		if (aluno.getEmail().equals(email)) {
 			Properties pro = new Properties();
+			//configuração para host do gmail
 			pro.put("mail.smtp.host", "smtp.gmail.com");
+			//configuração da autenticação do email
 			pro.put("mail.smtp.auth", "true");
+			//configuração da porta onde vai ser enviado o email
 			pro.put("mail.smtp.port", "587");
+			//configuração para 
 			pro.put("mail.smtp.starttls.enable", "true");
+			//configuração para protocolo ssl
 			pro.put("mail.smtp.ssl.protocols=TLSv1.2", "true");
+			//configuração para liberar todos 
 			pro.put("mail.smtp.ssl.trust", "*");
-
+			
+			//cria uma sessão para autenticar o email com o email e senha do remetente
 			Session session = Session.getInstance(pro, new Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
 					return new PasswordAuthentication("sistemawms568@gmail.com", "viqsabpfmfajoldq");
 				}
 			});
-
 			session.setDebug(true);
 
 			try {
+				//mensagem que vai ser enviada para
 				String htmlMessage = "<html>"
                         + "Hello,<br><br>"
                         + "This one test for send email with image,<br>"
@@ -66,10 +75,15 @@ public class EmailRestController {
                         + "http://newtours.demoaut.com" 
                         + "</html>";
 				Message message = new MimeMessage(session);
+				//passando o remetente  do email
 				message.setFrom(new InternetAddress("sistemawms568@gmail.com")); // Remetente
+				//passando o destinatário do email
 				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email)); // Destinatário(s)
+				//passando o assunto do email
 				message.setSubject("Alteração de senha ");// Assunto
+				//passando o corpo do email
 				message.setText("Olá, use esse código para redefinir sua senha: ");
+				//passando o link para a recuperação de senha
 				message.setContent(htmlMessage, "text/html; charset=utf-8"	);
 
 				/** Método para enviar a mensagem criada */

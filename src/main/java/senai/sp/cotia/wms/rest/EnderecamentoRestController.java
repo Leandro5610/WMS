@@ -109,33 +109,45 @@ public class EnderecamentoRestController {
 	public Iterable<Enderecamento> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
-
+	
+	//METODO PARA GERAR RELATÓRIO DO ESTOQUE GERAL
 	@GetMapping(value = "relatorio")
 	public ResponseEntity<Object> relatorioEstoque(HttpServletRequest request, HttpServletResponse response) {
+		//lista de todos os endereçamentos
 		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
-
+		//passando a lista de endereçamentos para collection
 		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
 		Calendar calendar = Calendar.getInstance();
-
+		//pegar o ano atual para mostrar no relatório
 		int yearInt = calendar.get(Calendar.YEAR);
 
 		try {
+			//compilando o arquivo de layout do relatório
 			JasperReport report = JasperCompileManager.compileReport("src/main/java/relatorios/Invoice.jrxml");
-
+			//convertendo o ano para string
 			String year = yearInt + "";
 
 			Map<String, Object> map = new HashMap<>();
+			//passando a collection de dados para o paremeter
+			//criado no arquivo de layout do jasper reports
 			map.put("CollectionData", dados);
-
+			//passando o ano para o parameter 
+			//criado no arquivo de layout do jasper reports
 			map.put("year", year);
-
+			
 			String name = "relatorio.pdf";
-
+			
+			//preenchendo o arquivo de layout com as informações 
+			//da lista de endereçamento
 			JasperPrint print = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
-
+			//exportando o relatório como um arquivo PDF
 			JasperExportManager.exportReportToPdfFile(print, name);
-			 File arquivo = new File(name); OutputStream output =
-			response.getOutputStream();
+			//criando um arquvio como o nome do relatório
+			 File arquivo = new File(name); 
+			 //pegando o caminho da requsição
+			 OutputStream output = response.getOutputStream();
+			 //mandando o relatório para o front-end 
+			 //para ser feito o download
 			 Files.copy(arquivo, output);
 			 return ResponseEntity.ok().build();
 		} catch (Exception e) {
