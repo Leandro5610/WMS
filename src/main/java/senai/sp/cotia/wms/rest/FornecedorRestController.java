@@ -75,7 +75,7 @@ public class FornecedorRestController {
 
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Fornecedor> findAluno(@PathVariable("id") Long idFornecedor, HttpServletRequest request,
+	public ResponseEntity<Fornecedor> findFornecedor(@PathVariable("id") Long idFornecedor, HttpServletRequest request,
 			HttpServletResponse response) {
 		Optional<Fornecedor> fornecedor = repository.findById(idFornecedor);
 		if (fornecedor.isPresent()) {

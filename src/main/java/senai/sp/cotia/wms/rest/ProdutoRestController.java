@@ -192,13 +192,13 @@ public class ProdutoRestController {
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
 
-	// MÉTODO PARA DELETAR PEDIDO
+	// MÉTODO PARA DELETAR PRODUTO
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> excluirProduto(@PathVariable("id") Long codProduto) {
 		prodRepo.deleteById(codProduto);
 		return ResponseEntity.noContent().build();
 	}
-
+	
 	@GetMapping(value = "relatorio")
 	public ResponseEntity<Object> relatorioEstoque() {
 		List<Movimentacao> list = (List<Movimentacao>) movirepo.findAll();

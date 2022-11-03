@@ -181,14 +181,13 @@
 							</staticText>
 						</jr:tableHeader>
 						<jr:tableFooter style="Table 1_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="50" height="30" uuid="57d1fec2-71db-48ff-b540-8a5e34a3baee"/>
 								<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 							</textField>
-						</jr:columnHeader>
-						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="Table 1_TD" height="30"/>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="90" uuid="dec769d9-cffb-4b1e-97a9-3bbc17d225c8">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
@@ -200,14 +199,13 @@
 							</staticText>
 						</jr:tableHeader>
 						<jr:tableFooter style="Table 1_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="90" height="30" uuid="b4c3afe3-2d28-459e-b198-ff5a9077cfb6"/>
 								<textFieldExpression><![CDATA[$F{produto.sku}]]></textFieldExpression>
 							</textField>
-						</jr:columnHeader>
-						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="Table 1_TD" height="30"/>
+						</jr:detailCell>
 					</jr:column>
 					<jr:column width="60" uuid="438acc76-d8d1-4d05-aeff-6843a6978004">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
@@ -219,14 +217,13 @@
 							</staticText>
 						</jr:tableHeader>
 						<jr:tableFooter style="Table 1_TH" height="30" rowSpan="1"/>
-						<jr:columnHeader style="Table 1_CH" height="30" rowSpan="1">
+						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="60" height="30" uuid="6f26768c-3ab7-4037-937f-41d12a48a227"/>
 								<textFieldExpression><![CDATA[""+$F{tipo}]]></textFieldExpression>
 							</textField>
-						</jr:columnHeader>
-						<jr:columnFooter style="Table 1_CH" height="30" rowSpan="1"/>
-						<jr:detailCell style="Table 1_TD" height="30"/>
+						</jr:detailCell>
 					</jr:column>
 				</jr:table>
 			</componentElement>

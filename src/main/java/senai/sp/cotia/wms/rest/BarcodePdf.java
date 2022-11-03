@@ -59,11 +59,7 @@ public class BarcodePdf {
 			// gera um novo doucmento
 			Document document = new Document();
 
-			// pega da requisição o tipo do arquivo
-			response.setContentType("apllication/pdf");
-
-			// comando para o navegador fazer o download de pdf
-			response.addHeader("Content-Disposition", "inline; filename=" + "codigo.pdf");
+			
 
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter arquivo = PdfWriter.getInstance(document, response.getOutputStream());
@@ -75,10 +71,11 @@ public class BarcodePdf {
 			Random geradorNumero = new Random();
 	
 			// gera um numero aleatório de 0 até 10
-			 double numeroAletorio = geradorNumero.nextDouble(10);
-
+			double number = geradorNumero.nextDouble();
+			System.out.println(number);
+			
 			// formata o numero com 9 casas decimais
-			 String numeroFormatado = String.format("%.9f", numeroAletorio);
+			 String numeroFormatado = String.format("%.9f", number);
 
 			// retira a vircula do número
 			 String mascaraCodigo = numeroFormatado.replace(",", "");
@@ -88,7 +85,7 @@ public class BarcodePdf {
 
 			Paragraph paragrafo = new Paragraph();
 
-			paragrafo.add("Codigo de Barras do " + nomeProduto);
+			paragrafo.add("Codigo de Barras  " + nomeProduto);
 
 			// inseri as inforções do codigo de barras com a mascara e o identificador do
 			// produto
@@ -180,7 +177,7 @@ public class BarcodePdf {
 				Random geradorNumero = new Random();
 
 				// gera um numero aleatório até 10
-				double numeroAletorio = geradorNumero.nextDouble(10);
+				double numeroAletorio = geradorNumero.nextDouble();
 
 				// formata o numero com 9 casas decimais
 				String numeroFormatado = String.format("%.9f", numeroAletorio);

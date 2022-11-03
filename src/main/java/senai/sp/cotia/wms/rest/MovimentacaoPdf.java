@@ -42,7 +42,7 @@ public class MovimentacaoPdf {
 	private MovimentacaoRepository movimentacaoRepository;
 
 	// METODO PARA GERAR RELATORIO DE TODAS AS MOVIMENTAÇÕES
-	@RequestMapping(value = "teste", method = RequestMethod.GET)
+	@RequestMapping(value = "relatorioMovimentacoes", method = RequestMethod.GET)
 	public String generatedPdf(HttpServletRequest request, HttpServletResponse response)
 			throws JRException, IOException {
 		// lista de todas as movimentações
@@ -97,7 +97,7 @@ public class MovimentacaoPdf {
 			map.put("CollectionBeanParam", bean);
 
 			// nome do arquivo
-			String name = "C:\\Users\\TecDevTarde\\Downloads\\relatorio.pdf";
+			String name = "relatorio.pdf";
 
 			// preenchendo o relatório com as informações das movimentações
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
@@ -124,7 +124,7 @@ public class MovimentacaoPdf {
 			HttpServletRequest request, HttpServletResponse response)
 			throws FileNotFoundException, JRException {
 
-		List<Movimentacao> list = movimentacaoRepository.buscarMovimentacoesPorData(dateEnd, dateEnd);
+		List<Movimentacao> list = movimentacaoRepository.buscarMovimentacoesPorData(dateStart, dateEnd);
 
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		try {
@@ -133,15 +133,14 @@ public class MovimentacaoPdf {
 			HashMap<String, Object> map = new HashMap<>();
 			map.put("CollectionBeanParam", bean);
 
-			String name = "C:\\Users\\Pichau\\Downloads\\relatorio.pdf";
+			String name = "relatorio.pdf";
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, new JREmptyDataSource());
 
 			JasperExportManager.exportReportToPdfFile(jasperPrint, name);
 
-			// NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
-			 File arquivo = new File(name); OutputStream output =
-			 response.getOutputStream();
+			 File arquivo = new File(name);
+			 OutputStream output = response.getOutputStream();
 			 Files.copy(arquivo, output);
 			 return ResponseEntity.ok().build();
 		} catch (Exception e) {

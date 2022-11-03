@@ -1,4 +1,4 @@
-package senai.sp.cotia.wms.rest;
+ package senai.sp.cotia.wms.rest;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -154,9 +154,11 @@ public class TurmaRestController {
 		return repo.procurarTudo(param);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> colocarMemebros(@RequestBody Turma turma, @PathVariable("id") Long id) {
-
+		if (id != turma.getId()) {
+			throw new RuntimeException("ID Inválido");
+		}
 		repo.save(turma);
 		HttpHeaders header = new HttpHeaders();
 		header.setLocation(URI.create("/api/turma"));

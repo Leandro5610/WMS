@@ -96,7 +96,7 @@ public class PedidoRestController {
 
 		// double total = pedido.totalPedido(pedido);
 
-		Long cod = null;
+		
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
@@ -226,7 +226,6 @@ public class PedidoRestController {
 
 	public ResponseEntity<Object> saveNotaFiscal(Pedido pedido) {
 		try {
-
 			LocalDateTime time = LocalDateTime.now();
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 			NotaFiscal nota = new NotaFiscal();
