@@ -1,8 +1,10 @@
 package senai.sp.cotia.wms.rest;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
 
@@ -58,7 +60,8 @@ public class BarcodePdf {
 
 			// gera um novo doucmento
 			Document document = new Document();
-
+			
+				
 			
 
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo

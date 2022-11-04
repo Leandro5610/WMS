@@ -131,6 +131,8 @@ public class AlunoRestController {
 				Files.delete(pathFile);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			} else {
+				
+				
 				//se o usuario não tiver foto ele salva mesmo assim
 				repository.save(aluno);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
@@ -179,9 +181,10 @@ public class AlunoRestController {
 		ArrayList<Aluno> list = new ArrayList<Aluno>();
 		list = (ArrayList<Aluno>) repository.findAll();
 		System.out.println(list);
+		
 		return repository.findAll();
 	}
-
+	
 	// metodo para procurar um aluno à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Aluno> findByAll(@PathVariable("p") String param) {

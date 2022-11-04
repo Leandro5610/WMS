@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -228,7 +229,7 @@ public class EnderecamentoRestController implements ServletContextAware {
 			map.put("year", year);
 
 			// String name = "relatorio.pdf";
-			response.setContentType("application/xls");
+			//response.setContentType("application/xls");
 			
 			
 			Resource resource = new ClassPathResource("static");
@@ -236,8 +237,7 @@ public class EnderecamentoRestController implements ServletContextAware {
 
 			System.out.println(contexto.getRealPath("static"));
 			
-			
-			String nomeAleatorio = "asdasdasda"+".xls";
+			String nomeAleatorio =  UUID.randomUUID().toString()+".xls";
 			
 			String nameXml = new File("src\\main\\resources\\static\\relatorios").getAbsolutePath() +"\\"+nomeAleatorio;
 			
@@ -262,13 +262,14 @@ public class EnderecamentoRestController implements ServletContextAware {
 			// para ser feito o download
 			
 			//Files.copy(arquivo, output);
+			
+			return ResponseEntity.ok(nomeAleatorio);
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
 		}
 
-		return ResponseEntity.ok().build();
-
+		
 	}
 
 	@RequestMapping(value = "armazenar/{id}", method = RequestMethod.PATCH)
