@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Erro;
+import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.Turma;
 
 import senai.sp.cotia.wms.repository.TurmaRepository;
@@ -164,5 +165,9 @@ public class TurmaRestController {
 		header.setLocation(URI.create("/api/turma"));
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
-
+	
+	@RequestMapping(value = "turmaByProf/{id}")
+	public List<Turma> procurarTurmaPorProf(@PathVariable("id") Professor idProf){
+		return repo.procurarTurmaPeloProf(idProf);	
+	}
 }

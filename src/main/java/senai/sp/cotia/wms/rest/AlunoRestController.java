@@ -72,12 +72,12 @@ public class AlunoRestController {
 	public ResponseEntity<Object> saveAluno(@RequestBody Aluno aluno, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws IOException {
 		try {
-			
+
 			// verificar se o aluno tem uma imagem
 			if (aluno.getImagem() != null) {
 				// variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = aluno.getImagem();
-				
+
 				// variaveis para extrair o que está entre a / e o ;
 				int posicaoBarra = stringImagem.indexOf('/');
 				int posicaoPontoVirgula = stringImagem.indexOf(';');
@@ -131,9 +131,8 @@ public class AlunoRestController {
 				Files.delete(pathFile);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			} else {
-				
-				
-				//se o usuario não tiver foto ele salva mesmo assim
+
+				// se o usuario não tiver foto ele salva mesmo assim
 				repository.save(aluno);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			}
@@ -148,7 +147,7 @@ public class AlunoRestController {
 	public ResponseEntity<Aluno> findAluno(@PathVariable("id") Long idAluno, HttpServletRequest request,
 			HttpServletResponse response) {
 		Optional<Aluno> aluno = repository.findById(idAluno);
-		//verifica se o aluno existe
+		// verifica se o aluno existe
 		if (aluno.isPresent()) {
 			return ResponseEntity.ok(aluno.get());
 		} else {
@@ -157,17 +156,73 @@ public class AlunoRestController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateAluno(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
-		//verfica se o id da requição existe no banco de dados
+	public ResponseEntity<Void> updateAluno(@RequestBody Aluno aluno, @PathVariable("id") Long id) throws IOException {
+		// verfica se o id da requição existe no banco de dados
 		if (id != aluno.getId()) {
 			throw new RuntimeException("Id Inválido");
+		} // verificar se o aluno tem uma imagem
+		if (aluno.getImagem() != null) {
+			// variavel para guardar a imagem codificada Base64 que está vindo do front
+			String stringImagem = aluno.getImagem();
+
+			// variaveis para extrair o que está entre a / e o ;
+			int posicaoBarra = stringImagem.indexOf('/');
+			int posicaoPontoVirgula = stringImagem.indexOf(';');
+
+			// variavel para retirar a / e o ; para pegar a extensão da imagem
+			String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
+
+			// variavel para retirar a / da extensão
+			String ex = extensao.replace("/", "");
+
+			// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
+			// base64 codificado do front-end
+			String base64ImageString = stringImagem.replace("data:image/" + ex + ";base64,", "");
+
+			// variavel para para decodificar o codigo base64 e converter em um vetor de
+			// bytes
+			byte[] decode = Base64.getDecoder().decode(base64ImageString);
+
+			// variavel para converter o vetor de bytes em um texto
+			String arquivoString = decode.toString();
+
+			// variavel para retirar o texto "[B@" da variavel arquivoString
+			String arquivo = arquivoString.replace("[B@", "");
+
+			// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
+			String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + ex;
+
+			// variavel para guardar o nome do arquivo em um File
+			File file = new File(nomeArquivo);
+
+			// variavel para converter em arquivo e armazenar na pasta da raiz da aplicação
+			FileOutputStream in = new FileOutputStream("temporaria/" + file);
+
+			// variavel para escrever os bytes no arquivo
+			in.write(decode);
+
+			// pegar o arquivo que foi salvo na pasta temporaria
+			Path pathFile = Paths.get("temporaria/" + nomeArquivo);
+
+			// fazer o upload do arquivo no Fire Base (nuvem)
+			fire.uploadFile(file, decode);
+
+			in.close();
+			// inserir nome da imagem no aluno que está vindo do Front
+			aluno.setImagem(file.toString());
+
+			// salva o aluno com as alteraçoes
+			repository.save(aluno);
+			Files.delete(pathFile);
+			HttpHeaders header = new HttpHeaders();
+			header.setLocation(URI.create("/api/aluno"));
+			return new ResponseEntity<Void>(header, HttpStatus.OK);
+
 		}
-		//salva o aluno com as alteraçoes 
 		repository.save(aluno);
 		HttpHeaders header = new HttpHeaders();
 		header.setLocation(URI.create("/api/aluno"));
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
-
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -181,17 +236,17 @@ public class AlunoRestController {
 		ArrayList<Aluno> list = new ArrayList<Aluno>();
 		list = (ArrayList<Aluno>) repository.findAll();
 		System.out.println(list);
-		
+
 		return repository.findAll();
 	}
-	
+
 	// metodo para procurar um aluno à partir de qualquer atributo
 	@RequestMapping(value = "/findbyall/{p}")
 	public Iterable<Aluno> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}
-	
-	//METODO PARA PROCURAR O ALUNO PELA TURMA
+
+	// METODO PARA PROCURAR O ALUNO PELA TURMA
 	@RequestMapping(value = "/turma/{id}", method = RequestMethod.GET)
 	public Iterable<Aluno> findByTurma(@PathVariable("id") Long id) {
 		return repository.findByTurmaId(id);
@@ -210,21 +265,18 @@ public class AlunoRestController {
 	 * RuntimeException("Email não encontrado"); }
 	 */
 
-	/*@RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET)
-	public Aluno enviarEmail(@PathVariable("p") String email) {
-		Aluno alunoEmail = repository.findByEmail(email);
-		String emailAln = alunoEmail.getEmail();
-		if (emailAln.equals(email)) {
-			service.mandarEmail(alunoEmail, email);
-			System.out.println(email);
-			System.out.println(alunoEmail);
-			return alunoEmail;
-		}
+	/*
+	 * @RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET) public
+	 * Aluno enviarEmail(@PathVariable("p") String email) { Aluno alunoEmail =
+	 * repository.findByEmail(email); String emailAln = alunoEmail.getEmail(); if
+	 * (emailAln.equals(email)) { service.mandarEmail(alunoEmail, email);
+	 * System.out.println(email); System.out.println(alunoEmail); return alunoEmail;
+	 * }
+	 * 
+	 * throw new RuntimeException("Email não encontrado"); }
+	 */
 
-		throw new RuntimeException("Email não encontrado");
-	}*/
-	
-	//METODO PARA INSERIR A TURMA NO ALUNO
+	// METODO PARA INSERIR A TURMA NO ALUNO
 	@RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> updateTurmaAluno(@RequestBody Turma turma, @PathVariable("id") Long id) {
 		Aluno aluno = repository.findAlunoById(id);
@@ -235,7 +287,7 @@ public class AlunoRestController {
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
 
-	//METODO PARA RETIRAR O ALUNO DA TURMA
+	// METODO PARA RETIRAR O ALUNO DA TURMA
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> deleteAlunoTurma(@PathVariable("id") Long id, @RequestBody Turma turma) {
 		Aluno aluno = repository.findAlunoById(id);
@@ -246,8 +298,8 @@ public class AlunoRestController {
 		repository.save(aluno);
 		return ResponseEntity.noContent().build();
 	}
-	
-	//METODO PARA RECUPERAR A SENHA
+
+	// METODO PARA RECUPERAR A SENHA
 	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
 		aluno = repository.findAlunoById(id);
@@ -263,16 +315,16 @@ public class AlunoRestController {
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public Object login(@RequestBody Aluno aluno) {
 		aluno = repository.findByCodMatriculaAndSenha(aluno.getCodMatricula(), aluno.getSenha());
-		//verifica se o aluno existe
+		// verifica se o aluno existe
 		if (aluno != null) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			//guarda o código de matricula e id no payload
+			// guarda o código de matricula e id no payload
 			map.put("aluno_codMatricula", aluno.getCodMatricula());
 			map.put("aluno_id", aluno.getId());
-			
+
 			Calendar expiracao = Calendar.getInstance();
 
-			//tempo de expiração do token 12 horas
+			// tempo de expiração do token 12 horas
 			expiracao.add(Calendar.HOUR, 12);
 
 			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
@@ -285,7 +337,7 @@ public class AlunoRestController {
 			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
 		}
 	}
-	
+
 	// decoda o token para pegar o id do aluno que está logado na sessão
 	@RequestMapping(value = "sendId", method = RequestMethod.GET)
 	public ResponseEntity<Long> decoda(HttpServletRequest request, HttpServletResponse response) {
@@ -305,15 +357,15 @@ public class AlunoRestController {
 		return ResponseEntity.ok(idl);
 	}
 
-    @RequestMapping(value = "/login/{codMatricula}")
-    public ResponseEntity<Aluno> findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula, HttpServletRequest request,
-            HttpServletResponse response) {
-        Optional<Aluno> aluno = repository.findByCodMatricula(codMatricula);
-        if (aluno.isPresent()) {
-            return ResponseEntity.ok(aluno.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+	@RequestMapping(value = "/login/{codMatricula}")
+	public ResponseEntity<Aluno> findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula,
+			HttpServletRequest request, HttpServletResponse response) {
+		Optional<Aluno> aluno = repository.findByCodMatricula(codMatricula);
+		if (aluno.isPresent()) {
+			return ResponseEntity.ok(aluno.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Fornecedor;
+import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.Turma;
 
 public interface TurmaRepository extends PagingAndSortingRepository<Turma, Long> {
@@ -20,5 +21,7 @@ public interface TurmaRepository extends PagingAndSortingRepository<Turma, Long>
 	
 	/*@Query("SELECT turma from Turma turma WHERE :t BETWEEN turma.dataInicio and turma.dataFinal")
 	public Turma between(@Param("t") Calendar dataInicio);*/
-
+	
+	@Query("SELECT t FROM Turma t WHERE t.prof = :p")
+	public List<Turma> procurarTurmaPeloProf(@Param("p") Professor idProf);
 }
