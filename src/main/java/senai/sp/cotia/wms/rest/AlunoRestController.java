@@ -241,7 +241,7 @@ public class AlunoRestController {
 	}
 
 	// metodo para procurar um aluno à partir de qualquer atributo
-	@RequestMapping(value = "/findbyall/{p}")
+	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
 	public Iterable<Aluno> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}

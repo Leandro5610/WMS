@@ -35,7 +35,6 @@ public class Aluno {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Turma turma;
 	@Lob
-	
 	private String imagem;
 	@Column(unique = true)
 	private String email;

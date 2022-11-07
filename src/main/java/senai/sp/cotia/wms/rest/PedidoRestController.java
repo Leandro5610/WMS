@@ -173,7 +173,7 @@ public class PedidoRestController {
 		Movimentacao mov = new Movimentacao();
 		mov.setTipo(Tipo.SAIDA);
 		LocalDateTime time = LocalDateTime.now();
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		mov.setData(time.format(fmt));
 		mov.setProduto(endereco.getItens());
 		movRepo.save(mov);

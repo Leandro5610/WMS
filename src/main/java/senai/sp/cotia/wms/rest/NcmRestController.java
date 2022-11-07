@@ -27,7 +27,7 @@ import senai.sp.cotia.wms.repository.NcmRepository;
 @RequestMapping("api/ncm")
 public class NcmRestController {
 	
-	
+		
 	@Autowired
 	private NcmRepository ncmRepo;
 	

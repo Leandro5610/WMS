@@ -60,9 +60,6 @@ public class BarcodePdf {
 
 			// gera um novo doucmento
 			Document document = new Document();
-			
-				
-			
 
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter arquivo = PdfWriter.getInstance(document, response.getOutputStream());
@@ -72,16 +69,15 @@ public class BarcodePdf {
 			Barcode128 barcode = new Barcode128();
 
 			Random geradorNumero = new Random();
-	
+
 			// gera um numero aleatório de 0 até 10
 			double number = geradorNumero.nextDouble();
-			System.out.println(number);
-			
+
 			// formata o numero com 9 casas decimais
-			 String numeroFormatado = String.format("%.9f", number);
+			String numeroFormatado = String.format("%.9f", number);
 
 			// retira a vircula do número
-			 String mascaraCodigo = numeroFormatado.replace(",", "");
+			String mascaraCodigo = numeroFormatado.replace(",", "");
 
 			// três primeiros digitos do codigo de barras brasileiro GTIN-13
 			String padraoBr = "789";
@@ -92,7 +88,7 @@ public class BarcodePdf {
 
 			// inseri as inforções do codigo de barras com a mascara e o identificador do
 			// produto
-			 barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+			barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
 
 			// montando o a imagem do codigo de barras
 			Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
@@ -124,11 +120,11 @@ public class BarcodePdf {
 		// cria um documento no tamanho A4
 		Document document = new Document(new Rectangle(PageSize.A4));
 		try {
-			/*CASO PRECISE
-			// coloca na reposta o formato do arquivo
-			response.setContentType("apllication/pdf");
-			// cria o arquivo com o nome qrCode
-			response.addHeader("Content-Disposition", "inline; filename=" + "qrCode.pdf");
+			/*
+			 * CASO PRECISE // coloca na reposta o formato do arquivo
+			 * response.setContentType("apllication/pdf"); // cria o arquivo com o nome
+			 * qrCode response.addHeader("Content-Disposition", "inline; filename=" +
+			 * "qrCode.pdf");
 			 */
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
@@ -140,12 +136,12 @@ public class BarcodePdf {
 
 			// cria um qrcode com o id do produto
 			BarcodeQRCode qrcode = new BarcodeQRCode(id + "", 200, 200, null);
-			
+
 			Image image = qrcode.getImage();
 
 			// adiciona no arquivo e gera o arquivo
 			document.add(image);
-			
+
 			document.close();
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
@@ -169,12 +165,12 @@ public class BarcodePdf {
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter arquivo = PdfWriter.getInstance(document, response.getOutputStream());
 			document.open();
-			
+
 			// biblioteca para gerar codigo de barras
 			Barcode128 barcode = new Barcode128();
-			
-			//percorre o array de ids para gerar codigos de barras 
-			//de acordo com o tamanho do array
+
+			// percorre o array de ids para gerar codigos de barras
+			// de acordo com o tamanho do array
 			for (Long id : ids) {
 
 				Random geradorNumero = new Random();
@@ -215,8 +211,8 @@ public class BarcodePdf {
 		}
 
 	}
-	
-	//METODO PARA GERAR VARIOS QR CODES
+
+	// METODO PARA GERAR VARIOS QR CODES
 	@RequestMapping(value = "qrCodes", method = RequestMethod.GET)
 	public String generatedQrCodes(Long[] ids, HttpServletRequest request, HttpServletResponse response)
 			throws FileNotFoundException, JRException, DocumentException {
@@ -228,16 +224,16 @@ public class BarcodePdf {
 
 			document.open();
 
-			//percorre o array de ids para gerar codigos de barras 
-			//de acordo com o tamanho do array
+			// percorre o array de ids para gerar codigos de barras
+			// de acordo com o tamanho do array
 			for (Long string : ids) {
-				
-				//adicionar o id no qrcode
+
+				// adicionar o id no qrcode
 				BarcodeQRCode qrcode = new BarcodeQRCode(ids + "", 200, 200, null);
 
 				Image image = qrcode.getImage();
 
-				//gerar o pdf com vários qr codes
+				// gerar o pdf com vários qr codes
 				document.add(image);
 
 			}

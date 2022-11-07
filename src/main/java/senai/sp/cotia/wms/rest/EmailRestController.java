@@ -69,10 +69,10 @@ public class EmailRestController {
 			try {
 				//mensagem que vai ser enviada para
 				String htmlMessage = "<html>"
-                        + "Hello,<br><br>"
-                        + "This one test for send email with image,<br>"
-                        + "thanks for cooperate.<br><br>"
-                        + "http://newtours.demoaut.com" 
+                        + "Olá,<br><br>"
+                        + "Para alterar sua senha por favor acesse este link,<br>"
+                        + "http://newtours.demoaut.com.<br><br>"
+                        + "Obrigado por escolher o sistem WMS" 
                         + "</html>";
 				Message message = new MimeMessage(session);
 				//passando o remetente  do email

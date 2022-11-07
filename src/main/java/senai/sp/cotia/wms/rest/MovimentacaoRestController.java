@@ -53,7 +53,6 @@ import senai.sp.cotia.wms.type.Tipo;
 
 @RestController
 @CrossOrigin
-@Controller
 @RequestMapping("api/movimentacao")
 public class MovimentacaoRestController {
 
@@ -148,7 +147,7 @@ public class MovimentacaoRestController {
 	}
 	
 	@RequestMapping(value = "listar/{a}&{c}&{e}", method = RequestMethod.GET)
-	public List<Movimentacao> listMov(@PathVariable("c") String dateStart,@PathVariable("e") String dateEnd, @PathVariable("a") String produto) {
+	public List<Movimentacao> listMov(@PathVariable("c")String dateStart, @PathVariable("e")String dateEnd, @PathVariable("a")String produto) {
 		return movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
 	}
 
