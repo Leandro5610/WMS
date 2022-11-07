@@ -291,5 +291,10 @@ public class PedidoRestController {
     public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {
         return itemPedidoRep.pegarItens(param);
     }
+	
+	@GetMapping(value = "pedidosAluno/{id}")
+	public List<Pedido>pegaPedidoDoAluno(@PathVariable("id")Long param){
+		return pedidoRepo.pegarPedidosAluno(param);
+	}
 
 }
