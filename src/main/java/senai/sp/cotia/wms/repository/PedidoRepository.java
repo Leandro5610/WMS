@@ -18,5 +18,7 @@ public interface PedidoRepository extends PagingAndSortingRepository<Pedido, Lon
 	@Query("SELECT pu FROM Pedido pu WHERE pu.aluno = idToken")
 	public List<Pedido> procurarPedidoPeloUsuario(@Param("pu") String pedidoUser, @Param("idToken") Long id);
 	
+	@Query("SELECT ped FROM Pedido ped WHERE aluno.id =:id ")
+	public List<Pedido> pegarPedidosAluno(@Param("id") Long id);
 	
 }
