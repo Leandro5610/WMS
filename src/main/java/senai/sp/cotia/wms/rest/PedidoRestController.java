@@ -1,6 +1,9 @@
   package senai.sp.cotia.wms.rest;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.sql.Connection;
 import java.text.DateFormat;
@@ -31,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.io.Files;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -252,7 +257,7 @@ public class PedidoRestController {
 
 	@GetMapping(value = "teste/{id}")
 	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota,HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws IOException {
 		List<ItemNota> list = itemNotaRepository.pegarNota(nota);
 		System.out.println(list.size());
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
@@ -276,8 +281,15 @@ public class PedidoRestController {
 			map.put("dataEmissao", dataFmt);
 			map.put("horaEntrada", horaEntrada);
 
+			String name = "notaFiscal.pdf";
+			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
-			JasperExportManager.exportReportToPdfFile(jasperPrint, "C:\\Users\\TecDevTarde\\Downloads\\notaFiscal.pdf");
+			JasperExportManager.exportReportToPdfFile(jasperPrint, name);
+			
+			File arquivo = new File(name);
+
+			OutputStream output = response.getOutputStream();
+			Files.copy(arquivo, output);
 
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
