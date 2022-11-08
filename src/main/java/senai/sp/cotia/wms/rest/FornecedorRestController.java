@@ -86,7 +86,7 @@ public class FornecedorRestController {
 	}
 
 	
-	@RequestMapping(value = "/findbyall/{p}")
+	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
 	public Iterable<Fornecedor> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}

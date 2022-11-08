@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import senai.sp.cotia.wms.model.UnidadeMedida;
 
 public interface UnidadeMedidaRepository extends PagingAndSortingRepository<UnidadeMedida, Long>{
-	@Query("SELECT uni FROM UnidadeMedida uni WHERE uni.nome LIKE %:p% OR uni.sigla LIKE %:p% " )
+	
+
+	@Query("SELECT uni FROM UnidadeMedida uni WHERE uni.nome LIKE %:p% OR uni.sigla LIKE %:p%")
    public List<UnidadeMedida> procurarTudo(@Param("p") String param);
 }	

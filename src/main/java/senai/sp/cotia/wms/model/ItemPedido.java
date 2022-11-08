@@ -22,8 +22,6 @@ public class ItemPedido {
 	@ManyToOne
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Pedido pedido;
-	@ManyToOne
-	private Movimentacao movimentacao;
 	
 }
      

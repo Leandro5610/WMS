@@ -122,7 +122,7 @@ public class EnderecamentoRestController implements ServletContextAware {
 		}
 	}
 
-	@RequestMapping(value = "/findbyall/{p}")
+	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
 	public Iterable<Enderecamento> findByAll(@PathVariable("p") String param) {
 		return repository.procurarTudo(param);
 	}

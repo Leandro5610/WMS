@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.EmailModel;
 import senai.sp.cotia.wms.repository.AlunoRepository;
-import senai.sp.cotia.wms.serevices.EmailService;
+import senai.sp.cotia.wms.services.EmailService;
 
 @RestController
 @RequestMapping("api/email")

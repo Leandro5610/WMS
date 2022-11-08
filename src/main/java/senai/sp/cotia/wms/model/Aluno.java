@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -39,36 +38,32 @@ public class Aluno {
 	@Column(unique = true)
 	private String email;
 
-	public void setNome(String nome) {
-		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
-		textEncriptor.setPasswordCharArray("chaves".toCharArray());
-		String nomeCrip = textEncriptor.encrypt(nome);
-		this.nome = nomeCrip;
-	}
-
-	public void setCodMatricula(String codMatricula) {
-		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
-		textEncriptor.setPasswordCharArray("chaves".toCharArray());
-
-		String codMatriculaCrip = textEncriptor.encrypt(codMatricula);
-		this.codMatricula = codMatriculaCrip;
-	}
-
-	public String getNome() {
-		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
-		textDecriptor.setPasswordCharArray("chaves".toCharArray());
-
-		String nomeDecrip = textDecriptor.decrypt(nome);
-		return nomeDecrip;
-	}
-
-	public String getCodMatricula() {
-		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
-		textDecriptor.setPasswordCharArray("chaves".toCharArray());
-
-		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
-		return codMatriculaDecrip;
-	}
+	/*
+	  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
+	  BasicTextEncryptor();
+	  textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
+	  textEncriptor.encrypt(nome); this.nome = nomeCrip; }
+	  
+	  public void setCodMatricula(String codMatricula) { BasicTextEncryptor
+	  textEncriptor = new BasicTextEncryptor();
+	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
+	  
+	  String codMatriculaCrip = textEncriptor.encrypt(codMatricula);
+	  this.codMatricula = codMatriculaCrip; }
+	  
+	  public String getNome() { BasicTextEncryptor textDecriptor = new
+	  BasicTextEncryptor();
+	  textDecriptor.setPasswordCharArray("chaves".toCharArray());
+	  
+	  String nomeDecrip = textDecriptor.decrypt(nome); return nomeDecrip; }
+	  
+	  public String getCodMatricula() { BasicTextEncryptor textDecriptor = new
+	  BasicTextEncryptor();
+	  textDecriptor.setPasswordCharArray("chaves".toCharArray());
+	  
+	  String codMatriculaDecrip = textDecriptor.decrypt(codMatricula); return
+	  codMatriculaDecrip; }
+	 
 
 	public void setSenha(String senha) {
 		this.senha = HashUtil.hash256(senha);
@@ -78,5 +73,5 @@ public class Aluno {
 		// seta o hash na senha
 		this.senha = hash;
 	}
-	
+	*/
 }

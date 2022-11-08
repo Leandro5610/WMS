@@ -5,12 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import lombok.Data;
+
 @Entity
 @Data
 public class Estoque {
@@ -24,15 +20,15 @@ public class Estoque {
 	@ManyToOne
 	private Enderecamento enderecamento;
 	
-	public int setSaldo(int item) {
+	/*public int setSaldo(int item) {
 		int saldo = item;
         return this.saldo;
-    }
+    }*/
 	
-	public int setDiponivel(int totalProdutos ) {
+	/*public int setDiponivel(int totalProdutos) {
 		return this.disponivel = capacidade - totalProdutos;
 	}
-	
+	*/
 
 
 }

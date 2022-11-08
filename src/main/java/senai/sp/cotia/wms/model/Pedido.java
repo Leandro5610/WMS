@@ -1,6 +1,5 @@
 package senai.sp.cotia.wms.model;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

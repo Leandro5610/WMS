@@ -3,7 +3,6 @@ package senai.sp.cotia.wms.rest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,41 +14,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
-
-import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
-import senai.sp.cotia.wms.annotation.Privado;
-import senai.sp.cotia.wms.annotation.Publico;
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.TokenWms;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.AlunoRepository;
-import senai.sp.cotia.wms.serevices.EmailService;
+import senai.sp.cotia.wms.services.EmailService;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
 @CrossOrigin
@@ -314,28 +305,33 @@ public class AlunoRestController {
 
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public Object login(@RequestBody Aluno aluno) {
-		aluno = repository.findByCodMatriculaAndSenha(aluno.getCodMatricula(), aluno.getSenha());
-		// verifica se o aluno existe
-		if (aluno != null) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			// guarda o código de matricula e id no payload
-			map.put("aluno_codMatricula", aluno.getCodMatricula());
-			map.put("aluno_id", aluno.getId());
+		List<Aluno> aln = repository.findAll();
+		
+		for (Aluno aluno2 : aln) {
+			// verifica se o aluno existe
+			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula()) && aluno.getSenha().equals(aluno2.getSenha())) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				// guarda o código de matricula e id no payload
+				map.put("aluno_codMatricula", aluno.getCodMatricula());
+				map.put("aluno_id", aluno.getId());
 
-			Calendar expiracao = Calendar.getInstance();
+				Calendar expiracao = Calendar.getInstance();
 
-			// tempo de expiração do token 12 horas
-			expiracao.add(Calendar.HOUR, 12);
+				// tempo de expiração do token 12 horas
+				expiracao.add(Calendar.HOUR, 12);
 
-			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
+				Algorithm algoritimo = Algorithm.HMAC256(SECRET);
 
-			TokenWms token = new TokenWms();
-			token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
-					.sign(algoritimo));
-			return ResponseEntity.ok(token);
-		} else {
-			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
+				TokenWms token = new TokenWms();
+				token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
+						.sign(algoritimo));
+				return ResponseEntity.ok(token);
+			}
 		}
+		
+		return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
+		
+		
 	}
 
 	// decoda o token para pegar o id do aluno que está logado na sessão
@@ -357,7 +353,7 @@ public class AlunoRestController {
 		return ResponseEntity.ok(idl);
 	}
 
-	@RequestMapping(value = "/login/{codMatricula}")
+	/*@RequestMapping(value = "/login/{codMatricula}")
 	public ResponseEntity<Aluno> findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula,
 			HttpServletRequest request, HttpServletResponse response) {
 		Optional<Aluno> aluno = repository.findByCodMatricula(codMatricula);
@@ -366,6 +362,6 @@ public class AlunoRestController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-	}
-
+	}*/
+	
 }

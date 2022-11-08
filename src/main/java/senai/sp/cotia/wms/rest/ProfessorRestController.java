@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -221,25 +222,27 @@ public class ProfessorRestController {
 
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenWms> login(@RequestBody Professor professor) {
-		professor = repo.findByNifAndSenha(professor.getNif(), professor.getSenha());
+		List<Professor> prof = repo.findAll();
+		
+		for (Professor professor2 : prof) {
+			if (professor.getNif().equals(professor2.getNif()) && professor.getSenha().equals(professor2.getSenha())) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("professor_id", professor.getId());
+				map.put("professor_nif", professor.getNif());
 
-		if (professor != null) {
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("professor_id", professor.getId());
-			map.put("professor_nif", professor.getNif());
+				Calendar expiracao = Calendar.getInstance();
+				expiracao.add(Calendar.HOUR, 12);
 
-			Calendar expiracao = Calendar.getInstance();
-			expiracao.add(Calendar.HOUR, 12);
+				Algorithm algoritimo = Algorithm.HMAC256(SECRET);
 
-			Algorithm algoritimo = Algorithm.HMAC256(SECRET);
-
-			TokenWms token = new TokenWms();
-			token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
-					.sign(algoritimo));
-			return ResponseEntity.ok(token);
-		} else {
-			return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
+				TokenWms token = new TokenWms();
+				token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
+						.sign(algoritimo));
+				return ResponseEntity.ok(token);
+			}
 		}
+		return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
+
 	}
 
 	// decoda o token para pegar o id do usuário que está logado na sessão

@@ -150,7 +150,7 @@ public class TurmaRestController {
 	}
 
 	// metodo para procurar uma reserva à partir de qualquer atributo
-	@RequestMapping(value = "/findbyall/{p}")
+	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
 	public Iterable<Turma> findByAll(@PathVariable("p") String param) {
 		return repo.procurarTudo(param);
 	}

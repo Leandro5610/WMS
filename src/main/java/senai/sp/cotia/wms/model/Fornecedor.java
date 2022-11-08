@@ -1,13 +1,10 @@
 package senai.sp.cotia.wms.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import org.jasypt.util.text.BasicTextEncryptor;
 
@@ -28,7 +25,7 @@ public class Fornecedor {
 	private boolean homologado;
 	
 	
-	public void setNome(String nome) {
+	/*public void setNome(String nome) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
 		
@@ -58,7 +55,7 @@ public class Fornecedor {
 		
 		String nomeDecrip = textDecriptor.decrypt(nome);
 		return nomeDecrip;
-	}
+	}*/
 	
 	
 	
