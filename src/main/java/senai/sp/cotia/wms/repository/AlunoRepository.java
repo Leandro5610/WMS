@@ -11,7 +11,7 @@ import senai.sp.cotia.wms.model.Aluno;
 
 public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long> {
 	
-	@Query("SELECT alu FROM Aluno alu WHERE alu.nome LIKE %:p% OR alu.codMatricula LIKE %:p% OR alu.email LIKE %:p%")
+	@Query("SELECT alu FROM Aluno alu WHERE alu.nome LIKE %:p% OR alu.email LIKE %:p%")
     public List<Aluno> procurarTudo(@Param("p") String param);
 	
 	//public List<Aluno> findAll();

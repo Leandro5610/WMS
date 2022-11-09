@@ -28,10 +28,9 @@ public class Fornecedor {
 	/*public void setNome(String nome) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
-		
 		String nomeCrip = textEncriptor.encrypt(nome);
 		 this.nome = nomeCrip;
-	}
+	}*/
 	
 	public void setCnpj(String cnpj) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
@@ -49,7 +48,7 @@ public class Fornecedor {
 		return CnpjDecrip;
 	}
 	
-	public String getNome() {
+	/*public String getNome() {
 		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
 		textDecriptor.setPasswordCharArray("chaves".toCharArray());
 		

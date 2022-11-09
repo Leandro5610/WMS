@@ -214,11 +214,11 @@ public class ProfessorRestController {
 		return repo.findAll();
 	}
 
-	// metodo para procurar uma reserva à partir de qualquer atributo
-//	@RequestMapping(value = "/findbyall/{p}")
-//	public Iterable<Professor> findByAll(@PathVariable("p") String param) {
-//		return repo.procurarTudo(param);
-//	}
+	// metodo para procurar um professor à partir de qualquer atributo
+	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
+	public Iterable<Professor> findByAll(@PathVariable("p") String param) {
+		return repo.procurarTudo(param);
+	}
 
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<TokenWms> login(@RequestBody Professor professor) {

@@ -10,7 +10,7 @@ import senai.sp.cotia.wms.model.Professor;
 
 public interface ProfessorRepository extends PagingAndSortingRepository<Professor, Long> {
 	
-	@Query("SELECT prof FROM Professor prof WHERE prof.nome LIKE %:p% OR prof.nif LIKE %:p% OR prof.email LIKE %:p%")
+	@Query("SELECT prof FROM Professor prof WHERE prof.nome LIKE %:p% OR prof.email LIKE %:p%")
 	public List<Professor> procurarTudo(@Param("p") String param);
 	
 	public Professor findByNifAndSenha(String nif, String senha);

@@ -31,29 +31,26 @@ public class Professor {
 	@Column(unique = true)
 	private String email;
 	
-	
-	  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
+
+	/*  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
 	  BasicTextEncryptor();
 	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	  
-	  String nomeCrip = textEncriptor.encrypt(nome); this.nome = nomeCrip; }
+	  String nomeCrip = textEncriptor.encrypt(nome); this.nome = nomeCrip; }*/
 	  
 	  public void setNif(String nif) { BasicTextEncryptor textEncriptor = new
 	  BasicTextEncryptor();
 	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	 
 	  String nifCrip = textEncriptor.encrypt(nif); this.nif = nifCrip; }
 	  
 	  public String getNif() { BasicTextEncryptor textEncriptor = new
 	  BasicTextEncryptor();
 	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
+	  String nifDescrip = textEncriptor.decrypt(nif); return nifDescrip; } 
 	  
-	  String nifDescrip = textEncriptor.decrypt(nif); return nifDescrip; } public
-	  String getNome() { BasicTextEncryptor textEncriptor = new
+	 /* public String getNome() { BasicTextEncryptor textEncriptor = new
 	  BasicTextEncryptor();
 	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	  
-	  String nomeDescrip = textEncriptor.decrypt(nome); return nomeDescrip; }
+	  String nomeDescrip = textEncriptor.decrypt(nome); return nomeDescrip; }*/
 	
 	
 	
