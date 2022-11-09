@@ -308,12 +308,11 @@ public class AlunoRestController {
 		List<Aluno> aln = repository.findAll();
 		
 		for (Aluno aluno2 : aln) {
-			// verifica se o aluno existe
 			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula()) && aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				// guarda o código de matricula e id no payload
 				map.put("aluno_codMatricula", aluno.getCodMatricula());
-				map.put("aluno_id", aluno.getId());
+				map.put("aluno_id", aluno2.getId());
 
 				Calendar expiracao = Calendar.getInstance();
 
