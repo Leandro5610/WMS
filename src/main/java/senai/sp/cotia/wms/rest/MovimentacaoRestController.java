@@ -141,7 +141,7 @@ public class MovimentacaoRestController {
 
 	// metodo para procurar um item à partir de qualquer atributo
 	
-	@RequestMapping(value = "/findbyall/{p}")
+	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
 	public List<Movimentacao> findByAll(@PathVariable("p") String param) {
 		return movimentacaoRepository.procurarTudo(param);
 	}
