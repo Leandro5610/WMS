@@ -220,15 +220,15 @@ public class ProfessorRestController {
 		return repo.procurarTudo(param);
 	}
 
-	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public ResponseEntity<TokenWms> login(@RequestBody Professor professor) {
 		List<Professor> prof = repo.findAll();
 		
 		for (Professor professor2 : prof) {
 			if (professor.getNif().equals(professor2.getNif()) && professor.getSenha().equals(professor2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("professor_id", professor.getId());
-				map.put("professor_nif", professor.getNif());
+				map.put("professor_id", professor2.getId());
+				map.put("professor_nif", professor2.getNif());
 
 				Calendar expiracao = Calendar.getInstance();
 				expiracao.add(Calendar.HOUR, 12);
