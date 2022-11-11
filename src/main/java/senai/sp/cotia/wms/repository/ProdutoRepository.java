@@ -10,11 +10,10 @@ import senai.sp.cotia.wms.model.Produto;
 
 public interface ProdutoRepository extends PagingAndSortingRepository<Produto, Long>{
 	@Query("SELECT pro FROM Produto pro WHERE pro.sku LIKE %:p% OR pro.nome LIKE %:p% "
-	+" OR pro.valorUnitario LIKE %:p% OR pro.descricao LIKE %:p% OR pro.medida LIKE %:p% " 
-	+" OR pro.importado LIKE %:p% OR pro.demanda LIKE %:p% OR pro.ipi LIKE %:p% "
-	+" OR pro.pis LIKE %:p% OR pro.cofins LIKE %:p% OR pro.icms LIKE %:p% "
-	+" OR pro.fornecedores LIKE %:p% OR pro.ncm LIKE %:p% OR pro.pontoPedido LIKE %:p% OR pro.valorImportacao LIKE %:p%"
-	+" OR pro.movimentacoes LIKE %:p%")
+	+" OR pro.descricao LIKE %:p% "
+	+" OR pro.medida.nome LIKE %:p%"
+	+" OR pro.ncm.ncm LIKE %:p%"
+	+" OR pro.demanda LIKE %:p% ")
 	public List<Produto> procurarTudo(@Param("p") String param);
 	
 	/*@Query("SELECT pro FROM Produto pro WHERE pro.nome")

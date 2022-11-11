@@ -8,11 +8,8 @@ import senai.sp.cotia.wms.model.Pedido;
 
 public interface PedidoRepository extends PagingAndSortingRepository<Pedido, Long>{
 	
-	@Query("SELECT ped FROM Pedido ped WHERE ped.valor LIKE %:p% "
-			+ " OR ped.aluno LIKE %:p%"
-			+ " OR ped.dataPedido LIKE %:p%"
-			+ " OR ped.itens LIKE %:p%"
-			+ " OR ped.totalItens LIKE %:p%")
+	@Query("SELECT ped FROM Pedido ped WHERE ped.dataPedido LIKE %:p% "
+			+" OR ped.aluno.nome LIKE %:p%")
    public List<Pedido> procurarTudo(@Param("p") String param);
 	
 	@Query("SELECT pu FROM Pedido pu WHERE pu.aluno = idToken")
