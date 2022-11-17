@@ -37,7 +37,7 @@ public class Aluno {
 	private String imagem;
 	@Column(unique = true)
 	private String email;
-
+	private int codigo;
 	
 	 /* public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
 	  BasicTextEncryptor();

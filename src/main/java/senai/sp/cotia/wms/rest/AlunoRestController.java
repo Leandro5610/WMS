@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +36,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.TokenWms;
@@ -54,7 +55,7 @@ public class AlunoRestController {
 	private FireBaseUtil fire;
 
 	@Autowired
-	private EmailService service = new EmailService();
+	private EmailService service;
 
 	public static final String EMISSOR = "Sen@i";
 	public static final String SECRET = "@msSenai";
@@ -306,9 +307,10 @@ public class AlunoRestController {
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public Object login(@RequestBody Aluno aluno) {
 		List<Aluno> aln = repository.findAll();
-		
+
 		for (Aluno aluno2 : aln) {
-			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula()) && aluno.getSenha().equals(aluno2.getSenha())) {
+			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula())
+					&& aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				// guarda o código de matricula e id no payload
 				map.put("aluno_codMatricula", aluno.getCodMatricula());
@@ -327,10 +329,9 @@ public class AlunoRestController {
 				return ResponseEntity.ok(token);
 			}
 		}
-		
+
 		return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
-		
-		
+
 	}
 
 	// decoda o token para pegar o id do aluno que está logado na sessão
@@ -352,15 +353,54 @@ public class AlunoRestController {
 		return ResponseEntity.ok(idl);
 	}
 
-	/*@RequestMapping(value = "/login/{codMatricula}")
-	public ResponseEntity<Aluno> findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula,
-			HttpServletRequest request, HttpServletResponse response) {
-		Optional<Aluno> aluno = repository.findByCodMatricula(codMatricula);
-		if (aluno.isPresent()) {
-			return ResponseEntity.ok(aluno.get());
-		} else {
-			return ResponseEntity.notFound().build();
+	/*
+	 * @RequestMapping(value = "/login/{codMatricula}") public ResponseEntity<Aluno>
+	 * findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula,
+	 * HttpServletRequest request, HttpServletResponse response) { Optional<Aluno>
+	 * aluno = repository.findByCodMatricula(codMatricula); if (aluno.isPresent()) {
+	 * return ResponseEntity.ok(aluno.get()); } else { return
+	 * ResponseEntity.notFound().build(); } }
+	 */
+
+	@PostMapping(value = "/buscarEmail/{e}")
+	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {
+
+		List<Aluno> alunosBd = repository.findByEmail(aluno.getEmail());
+
+		for (Aluno alunos : alunosBd) {
+
+			if (alunos.getEmail().equals(aluno.getEmail())) {
+
+				Random random = new Random();
+				alunos.setCodigo(random.nextInt(1000));
+				repository.save(alunos);
+				service.sendingEmail(email);
+
+			} else {
+
+				return ResponseEntity.notFound().build();
+			}
 		}
-	}*/
-	
+
+		return ResponseEntity.ok(aluno);
+	}
+
+	@PostMapping(value = "/verificarCod")
+	public ResponseEntity<Aluno> verifCodigo(@RequestBody Aluno aluno, String codigo) {
+
+		Aluno codigoVerificacao = repository.findByCodigoAndEmail(aluno.getCodigo(), aluno.getEmail());
+
+		
+
+			if (codigoVerificacao != null) {
+				System.out.println("codigo certo");
+			} else { 
+				System.out.println("sexo");
+
+			}
+		
+
+		return ResponseEntity.ok(aluno);
+	}
+
 }
