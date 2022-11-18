@@ -30,6 +30,7 @@ public class Professor {
 	private String imagem;
 	@Column(unique = true)
 	private String email;
+	private int codigo;
 
 	/*
 	 * public void setNome(String nome) { BasicTextEncryptor textEncriptor = new

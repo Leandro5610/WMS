@@ -365,42 +365,32 @@ public class AlunoRestController {
 	@PostMapping(value = "/buscarEmail/{e}")
 	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {
 
-		List<Aluno> alunosBd = repository.findByEmail(aluno.getEmail());
+		Aluno alunoBd = repository.findByEmail(aluno.getEmail());			
+		
+		if (alunoBd.getEmail().equals(aluno.getEmail())) {
 
-		for (Aluno alunos : alunosBd) {
-
-			if (alunos.getEmail().equals(aluno.getEmail())) {
-
-				Random random = new Random();
-				alunos.setCodigo(random.nextInt(1000));
-				repository.save(alunos);
-				service.sendingEmail(email);
-
-			} else {
-
-				return ResponseEntity.notFound().build();
-			}
+			Random random = new Random();
+			alunoBd.setCodigo(random.nextInt(1000));
+			repository.save(alunoBd);
+			service.sendingEmailAluno(email, alunoBd.getCodigo());
+			return ResponseEntity.ok(aluno);
+			
+		} else {
+			return ResponseEntity.notFound().build();}
 		}
-
-		return ResponseEntity.ok(aluno);
-	}
+	
 
 	@PostMapping(value = "/verificarCod")
 	public ResponseEntity<Aluno> verifCodigo(@RequestBody Aluno aluno, String codigo) {
 
 		Aluno codigoVerificacao = repository.findByCodigoAndEmail(aluno.getCodigo(), aluno.getEmail());
 
-		
-
 			if (codigoVerificacao != null) {
 				System.out.println("codigo certo");
+				return ResponseEntity.ok(codigoVerificacao);
 			} else { 
-				System.out.println("sexo");
-
+				System.out.println("bruh");
+				return ResponseEntity.notFound().build();
 			}
-		
-
-		return ResponseEntity.ok(aluno);
 	}
-
 }
