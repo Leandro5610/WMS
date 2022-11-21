@@ -85,7 +85,6 @@ public class ProdutoRestController {
 	public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		try {
-
 			// percorrer os itens do fornecerdor e inserir o produto
 			for (ItemFornecedor itens : produto.getFornecedores()) {
 				itens.setProduto(produto);
@@ -152,7 +151,7 @@ public class ProdutoRestController {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.ok().build();
 	}
