@@ -18,6 +18,8 @@ public interface ProfessorRepository extends PagingAndSortingRepository<Professo
 	
 	public Professor findByEmail(String email);
 	
+	public Professor findProfessorById(long id);
+	
 	@Query("SELECT professor FROM Professor professor WHERE professor.email = :e ")
 	public Professor findByEmails(@Param("e") String email);
 	

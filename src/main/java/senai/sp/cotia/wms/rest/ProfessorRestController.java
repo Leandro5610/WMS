@@ -270,6 +270,18 @@ public class ProfessorRestController {
 		return ResponseEntity.ok(idl);
 	}
 	
+	// METODO PARA RECUPERAR A SENHA
+	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> recuperaSenha(@RequestBody Professor professor, @PathVariable("id") Long id) {
+		if (id != professor.getId()) {
+			throw new RuntimeException("Id Inválido");
+		}
+		repo.save(professor);
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/professor"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/buscarEmail/{e}")
 	public ResponseEntity<Professor> verifEmail(@RequestBody Professor professor, @PathVariable("e") String email) {
 

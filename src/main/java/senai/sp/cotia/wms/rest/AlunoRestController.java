@@ -292,9 +292,8 @@ public class AlunoRestController {
 	}
 
 	// METODO PARA RECUPERAR A SENHA
-	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
-		aluno = repository.findAlunoById(id);
 		if (id != aluno.getId()) {
 			throw new RuntimeException("Id Inválido");
 		}
