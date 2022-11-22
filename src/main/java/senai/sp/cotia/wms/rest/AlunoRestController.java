@@ -306,10 +306,11 @@ public class AlunoRestController {
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public Object login(@RequestBody Aluno aluno) {
 		List<Aluno> aln = repository.findAll();
-		
+
 		for (Aluno aluno2 : aln) {
 			// verifica se o aluno existe
-			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula()) && aluno.getSenha().equals(aluno2.getSenha())) {
+			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula())
+					&& aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				// guarda o código de matricula e id no payload
 				map.put("aluno_codMatricula", aluno.getCodMatricula());
@@ -328,10 +329,9 @@ public class AlunoRestController {
 				return ResponseEntity.ok(token);
 			}
 		}
-		
+
 		return new ResponseEntity<TokenWms>(HttpStatus.UNAUTHORIZED);
-		
-		
+
 	}
 
 	// decoda o token para pegar o id do aluno que está logado na sessão
@@ -353,15 +353,13 @@ public class AlunoRestController {
 		return ResponseEntity.ok(idl);
 	}
 
-	/*@RequestMapping(value = "/login/{codMatricula}")
-	public ResponseEntity<Aluno> findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula,
-			HttpServletRequest request, HttpServletResponse response) {
-		Optional<Aluno> aluno = repository.findByCodMatricula(codMatricula);
-		if (aluno.isPresent()) {
-			return ResponseEntity.ok(aluno.get());
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}*/
-	
+	/*
+	 * @RequestMapping(value = "/login/{codMatricula}") public ResponseEntity<Aluno>
+	 * findAlunoByCodMatricula(@PathVariable("codMatricula") String codMatricula,
+	 * HttpServletRequest request, HttpServletResponse response) { Optional<Aluno>
+	 * aluno = repository.findByCodMatricula(codMatricula); if (aluno.isPresent()) {
+	 * return ResponseEntity.ok(aluno.get()); } else { return
+	 * ResponseEntity.notFound().build(); } }
+	 */
+
 }
