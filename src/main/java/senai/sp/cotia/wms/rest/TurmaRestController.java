@@ -62,59 +62,15 @@ public class TurmaRestController {
 			// verificar se a data de inicio é antes da data atual
 			else if (turma.getDataInicio().before(dataAtual)) {
 				return ResponseEntity.badRequest().build();
-				
+
 			} else if (turma.getDataFinal().get(Calendar.DAY_OF_WEEK) == 1) {
 				return new ResponseEntity<Object>(erro, HttpStatus.NOT_ACCEPTABLE);
-				
+
 			} else if (turma.getImagem() != null) {
-				// variavel para guardar a imagem codificada Base64 que está vindo do front
-				String stringImagem = turma.getImagem();
 
-				// variaveis para extrair o que está entre a / e o ;
-				int posicaoBarra = stringImagem.indexOf('/');
-				int posicaoPontoVirgula = stringImagem.indexOf(';');
-
-				// variavel para retirar a / e o ; para pegar a extensão da imagem
-				String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
-
-				// variavel para retirar a / da extensão
-				String extensaoOriginal = extensao.replace("/", "");
-
-				// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-				// base64 codificado do front-end
-				String base64ImagemString = stringImagem.replace("data:image/" + extensaoOriginal + ";base64,", "");
-
-				// variavel para para decodificar o codigo base64 e converter em um vetor de
-				// bytes
-				byte[] decodificada = Base64.getDecoder().decode(base64ImagemString);
-
-				// variavel para converter o vetor de bytes em um texto
-				String arquivoString = decodificada.toString();
-
-				// variavel para retirar o texto "[B@" da variavel arquivoString
-				String arquivo = arquivoString.replace("[B@", "");
-
-				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensaoOriginal;
-
-				// variavel para guardar o nome do arquivo em um File
-				File file = new File(nomeArquivo);
-
-				// variavel para converter em arquivo e armazenar no sistema do pc
-				FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
-
-				// variavel para escrever os bytes no arquivo
-				fileInput.write(decodificada);
-
-				// variavel para pegar o caminho da pasta com o arquivo da imagem
-				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-				firebase.uploadFile(file, decodificada);
-				fileInput.close();
-
-				turma.setImagem(file.toString());
 				repo.save(turma);
-				Files.delete(pathFile);
 				return ResponseEntity.ok(HttpStatus.CREATED);
+
 			} else {
 				// salvar o usuário no banco de dados
 				repo.save(turma);
@@ -162,53 +118,7 @@ public class TurmaRestController {
 		}
 		try {
 			if (turma.getImagem() != null) {
-				// variavel para guardar a imagem codificada Base64 que está vindo do front
-				String stringImagem = turma.getImagem();
-
-				// variaveis para extrair o que está entre a / e o ;
-				int posicaoBarra = stringImagem.indexOf('/');
-				int posicaoPontoVirgula = stringImagem.indexOf(';');
-
-				// variavel para retirar a / e o ; para pegar a extensão da imagem
-				String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
-
-				// variavel para retirar a / da extensão
-				String extensaoOriginal = extensao.replace("/", "");
-
-				// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-				// base64 codificado do front-end
-				String base64ImagemString = stringImagem.replace("data:image/" + extensaoOriginal + ";base64,", "");
-
-				// variavel para para decodificar o codigo base64 e converter em um vetor de
-				// bytes
-				byte[] decodificada = Base64.getDecoder().decode(base64ImagemString);
-
-				// variavel para converter o vetor de bytes em um texto
-				String arquivoString = decodificada.toString();
-
-				// variavel para retirar o texto "[B@" da variavel arquivoString
-				String arquivo = arquivoString.replace("[B@", "");
-
-				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensaoOriginal;
-
-				// variavel para guardar o nome do arquivo em um File
-				File file = new File(nomeArquivo);
-
-				// variavel para converter em arquivo e armazenar no sistema do pc
-				FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
-
-				// variavel para escrever os bytes no arquivo
-				fileInput.write(decodificada);
-
-				// variavel para pegar o caminho da pasta com o arquivo da imagem
-				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-				firebase.uploadFile(file, decodificada);
-				fileInput.close();
-
-				turma.setImagem(file.toString());
 				repo.save(turma);
-				Files.delete(pathFile);
 				return ResponseEntity.ok().build();
 			}
 		} catch (Exception e) {
@@ -219,9 +129,9 @@ public class TurmaRestController {
 		header.setLocation(URI.create("/api/turma"));
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "turmaByProf/{id}")
-	public List<Turma> procurarTurmaPorProf(@PathVariable("id") Professor idProf){
-		return repo.procurarTurmaPeloProf(idProf);	
+	public List<Turma> procurarTurmaPorProf(@PathVariable("id") Professor idProf) {
+		return repo.procurarTurmaPeloProf(idProf);
 	}
 }

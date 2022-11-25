@@ -35,7 +35,7 @@ public class Turma {
 	@OneToOne
 	private Professor prof;
 	@Lob
-	@Column(columnDefinition = "MEDIUMBLOB")
+	@Column(columnDefinition = "LONGTEXT")
 	private String imagem;
 	@OneToMany
 	@JsonProperty(access = Access.WRITE_ONLY)

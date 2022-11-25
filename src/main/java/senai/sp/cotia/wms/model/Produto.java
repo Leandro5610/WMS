@@ -42,8 +42,7 @@ public class Produto {
 	@OneToOne
 	private Ncm ncm;
 	private int pontoPedido;
-	@Lob
-	@Column(columnDefinition = "MEDIUMBLOB")
+	@Column(columnDefinition ="LONGTEXT")
 	private String imagem;
 	@OneToMany(mappedBy = "produto")
 	private List<Movimentacao> movimentacoes;

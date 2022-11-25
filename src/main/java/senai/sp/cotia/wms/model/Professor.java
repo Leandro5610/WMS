@@ -26,7 +26,7 @@ public class Professor {
 	@NotEmpty
 	private String senha;
 	@Lob
-	@Column(columnDefinition = "MEDIUMBLOB")
+	@Column(columnDefinition = "LONGTEXT")
 	private String imagem;
 	@Column(unique = true)
 	private String email;
