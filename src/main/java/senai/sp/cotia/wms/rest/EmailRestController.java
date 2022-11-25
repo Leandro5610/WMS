@@ -41,7 +41,7 @@ public class EmailRestController {
 	@RequestMapping(value = "sending-email", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> sendingEmail(String email) {
 		
-		Aluno aluno = repository.findByEmail(email);
+		Aluno aluno = (Aluno) repository.findByEmail(email);
 		//Verifica se o aluno existe a partir do email
 		if (aluno.getEmail().equals(email)) {
 			Properties pro = new Properties();

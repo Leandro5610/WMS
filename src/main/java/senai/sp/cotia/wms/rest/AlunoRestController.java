@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,7 +36,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.TokenWms;
@@ -54,7 +55,7 @@ public class AlunoRestController {
 	private FireBaseUtil fire;
 
 	@Autowired
-	private EmailService service = new EmailService();
+	private EmailService service;
 
 	public static final String EMISSOR = "Sen@i";
 	public static final String SECRET = "@msSenai";
@@ -291,9 +292,8 @@ public class AlunoRestController {
 	}
 
 	// METODO PARA RECUPERAR A SENHA
-	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> recuperaSenha(@RequestBody Aluno aluno, @PathVariable("id") Long id) {
-		aluno = repository.findAlunoById(id);
 		if (id != aluno.getId()) {
 			throw new RuntimeException("Id Inválido");
 		}
@@ -308,13 +308,16 @@ public class AlunoRestController {
 		List<Aluno> aln = repository.findAll();
 
 		for (Aluno aluno2 : aln) {
+<<<<<<< HEAD
 			// verifica se o aluno existe
+=======
+>>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
 			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula())
 					&& aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				// guarda o código de matricula e id no payload
 				map.put("aluno_codMatricula", aluno.getCodMatricula());
-				map.put("aluno_id", aluno.getId());
+				map.put("aluno_id", aluno2.getId());
 
 				Calendar expiracao = Calendar.getInstance();
 
@@ -362,4 +365,38 @@ public class AlunoRestController {
 	 * ResponseEntity.notFound().build(); } }
 	 */
 
+<<<<<<< HEAD
+=======
+	@PostMapping(value = "/buscarEmail/{e}")
+	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {
+
+		Aluno alunoBd = repository.findByEmail(aluno.getEmail());			
+		
+		if (alunoBd.getEmail().equals(aluno.getEmail())) {
+
+			Random random = new Random();
+			alunoBd.setCodigo(random.nextInt(1000));
+			repository.save(alunoBd);
+			service.sendingEmailAluno(email, alunoBd.getCodigo());
+			return ResponseEntity.ok(aluno);
+			
+		} else {
+			return ResponseEntity.notFound().build();}
+		}
+	
+
+	@PostMapping(value = "/verificarCod")
+	public ResponseEntity<Aluno> verifCodigo(@RequestBody Aluno aluno, String codigo) {
+
+		Aluno codigoVerificacao = repository.findByCodigoAndEmail(aluno.getCodigo(), aluno.getEmail());
+
+			if (codigoVerificacao != null) {
+				System.out.println("codigo certo");
+				return ResponseEntity.ok(codigoVerificacao);
+			} else { 
+				System.out.println("bruh");
+				return ResponseEntity.notFound().build();
+			}
+	}
+>>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
 }

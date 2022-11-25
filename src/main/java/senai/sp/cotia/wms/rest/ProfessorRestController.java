@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +43,7 @@ import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.TokenWms;
 import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.ProfessorRepository;
+import senai.sp.cotia.wms.services.EmailService;
 import senai.sp.cotia.wms.util.FireBaseUtil;
 
 @RestController
@@ -52,6 +55,8 @@ public class ProfessorRestController {
 	private ProfessorRepository repo;
 	@Autowired
 	private FireBaseUtil firebase;
+	@Autowired
+	private EmailService service;
 
 	public static final String EMISSOR = "Sen@i";
 	public static final String SECRET = "@msSenai";
@@ -220,15 +225,15 @@ public class ProfessorRestController {
 		return repo.procurarTudo(param);
 	}
 
-	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
 	public ResponseEntity<TokenWms> login(@RequestBody Professor professor) {
 		List<Professor> prof = repo.findAll();
 		
 		for (Professor professor2 : prof) {
 			if (professor.getNif().equals(professor2.getNif()) && professor.getSenha().equals(professor2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("professor_id", professor.getId());
-				map.put("professor_nif", professor.getNif());
+				map.put("professor_id", professor2.getId());
+				map.put("professor_nif", professor2.getNif());
 
 				Calendar expiracao = Calendar.getInstance();
 				expiracao.add(Calendar.HOUR, 12);
@@ -264,5 +269,48 @@ public class ProfessorRestController {
 		Long idl = Long.parseLong(id);
 		return ResponseEntity.ok(idl);
 	}
+	
+	// METODO PARA RECUPERAR A SENHA
+	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> recuperaSenha(@RequestBody Professor professor, @PathVariable("id") Long id) {
+		if (id != professor.getId()) {
+			throw new RuntimeException("Id Inválido");
+		}
+		repo.save(professor);
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/professor"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/buscarEmail/{e}")
+	public ResponseEntity<Professor> verifEmail(@RequestBody Professor professor, @PathVariable("e") String email) {
 
+		Professor profBd = repo.findByEmail(professor.getEmail());			
+		
+		if (professor.getEmail().equals(profBd.getEmail())) {
+
+			Random random = new Random();
+			profBd.setCodigo(random.nextInt(1000));
+			repo.save(profBd);
+			service.sendingEmailProf(email, profBd.getCodigo());
+			return ResponseEntity.ok(profBd);
+			
+		} else {
+			return ResponseEntity.notFound().build();}
+		}
+	
+
+	@PostMapping(value = "/verificarCod")
+	public ResponseEntity<Professor> verifCodigo(@RequestBody Professor professor, String codigo) {
+
+		Professor codigoVerificacao = repo.findByCodigoAndEmail(professor.getCodigo(), professor.getEmail());
+
+			if (codigoVerificacao != null) {
+				System.out.println("codigo certo");
+				return ResponseEntity.ok(codigoVerificacao);
+			} else { 
+				System.out.println("bruh");
+				return ResponseEntity.notFound().build();
+			}
+	}
 }

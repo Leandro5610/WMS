@@ -27,4 +27,11 @@ public interface AlunoRepository extends PagingAndSortingRepository<Aluno, Long>
 	public List<Aluno> findByTurmaId(long id);
 
 	public Optional<Aluno> findByCodMatricula(String matricula);
+	
+	@Query("SELECT aluno FROM Aluno aluno WHERE aluno.email = :e ")
+	public Aluno findByEmails(@Param("e") String email);
+	
+	public List<Aluno> findByCodigo(int codigo);
+	
+	public Aluno findByCodigoAndEmail(int codigo, String email);
 }

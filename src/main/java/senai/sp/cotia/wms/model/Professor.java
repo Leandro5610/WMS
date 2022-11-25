@@ -30,37 +30,43 @@ public class Professor {
 	private String imagem;
 	@Column(unique = true)
 	private String email;
-	
+	private int codigo;
 
-	/*  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
-	  BasicTextEncryptor();
-	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	  String nomeCrip = textEncriptor.encrypt(nome); this.nome = nomeCrip; }*/
-	  
-	  public void setNif(String nif) { BasicTextEncryptor textEncriptor = new
-	  BasicTextEncryptor();
-	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	  String nifCrip = textEncriptor.encrypt(nif); this.nif = nifCrip; }
-	  
-	  public String getNif() { BasicTextEncryptor textEncriptor = new
-	  BasicTextEncryptor();
-	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	  String nifDescrip = textEncriptor.decrypt(nif); return nifDescrip; } 
-	  
-	 /* public String getNome() { BasicTextEncryptor textEncriptor = new
-	  BasicTextEncryptor();
-	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	  String nomeDescrip = textEncriptor.decrypt(nome); return nomeDescrip; }*/
-	
-	
-	
+	/*
+	 * public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
+	 * BasicTextEncryptor();
+	 * textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
+	 * textEncriptor.encrypt(nome); this.nome = nomeCrip; }
+	 */
+
+	public void setNif(String nif) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		String nifCrip = textEncriptor.encrypt(nif);
+		this.nif = nifCrip;
+	}
+
+	public String getNif() {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		String nifDescrip = textEncriptor.decrypt(nif);
+		return nifDescrip;
+	}
+
+	/*
+	 * public String getNome() { BasicTextEncryptor textEncriptor = new
+	 * BasicTextEncryptor();
+	 * textEncriptor.setPasswordCharArray("chaves".toCharArray()); String
+	 * nomeDescrip = textEncriptor.decrypt(nome); return nomeDescrip; }
+	 */
+
 	public void setSenha(String senha) {
-	    this.senha = HashUtil.hash256(senha);
-	 }
-		
-		public void setSenhaComHash(String hash) {
-	        // seta o hash na senha
-	        this.senha = hash;
-		}
-			
+		this.senha = HashUtil.hash256(senha);
+	}
+
+	public void setSenhaComHash(String hash) {
+		// seta o hash na senha
+		this.senha = hash;
+	}
+
 }

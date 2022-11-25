@@ -12,6 +12,6 @@ public interface EnderecamentoRepository extends PagingAndSortingRepository<Ende
 	
 	@Query("SELECT endereco FROM Enderecamento endereco WHERE endereco.corredor LIKE %:e% OR endereco.edificio LIKE %:e%"
 			+" OR endereco.andar LIKE %:e% OR endereco.modulo LIKE %:e% OR endereco.demanda LIKE %:e%"
-			+" OR endereco.itens LIKE %:e% OR endereco.quantidade LIKE %:e%")
+			+" OR endereco.itens.nome LIKE %:e%")
     public List<Enderecamento> procurarTudo(@Param("e") String param);
 }

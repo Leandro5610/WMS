@@ -164,7 +164,7 @@ public class PedidoRestController {
 	}
 
 	// metodo para procurar um pedido à partir de qualquer atributo
-	@RequestMapping(value = "/findbyall/{p}")
+	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
 	public Iterable<Pedido> findByAll(@PathVariable("p") String param) {
 		return pedidoRepo.procurarTudo(param);
 	}

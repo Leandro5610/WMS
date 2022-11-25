@@ -15,7 +15,9 @@ import javax.swing.text.StyleConstants.ColorConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,6 +55,7 @@ public class BarcodePdf {
 			HttpServletResponse response) throws FileNotFoundException, JRException, DocumentException {
 
 		try {
+
 			// procura o produto no banco
 			Optional<Produto> produto = productRepository.findById(idProduto);
 
@@ -74,7 +77,16 @@ public class BarcodePdf {
 			double number = geradorNumero.nextDouble();
 
 			// formata o numero com 9 casas decimais
-			String numeroFormatado = String.format("%.9f", number);
+			String numeroFormatado = "";
+			if (idProduto < 10) {
+				numeroFormatado= String.format("%.8f", number);
+			}else if(idProduto >=100 && idProduto <=99) {
+				numeroFormatado = String.format("%.7f", number);
+			}else if(idProduto >=1000 && idProduto == 9999) {
+				numeroFormatado = String.format("%.6f", number);
+			}else {
+				numeroFormatado = String.format("%.6f", number);
+			}
 
 			// retira a vircula do número
 			String mascaraCodigo = numeroFormatado.replace(",", "");
@@ -104,6 +116,7 @@ public class BarcodePdf {
 			document.close();
 
 			return "funcionou";
+
 		} catch (Exception e) {
 			return "deu errado";
 		}
@@ -155,7 +168,7 @@ public class BarcodePdf {
 
 	}
 
-	@RequestMapping(value = "barCodes", method = RequestMethod.GET)
+	@GetMapping(value = "barCodes")
 	public String generatedPdfA(Long[] ids, HttpServletRequest request, HttpServletResponse response)
 			throws FileNotFoundException, JRException, DocumentException {
 
@@ -176,10 +189,23 @@ public class BarcodePdf {
 				Random geradorNumero = new Random();
 
 				// gera um numero aleatório até 10
-				double numeroAletorio = geradorNumero.nextDouble();
-
+				double number = geradorNumero.nextDouble();
+				
+				String numeroFormatado = "";
+				if (id < 10) {
+					numeroFormatado= String.format("%.8f", number);
+					System.out.println("passou 1");
+				}else if(id >=100 && id <=199) {
+					numeroFormatado = String.format("%.6f", number);
+					System.out.println("passou 2");
+				}else if(id >=1000 && id == 9999) {
+					numeroFormatado = String.format("%.5f", number);
+					System.out.println("passou 3");
+				}else {
+					numeroFormatado = String.format("%.6f", number);
+					System.out.println("passou 4");
+				}
 				// formata o numero com 9 casas decimais
-				String numeroFormatado = String.format("%.9f", numeroAletorio);
 
 				// retira a vircula do número
 				String mascaraCodigo = numeroFormatado.replace(",", "");

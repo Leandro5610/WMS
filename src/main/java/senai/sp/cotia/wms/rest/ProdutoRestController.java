@@ -85,7 +85,6 @@ public class ProdutoRestController {
 	public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		try {
-
 			// percorrer os itens do fornecerdor e inserir o produto
 			for (ItemFornecedor itens : produto.getFornecedores()) {
 				itens.setProduto(produto);
@@ -152,7 +151,7 @@ public class ProdutoRestController {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
 		}
 		return ResponseEntity.ok().build();
 	}
@@ -184,7 +183,62 @@ public class ProdutoRestController {
 		if (codProduto != produto.getCodProduto()) {
 			throw new RuntimeException("ID inválido");
 		}
-		// salvar atualizado atualizado
+		try {
+			if(produto.getImagem() != null) {
+				// variavel para guardar a imagem codificada Base64 que está vindo do front
+				String stringImagem = produto.getImagem();
+
+				// variaveis para extrair o que está entre a / e o ;
+				int posicaoBarra = stringImagem.indexOf('/');
+				int posicaoPontoVirgula = stringImagem.indexOf(';');
+
+				// variavel para retirar a / e o ; para pegar a extensão da imagem
+				String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
+
+				// variavel para retirar a / da extensão
+				String extensaoOriginal = extensao.replace("/", "");
+
+				// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
+				// base64 codificado do front-end
+				String base64ImagemString = stringImagem.replace("data:image/" + extensaoOriginal + ";base64,", "");
+
+				// variavel para para decodificar o codigo base64 e converter em um vetor de
+				// bytes
+				byte[] decodificada = Base64.getDecoder().decode(base64ImagemString);
+
+				// variavel para converter o vetor de bytes em um texto
+				String arquivoString = decodificada.toString();
+
+				// variavel para retirar o texto "[B@" da variavel arquivoString
+				String arquivo = arquivoString.replace("[B@", "");
+
+				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
+				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + extensaoOriginal;
+
+				// variavel para guardar o nome do arquivo em um File
+				File file = new File(nomeArquivo);
+
+				// variavel para converter em arquivo e armazenar no sistema do pc
+				FileOutputStream fileInput = new FileOutputStream("temporaria/" + file);
+
+				// variavel para escrever os bytes no arquivo
+				fileInput.write(decodificada);
+
+				// variavel para pegar o caminho da pasta com o arquivo da imagem
+				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
+				fire.uploadFile(file, decodificada);
+				fileInput.close();
+
+				produto.setImagem(file.toString());
+				prodRepo.save(produto);
+				Files.delete(pathFile);
+				return ResponseEntity.ok().build();
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+				// salvar atualizado atualizado
 		prodRepo.save(produto);
 		// criar novo cabeçalho HTTP
 		HttpHeaders header = new HttpHeaders();
