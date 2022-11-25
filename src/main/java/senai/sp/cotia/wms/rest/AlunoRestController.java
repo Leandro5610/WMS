@@ -67,7 +67,7 @@ public class AlunoRestController {
 
 			// verificar se o aluno tem uma imagem
 			if (aluno.getImagem() != null) {
-				// variavel para guardar a imagem codificada Base64 que está vindo do front
+				/*// variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = aluno.getImagem();
 
 				// variaveis para extrair o que está entre a / e o ;
@@ -114,16 +114,13 @@ public class AlunoRestController {
 
 				in.close();
 				// inserir nome da imagem no aluno que está vindo do Front
-				aluno.setImagem(file.toString());
-
+				aluno.setImagem(file.toString());*/
+				/*// excluir imagem da pasta temporaria depois de salvar o aluno
+				Files.delete(pathFile);*/
 				// salva o aluno Banco de Dados
 				repository.save(aluno);
-
-				// excluir imagem da pasta temporaria depois de salvar o aluno
-				Files.delete(pathFile);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			} else {
-
 				// se o usuario não tiver foto ele salva mesmo assim
 				repository.save(aluno);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);

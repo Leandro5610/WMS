@@ -33,7 +33,7 @@ public class Aluno {
 	private String senha;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Turma turma;
-	@Lob
+	@Column(columnDefinition = "LONGTEXT")
 	private String imagem;
 	@Column(unique = true)
 	private String email;
