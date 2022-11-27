@@ -243,7 +243,6 @@ public class PedidoRestController {
 			for (ItemPedido itens : pedido.getItens()) {
 				ItemNota item = new ItemNota();
 				item.setNotaFiscal(nota);
-				;
 				item.setPedido(pedido);
 				item.setProduto(itens.getProduto());
 				item.setQuantidade(itens.getQuantidade());

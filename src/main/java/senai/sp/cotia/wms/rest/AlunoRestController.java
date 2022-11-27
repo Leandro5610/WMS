@@ -305,6 +305,9 @@ public class AlunoRestController {
 		List<Aluno> aln = repository.findAll();
 
 		for (Aluno aluno2 : aln) {
+
+			// verifica se o aluno existe
+
 			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula())
 					&& aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -357,6 +360,8 @@ public class AlunoRestController {
 	 * return ResponseEntity.ok(aluno.get()); } else { return
 	 * ResponseEntity.notFound().build(); } }
 	 */
+
+
 
 	@PostMapping(value = "/buscarEmail/{e}")
 	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {

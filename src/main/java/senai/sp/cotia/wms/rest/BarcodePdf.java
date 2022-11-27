@@ -185,7 +185,7 @@ public class BarcodePdf {
 			// percorre o array de ids para gerar codigos de barras
 			// de acordo com o tamanho do array
 			for (Long id : ids) {
-
+				
 				Random geradorNumero = new Random();
 				Produto product = productRepository.findById(id).get();
 				System.out.println("Nome do produto: " + product.getNome());
