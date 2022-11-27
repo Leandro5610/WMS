@@ -26,6 +26,7 @@ import senai.sp.cotia.wms.model.ItemFornecedor;
 import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.repository.ItemNotaRepository;
+import senai.sp.cotia.wms.repository.PedidoRepository;
 
 @CrossOrigin
 @RestController
@@ -34,6 +35,9 @@ public class ItemNotaRestController {
 
 	@Autowired
 	private ItemNotaRepository itemNotaRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemNota> findItensNota(@PathVariable("id") Long idItens) {
@@ -72,7 +76,7 @@ public class ItemNotaRestController {
 	public Iterable<ItemNota> listarPedidos() {
 		return itemNotaRepository.findAll();
 	}
-
+	
 	// metodo para procurar um item à partir de qualquer atributo
 	@GetMapping(value = "/findbyall/{p}")
 	public List<ItemNota> findByAll(@PathVariable("p") String param) {
@@ -84,4 +88,11 @@ public class ItemNotaRestController {
 	public List<ItemNota> teste(@PathVariable("codigo") Long param) {
 		return itemNotaRepository.pegarNota(param);
 	}
+	
+	@RequestMapping(value ="pedido/{id}", method = RequestMethod.GET)
+	public List<ItemNota> pegarItemsPorPedido(@PathVariable("id") String idPedido) {
+		Long id = Long.parseLong(idPedido);
+		return itemNotaRepository.pegarItensPorPedido(id);
+	}
+
 }

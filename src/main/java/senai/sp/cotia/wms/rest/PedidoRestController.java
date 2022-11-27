@@ -98,21 +98,21 @@ public class PedidoRestController {
 	@RequestMapping(value = "save")
 	public ResponseEntity<Pedido> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
 			HttpServletResponse response) {
-
-		// double total = pedido.totalPedido(pedido);
-
-		
+		int totalProdutos = 0;
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
+				totalProdutos +=itens.getQuantidade();
 			} 
 
 			// pedido.setValor(total);
+			pedido.setTotalItens(totalProdutos);
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat parse = new SimpleDateFormat("dd-MM-yyyy");
-
+			
 			String data = parse.format(c.getTime());
 			pedido.setDataPedido(data);
+			
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
@@ -198,7 +198,7 @@ public class PedidoRestController {
 			for (ItemNota itens : nota.getItens()) {
 				ItemNota itemNota = new ItemNota();
 				itemNota.setNotaFiscal(nota);
-				// itemNota.setItem();
+				;
 				itemNota.setPedido(pedido);
 				itemNotaRepository.save(itemNota);
 			}
@@ -238,13 +238,15 @@ public class PedidoRestController {
 			// nota.setPedido(pedido);
 			nota.setValorTotal(pedido.getValor());
 			// nota.setQuantidade(pedido.getTotalItens());
+			nota.setPedido(pedido);
 			nfRepo.save(nota);
 			for (ItemPedido itens : pedido.getItens()) {
 				ItemNota item = new ItemNota();
 				item.setNotaFiscal(nota);
+				;
 				item.setPedido(pedido);
 				item.setProduto(itens.getProduto());
-				// item.setQuantidade(itens.getQuantidade());
+				item.setQuantidade(itens.getQuantidade());
 				itemNotaRepository.save(item);
 			}
 
@@ -308,5 +310,10 @@ public class PedidoRestController {
 	public List<Pedido>pegaPedidoDoAluno(@PathVariable("id")Long param){
 		return pedidoRepo.pegarPedidosAluno(param);
 	}
+	@GetMapping(value = "pedidosProfessor/{id}")
+	public List<Pedido>pegaPedidoDoProf(@PathVariable("id")Long param){
+		return pedidoRepo.pegarPedidosProf(param);
+	}
+	
 
 }

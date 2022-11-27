@@ -366,7 +366,8 @@ public class AlunoRestController {
 		if (alunoBd.getEmail().equals(aluno.getEmail())) {
 
 			Random random = new Random();
-			alunoBd.setCodigo(random.nextInt(1000));
+			alunoBd.setCodigo(random.nextInt(999) + 1);
+			
 			repository.save(alunoBd);
 			service.sendingEmailAluno(email, alunoBd.getCodigo());
 			return ResponseEntity.ok(aluno);

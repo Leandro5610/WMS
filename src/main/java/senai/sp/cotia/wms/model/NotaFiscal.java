@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import lombok.Data;
 
 @Data
@@ -18,6 +20,8 @@ public class NotaFiscal {
 	private Long codigoNota;
 	private Double valorTotal;
 	private String dataEmissao;
+	@OneToOne
+	private Pedido pedido;
 	@OneToMany(mappedBy = "notaFiscal", cascade = CascadeType.ALL)
 	private List<ItemNota> itens;
 }

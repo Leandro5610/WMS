@@ -96,7 +96,7 @@ public class BarcodePdf {
 
 			Paragraph paragrafo = new Paragraph();
 
-			paragrafo.add("Codigo de Barras  " + nomeProduto);
+			paragrafo.add("Codigo de Barras: " + nomeProduto);
 
 			// inseri as inforções do codigo de barras com a mascara e o identificador do
 			// produto
@@ -124,7 +124,7 @@ public class BarcodePdf {
 	}
 
 	// METODO PARA GERAR O QR CODE DO PRODUTO
-	@RequestMapping(value = "qrcode/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "qrCode/{id}", method = RequestMethod.GET)
 	public String generatedQrCode(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response)
 			throws FileNotFoundException, JRException, DocumentException {
 		// procura o produto no banco de dados
@@ -145,7 +145,7 @@ public class BarcodePdf {
 			document.open();
 
 			// QR Code Barcode
-			document.add(new Paragraph("QR Code do Produto" + pro.get().getNome()));
+			document.add(new Paragraph("QR Code do Produto: " + pro.get().getNome()));
 
 			// cria um qrcode com o id do produto
 			BarcodeQRCode qrcode = new BarcodeQRCode(id + "", 200, 200, null);
@@ -187,7 +187,8 @@ public class BarcodePdf {
 			for (Long id : ids) {
 
 				Random geradorNumero = new Random();
-
+				Produto product = productRepository.findById(id).get();
+				System.out.println("Nome do produto: " + product.getNome());
 				// gera um numero aleatório até 10
 				double number = geradorNumero.nextDouble();
 				
@@ -202,7 +203,7 @@ public class BarcodePdf {
 					numeroFormatado = String.format("%.5f", number);
 					System.out.println("passou 3");
 				}else {
-					numeroFormatado = String.format("%.6f", number);
+					numeroFormatado = String.format("%.7f", number);
 					System.out.println("passou 4");
 				}
 				// formata o numero com 9 casas decimais
@@ -215,7 +216,7 @@ public class BarcodePdf {
 
 				Paragraph paragrafo = new Paragraph();
 
-				paragrafo.add("Codigo de Barras do ");
+				paragrafo.add("Codigo de Barras: " + product.getNome());
 				// gerar o codigo de barras com a mascara e o identificador do produto
 				barcode.setCode(padraoBr + mascaraCodigo + id);
 
@@ -247,18 +248,26 @@ public class BarcodePdf {
 		try {
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+			
 
 			document.open();
-
+			
 			// percorre o array de ids para gerar codigos de barras
 			// de acordo com o tamanho do array
-			for (Long string : ids) {
-
+			for (Long qrCode : ids) {
+				Produto product = productRepository.findById(qrCode).get();
+				
+				Paragraph paragrafo = new Paragraph();
+				
+				paragrafo.add("QR CODE: " + product.getNome());
+				
 				// adicionar o id no qrcode
-				BarcodeQRCode qrcode = new BarcodeQRCode(ids + "", 200, 200, null);
-
+				document.add(paragrafo);
+				
+				BarcodeQRCode qrcode = new BarcodeQRCode(qrCode + "", 200, 200, null);
+				
 				Image image = qrcode.getImage();
-
+				
 				// gerar o pdf com vários qr codes
 				document.add(image);
 
