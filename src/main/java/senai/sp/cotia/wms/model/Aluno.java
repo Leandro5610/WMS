@@ -33,10 +33,40 @@ public class Aluno {
 	private String senha;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Turma turma;
-	@Lob
+	@Column(columnDefinition = "LONGTEXT")
 	private String imagem;
 	@Column(unique = true)
 	private String email;
+<<<<<<< HEAD
+
+	/*
+	 * public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
+	 * BasicTextEncryptor();
+	 * textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
+	 * textEncriptor.encrypt(nome); this.nome = nomeCrip; }
+	 */
+
+	        public void setCodMatricula(String codMatricula) {
+		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
+		textEncriptor.setPasswordCharArray("chaves".toCharArray());
+		String codMatriculaCrip = textEncriptor.encrypt(codMatricula);
+		this.codMatricula = codMatriculaCrip;
+	}
+
+	/*
+	 * public String getNome() { BasicTextEncryptor textDecriptor = new
+	 * BasicTextEncryptor();
+	 * textDecriptor.setPasswordCharArray("chaves".toCharArray()); String nomeDecrip
+	 * = textDecriptor.decrypt(nome); return nomeDecrip; }
+	 */
+
+	public String getCodMatricula() {
+		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
+		textDecriptor.setPasswordCharArray("chaves".toCharArray());
+		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
+		return codMatriculaDecrip;
+	}
+=======
 	private int codigo;
 	
 	 /* public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
@@ -61,6 +91,7 @@ public class Aluno {
 	  String codMatriculaDecrip = textDecriptor.decrypt(codMatricula); return
 	  codMatriculaDecrip; }
 	 
+>>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
 
 	public void setSenha(String senha) {
 		this.senha = HashUtil.hash256(senha);
@@ -70,5 +101,5 @@ public class Aluno {
 		// seta o hash na senha
 		this.senha = hash;
 	}
-	
+
 }

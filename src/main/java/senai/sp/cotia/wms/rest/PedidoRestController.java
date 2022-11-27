@@ -1,4 +1,4 @@
-  package senai.sp.cotia.wms.rest;
+package senai.sp.cotia.wms.rest;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -93,7 +93,7 @@ public class PedidoRestController {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRep;
-	
+
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
 	public ResponseEntity<Pedido> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
@@ -101,11 +101,10 @@ public class PedidoRestController {
 
 		// double total = pedido.totalPedido(pedido);
 
-		
 		try {
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
-			} 
+			}
 
 			// pedido.setValor(total);
 			Calendar c = Calendar.getInstance();
@@ -116,7 +115,7 @@ public class PedidoRestController {
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -217,12 +216,11 @@ public class PedidoRestController {
 			mov.setProduto(itens.getProduto());
 			mov.setTipo(Tipo.ENTRADA);
 			LocalDateTime time = LocalDateTime.now();
-			
+
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			mov.setData(time.format(fmt));
 			mov.setQuantidade(itens.getQuantidade());
 			movRepo.save(mov);
-		
 
 		}
 
@@ -257,23 +255,25 @@ public class PedidoRestController {
 	}
 
 	@GetMapping(value = "teste/{id}")
-	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota,HttpServletRequest request,
+	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		List<ItemNota> list = itemNotaRepository.pegarNota(nota);
-		System.out.println(list.size());
+	      	System.out.println(list.size());
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		Optional<NotaFiscal> notaToda = nfRepo.findById(nota);
 		notaToda.get().getCodigoNota();
 		response.setContentType("apllication/pdf");
 
 		response.addHeader("Content-Disposition", "inline; filename=" + "codigo.pdf");
-		
+
 		try {
 
-			/*LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			String dataFmt = fmt+"";*/
-			 JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/relatorios/notaFiscal.jrxml"));
+			/*
+			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+			 * DateTimeFormatter.ofPattern("dd-MM-yyyy"); String dataFmt = fmt+"";
+			 */
+			JasperReport report = JasperCompileManager
+					.compileReport(getClass().getResourceAsStream("/relatorios/notaFiscal.jrxml"));
 			Map<String, Object> map = new HashMap<>();
 			String dataEmission = notaToda.get().getDataEmissao();
 			String horaEntrada = dataEmission.substring(11);
@@ -283,10 +283,10 @@ public class PedidoRestController {
 			map.put("horaEntrada", horaEntrada);
 
 			String name = "notaFiscal.pdf";
-			
+
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 			JasperExportManager.exportReportToPdfFile(jasperPrint, name);
-			
+
 			File arquivo = new File(name);
 
 			OutputStream output = response.getOutputStream();
@@ -295,18 +295,20 @@ public class PedidoRestController {
 		} catch (JRException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
 
 		return ResponseEntity.ok().build();
 
 	}
+
 	@RequestMapping(value = "/findbypedido/{codigo}")
-    public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {
-        return itemPedidoRep.pegarItens(param);
-    }
-	
+	public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {
+		return itemPedidoRep.pegarItens(param);
+	}
+
 	@GetMapping(value = "pedidosAluno/{id}")
-	public List<Pedido>pegaPedidoDoAluno(@PathVariable("id")Long param){
+	public List<Pedido> pegaPedidoDoAluno(@PathVariable("id") Long param) {
 		return pedidoRepo.pegarPedidosAluno(param);
 	}
 

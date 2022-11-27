@@ -67,7 +67,7 @@ public class AlunoRestController {
 
 			// verificar se o aluno tem uma imagem
 			if (aluno.getImagem() != null) {
-				// variavel para guardar a imagem codificada Base64 que está vindo do front
+				/*// variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = aluno.getImagem();
 
 				// variaveis para extrair o que está entre a / e o ;
@@ -114,16 +114,13 @@ public class AlunoRestController {
 
 				in.close();
 				// inserir nome da imagem no aluno que está vindo do Front
-				aluno.setImagem(file.toString());
-
+				aluno.setImagem(file.toString());*/
+				/*// excluir imagem da pasta temporaria depois de salvar o aluno
+				Files.delete(pathFile);*/
 				// salva o aluno Banco de Dados
 				repository.save(aluno);
-
-				// excluir imagem da pasta temporaria depois de salvar o aluno
-				Files.delete(pathFile);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			} else {
-
 				// se o usuario não tiver foto ele salva mesmo assim
 				repository.save(aluno);
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
@@ -308,6 +305,10 @@ public class AlunoRestController {
 		List<Aluno> aln = repository.findAll();
 
 		for (Aluno aluno2 : aln) {
+<<<<<<< HEAD
+			// verifica se o aluno existe
+=======
+>>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
 			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula())
 					&& aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -361,6 +362,8 @@ public class AlunoRestController {
 	 * ResponseEntity.notFound().build(); } }
 	 */
 
+<<<<<<< HEAD
+=======
 	@PostMapping(value = "/buscarEmail/{e}")
 	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {
 
@@ -392,4 +395,5 @@ public class AlunoRestController {
 				return ResponseEntity.notFound().build();
 			}
 	}
+>>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
 }
