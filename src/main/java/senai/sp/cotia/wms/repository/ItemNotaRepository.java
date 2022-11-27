@@ -21,6 +21,11 @@ public interface ItemNotaRepository extends PagingAndSortingRepository<ItemNota,
 	@Query("SELECT nota.itens FROM NotaFiscal nota WHERE nota.codigoNota = :codigo")
     public List<ItemNota> pegarNota(@Param("codigo") Long param);
 	
+	@Query("SELECT itens.notaFiscal FROM ItemNota itens WHERE itens.pedido.numPedido = :cod")
+	public List<ItemNota> pegarCod(@Param("cod") Long param);
+	
+
+	
 
 }	
    

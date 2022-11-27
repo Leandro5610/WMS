@@ -72,6 +72,12 @@ public class NotaFiscalRestController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@RequestMapping(value = "pega/{cod}", method = RequestMethod.GET)
+	public List<NotaFiscal> vamove(@PathVariable("cod") String param) {
+		Long id = Long.parseLong(param);
+		return nfRepo.pegaPedido(id);
+	}
 
 	
 

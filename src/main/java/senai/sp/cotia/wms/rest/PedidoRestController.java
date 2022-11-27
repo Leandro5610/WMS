@@ -237,6 +237,7 @@ public class PedidoRestController {
 			nota.setDataEmissao(time.format(fmt));
 			// nota.setPedido(pedido);
 			nota.setValorTotal(pedido.getValor());
+			nota.setPedido(pedido);			
 			// nota.setQuantidade(pedido.getTotalItens());
 			nfRepo.save(nota);
 			for (ItemPedido itens : pedido.getItens()) {

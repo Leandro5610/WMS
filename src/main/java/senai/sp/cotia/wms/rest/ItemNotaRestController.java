@@ -84,4 +84,10 @@ public class ItemNotaRestController {
 	public List<ItemNota> teste(@PathVariable("codigo") Long param) {
 		return itemNotaRepository.pegarNota(param);
 	}
+	
+	@RequestMapping(value = "pega/{cod}", method = RequestMethod.GET)
+	public List<ItemNota> vamo(@PathVariable("cod") String param) {
+		Long id = Long.parseLong(param);
+		return itemNotaRepository.pegarCod(id);
+	}
 }
