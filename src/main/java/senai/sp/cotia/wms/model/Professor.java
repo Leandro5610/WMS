@@ -39,19 +39,19 @@ public class Professor {
 	 * textEncriptor.encrypt(nome); this.nome = nomeCrip; }
 	 */
 
-	public void setNif(String nif) {
+	/*public void setNif(String nif) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
 		String nifCrip = textEncriptor.encrypt(nif);
 		this.nif = nifCrip;
-	}
+	}*/
 
-	public String getNif() {
+	/*public String getNif() {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
 		String nifDescrip = textEncriptor.decrypt(nif);
 		return nifDescrip;
-	}
+	}*/
 
 	/*
 	 * public String getNome() { BasicTextEncryptor textEncriptor = new

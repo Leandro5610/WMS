@@ -25,10 +25,8 @@ public class Pedido {
 	private List<ItemPedido> itens;
 	private int totalItens;
 	@OneToOne
-
 	private Professor prof;
-
-	private Professor professor;
+	
 
 	
 	public Double totalPedido(Pedido pedido) {
