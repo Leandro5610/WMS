@@ -1,16 +1,10 @@
 package senai.sp.cotia.wms.rest;
 
-import java.io.File;
-import java.io.FileOutputStream;
+
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Erro;
 import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.Turma;
@@ -86,6 +79,7 @@ public class TurmaRestController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Turma> getTurma(@PathVariable("id") Long idTurma) {
+		
 		Optional<Turma> turma = repo.findById(idTurma);
 		if (turma.isPresent()) {
 			return ResponseEntity.ok(turma.get());
@@ -95,13 +89,13 @@ public class TurmaRestController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deletaUnidades(@PathVariable("id") Long idTurma) {
+	public ResponseEntity<Void> deletaTurma(@PathVariable("id") Long idTurma) {
 		repo.deleteById(idTurma);
 		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public Iterable<Turma> listAluno() {
+	public Iterable<Turma> listTurma() {
 		return repo.findAll();
 	}
 
@@ -112,7 +106,7 @@ public class TurmaRestController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> colocarMemebros(@RequestBody Turma turma, @PathVariable("id") Long id) {
+	public ResponseEntity<Void> colocarMembros(@RequestBody Turma turma, @PathVariable("id") Long id) {
 		if (id != turma.getId()) {
 			throw new RuntimeException("ID Inválido");
 		}

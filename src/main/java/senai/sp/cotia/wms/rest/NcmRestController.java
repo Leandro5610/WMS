@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import senai.sp.cotia.wms.annotation.Privado;
-import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Ncm;
 import senai.sp.cotia.wms.repository.NcmRepository;
 
@@ -27,7 +24,6 @@ import senai.sp.cotia.wms.repository.NcmRepository;
 @RequestMapping("api/ncm")
 public class NcmRestController {
 	
-		
 	@Autowired
 	private NcmRepository ncmRepo;
 	
@@ -44,8 +40,8 @@ public class NcmRestController {
 	}
 	
 	
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Iterable<Ncm> getNotasFiscais(){
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public Iterable<Ncm> getNcm(){
 		return ncmRepo.findAll();
 	}
 	
@@ -58,7 +54,8 @@ public class NcmRestController {
 	
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateNcm(@RequestBody Ncm ncm, @PathVariable("id" )Long id ){
+	public ResponseEntity<Void> updateNcm(@RequestBody Ncm ncm, @PathVariable("id") Long id ){
+		
 		if(id != ncm.getId()) {
 			throw new RuntimeException("Id Inválido");
 		}
@@ -71,7 +68,8 @@ public class NcmRestController {
 	
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Ncm> findAlunos(@PathVariable("id") Long idNcm, HttpServletRequest request, HttpServletResponse response){
+	public ResponseEntity<Ncm> findAlunos(@PathVariable("id") Long idNcm, HttpServletRequest request, HttpServletResponse response) {
+		
 		Optional<Ncm> ncm = ncmRepo.findById(idNcm);
 		if(ncm.isPresent()) {
 			return ResponseEntity.ok(ncm.get());

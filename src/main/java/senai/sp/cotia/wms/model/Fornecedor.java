@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.jasypt.util.text.BasicTextEncryptor;
+
 
 import lombok.Data;
 @Data
@@ -30,7 +30,7 @@ public class Fornecedor {
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
 		String nomeCrip = textEncriptor.encrypt(nome);
 		 this.nome = nomeCrip;
-	}*/
+	}
 	
 	public void setCnpj(String cnpj) {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
@@ -48,7 +48,7 @@ public class Fornecedor {
 		return CnpjDecrip;
 	}
 	
-	/*public String getNome() {
+	public String getNome() {
 		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
 		textDecriptor.setPasswordCharArray("chaves".toCharArray());
 		

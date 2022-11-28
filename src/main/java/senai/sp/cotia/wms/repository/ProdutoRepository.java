@@ -9,6 +9,7 @@ import senai.sp.cotia.wms.model.Produto;
 
 
 public interface ProdutoRepository extends PagingAndSortingRepository<Produto, Long>{
+	
 	@Query("SELECT pro FROM Produto pro WHERE pro.sku LIKE %:p% OR pro.nome LIKE %:p% "
 	+" OR pro.descricao LIKE %:p% "
 	+" OR pro.medida.nome LIKE %:p%"

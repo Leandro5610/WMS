@@ -67,55 +67,56 @@ public class AlunoRestController {
 
 			// verificar se o aluno tem uma imagem
 			if (aluno.getImagem() != null) {
-				/*// variavel para guardar a imagem codificada Base64 que está vindo do front
+				
+				/* variavel para guardar a imagem codificada Base64 que está vindo do front
 				String stringImagem = aluno.getImagem();
 
-				// variaveis para extrair o que está entre a / e o ;
+				 variaveis para extrair o que está entre a / e o ;
 				int posicaoBarra = stringImagem.indexOf('/');
 				int posicaoPontoVirgula = stringImagem.indexOf(';');
 
-				// variavel para retirar a / e o ; para pegar a extensão da imagem
+				 variavel para retirar a / e o ; para pegar a extensão da imagem
 				String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
 
-				// variavel para retirar a / da extensão
+				 variavel para retirar a / da extensão
 				String ex = extensao.replace("/", "");
 
-				// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-				// base64 codificado do front-end
+				 variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
+				 base64 codificado do front-end
 				String base64ImageString = stringImagem.replace("data:image/" + ex + ";base64,", "");
 
-				// variavel para para decodificar o codigo base64 e converter em um vetor de
-				// bytes
+				 variavel para para decodificar o codigo base64 e converter em um vetor de
+				 bytes
 				byte[] decode = Base64.getDecoder().decode(base64ImageString);
 
-				// variavel para converter o vetor de bytes em um texto
+				 variavel para converter o vetor de bytes em um texto
 				String arquivoString = decode.toString();
 
-				// variavel para retirar o texto "[B@" da variavel arquivoString
+				 variavel para retirar o texto "[B@" da variavel arquivoString
 				String arquivo = arquivoString.replace("[B@", "");
 
-				// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
+				 variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
 				String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + ex;
 
-				// variavel para guardar o nome do arquivo em um File
+				 variavel para guardar o nome do arquivo em um File
 				File file = new File(nomeArquivo);
 
-				// variavel para converter em arquivo e armazenar na pasta da raiz da aplicação
+				 variavel para converter em arquivo e armazenar na pasta da raiz da aplicação
 				FileOutputStream in = new FileOutputStream("temporaria/" + file);
 
-				// variavel para escrever os bytes no arquivo
+				 variavel para escrever os bytes no arquivo
 				in.write(decode);
 
-				// pegar o arquivo que foi salvo na pasta temporaria
+				 pegar o arquivo que foi salvo na pasta temporaria
 				Path pathFile = Paths.get("temporaria/" + nomeArquivo);
 
-				// fazer o upload do arquivo no Fire Base (nuvem)
+				 fazer o upload do arquivo no Fire Base (nuvem)
 				fire.uploadFile(file, decode);
 
 				in.close();
-				// inserir nome da imagem no aluno que está vindo do Front
+				 inserir nome da imagem no aluno que está vindo do Front
 				aluno.setImagem(file.toString());*/
-				/*// excluir imagem da pasta temporaria depois de salvar o aluno
+				/*excluir imagem da pasta temporaria depois de salvar o aluno
 				Files.delete(pathFile);*/
 				// salva o aluno Banco de Dados
 				repository.save(aluno);
@@ -126,7 +127,7 @@ public class AlunoRestController {
 				return new ResponseEntity<Object>(HttpStatus.CREATED);
 			}
 		} catch (Exception e) {
-			// TODO: handle exceptionelse {
+			// TODO: handle exceptionelse 
 			e.printStackTrace();
 			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -222,10 +223,6 @@ public class AlunoRestController {
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Aluno> listAluno() {
-		ArrayList<Aluno> list = new ArrayList<Aluno>();
-		list = (ArrayList<Aluno>) repository.findAll();
-		System.out.println(list);
-
 		return repository.findAll();
 	}
 
@@ -240,29 +237,29 @@ public class AlunoRestController {
 	public Iterable<Aluno> findByTurma(@PathVariable("id") Long id) {
 		return repository.findByTurmaId(id);
 	}
+	
 	/*
-	 * @RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET) public
-	 * Aluno findByTurma(@PathVariable("p") String email) { return
-	 * repository.findByEmail(email); }
+	  @RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET) public
+	  Aluno findByTurma(@PathVariable("p") String email) { return
+	  repository.findByEmail(email); }
 	 */
 
 	/*
-	 * @RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET) public
-	 * Aluno confirmaEmail(@PathVariable("p") String email) { Aluno alnEmail =
-	 * repository.findByEmail(email); String emailAln = alnEmail.getEmail(); if
-	 * (emailAln.equals(email)) { return alnEmail; } throw new
-	 * RuntimeException("Email não encontrado"); }
+	  @RequestMapping(value = "/confirma/{p}", method = RequestMethod.GET) public
+	  Aluno confirmaEmail(@PathVariable("p") String email) { Aluno alnEmail =
+	  repository.findByEmail(email); String emailAln = alnEmail.getEmail(); if
+	  (emailAln.equals(email)) { return alnEmail; } throw new
+	  RuntimeException("Email não encontrado"); }
 	 */
 
 	/*
-	 * @RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET) public
-	 * Aluno enviarEmail(@PathVariable("p") String email) { Aluno alunoEmail =
-	 * repository.findByEmail(email); String emailAln = alunoEmail.getEmail(); if
-	 * (emailAln.equals(email)) { service.mandarEmail(alunoEmail, email);
-	 * System.out.println(email); System.out.println(alunoEmail); return alunoEmail;
-	 * }
-	 * 
-	 * throw new RuntimeException("Email não encontrado"); }
+	  @RequestMapping(value = "/sendEmail/{p}", method = RequestMethod.GET) public
+	  Aluno enviarEmail(@PathVariable("p") String email) { Aluno alunoEmail =
+	  repository.findByEmail(email); String emailAln = alunoEmail.getEmail(); if
+	  (emailAln.equals(email)) { service.mandarEmail(alunoEmail, email);
+	  System.out.println(email); System.out.println(alunoEmail); return alunoEmail;
+	  } 
+	  throw new RuntimeException("Email não encontrado"); }
 	 */
 
 	// METODO PARA INSERIR A TURMA NO ALUNO
@@ -305,10 +302,10 @@ public class AlunoRestController {
 		List<Aluno> aln = repository.findAll();
 
 		for (Aluno aluno2 : aln) {
-<<<<<<< HEAD
+
 			// verifica se o aluno existe
-=======
->>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
+
+
 			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula())
 					&& aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -362,8 +359,7 @@ public class AlunoRestController {
 	 * ResponseEntity.notFound().build(); } }
 	 */
 
-<<<<<<< HEAD
-=======
+
 	@PostMapping(value = "/buscarEmail/{e}")
 	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {
 
@@ -395,5 +391,5 @@ public class AlunoRestController {
 				return ResponseEntity.notFound().build();
 			}
 	}
->>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
+
 }

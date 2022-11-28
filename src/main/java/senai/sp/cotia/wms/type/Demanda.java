@@ -1,7 +1,5 @@
 package senai.sp.cotia.wms.type;
 
-
-
 public enum Demanda {
 	BAIXA("baixa"),
 	MEDIA("media"),
