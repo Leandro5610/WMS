@@ -1,23 +1,14 @@
 package senai.sp.cotia.wms.rest;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,18 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-
 import senai.sp.cotia.wms.annotation.Privado;
-import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Professor;
 import senai.sp.cotia.wms.model.TokenWms;
-import senai.sp.cotia.wms.model.Turma;
 import senai.sp.cotia.wms.repository.ProfessorRepository;
 import senai.sp.cotia.wms.services.EmailService;
 import senai.sp.cotia.wms.util.FireBaseUtil;
@@ -84,6 +71,7 @@ public class ProfessorRestController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Professor> getProfessores(@PathVariable("id") Long idUni) {
+		
 		Optional<Professor> prof = repo.findById(idUni);
 		if (prof.isPresent()) {
 			return ResponseEntity.ok(prof.get());
@@ -100,6 +88,7 @@ public class ProfessorRestController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> atualizarProfessor(@PathVariable("id") Long id, @RequestBody Professor professor) {
+		
 		if (id != professor.getId()) {
 			throw new RuntimeException("id invalido");
 		}
@@ -179,6 +168,7 @@ public class ProfessorRestController {
 	// METODO PARA RECUPERAR A SENHA
 	@RequestMapping(value = "recuperarSenha/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> recuperaSenha(@RequestBody Professor professor, @PathVariable("id") Long id) {
+		
 		if (id != professor.getId()) {
 			throw new RuntimeException("Id Inválido");
 		}

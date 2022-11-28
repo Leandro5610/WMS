@@ -1,28 +1,19 @@
 package senai.sp.cotia.wms.rest;
 
-import java.io.File;
+
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.StyleConstants.ColorConstants;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -32,12 +23,8 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.Barcode128;
 import com.itextpdf.text.pdf.BarcodeQRCode;
-import com.itextpdf.text.pdf.PdfFormXObject;
 import com.itextpdf.text.pdf.PdfWriter;
-
 import net.sf.jasperreports.engine.JRException;
-import senai.sp.cotia.wms.annotation.Privado;
-import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
 
@@ -134,11 +121,12 @@ public class BarcodePdf {
 		Document document = new Document(new Rectangle(PageSize.A4));
 		try {
 			/*
-			 * CASO PRECISE // coloca na reposta o formato do arquivo
-			 * response.setContentType("apllication/pdf"); // cria o arquivo com o nome
-			 * qrCode response.addHeader("Content-Disposition", "inline; filename=" +
-			 * "qrCode.pdf");
+			  CASO PRECISE // coloca na reposta o formato do arquivo
+			  response.setContentType("apllication/pdf"); // cria o arquivo com o nome
+			  qrCode response.addHeader("Content-Disposition", "inline; filename=" +
+			  "qrCode.pdf");
 			 */
+			
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 

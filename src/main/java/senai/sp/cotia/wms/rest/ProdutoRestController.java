@@ -1,44 +1,26 @@
 package senai.sp.cotia.wms.rest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -46,13 +28,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import senai.sp.cotia.wms.model.Aluno;
-import senai.sp.cotia.wms.model.Fornecedor;
 import senai.sp.cotia.wms.model.ItemFornecedor;
-import senai.sp.cotia.wms.model.ItemNota;
-import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Movimentacao;
-import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
 import senai.sp.cotia.wms.repository.FornecedorRepository;
 import senai.sp.cotia.wms.repository.ItemFornecedorRepository;
@@ -84,6 +61,7 @@ public class ProdutoRestController {
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveProduto(@RequestBody Produto produto, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
+		
 		try {
 			// percorrer os itens do fornecerdor e inserir o produto
 			for (ItemFornecedor itens : produto.getFornecedores()) {
@@ -110,13 +88,14 @@ public class ProdutoRestController {
 
 	// MÉTODO PARA LISTAR OS PRODUTOS
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public Iterable<Produto> listarPedidos() {
+	public Iterable<Produto> listarProdutos() {
 		return prodRepo.findAll();
 	}
 
 	// MÉTODO PARA BUSCAR PRODUTO NO BANCO
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Produto> findProduto(@PathVariable("id") Long codProduto) {
+		
 		// buscar pedido
 		Optional<Produto> produto = prodRepo.findById(codProduto);
 

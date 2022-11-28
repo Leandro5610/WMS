@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.file.Path;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +104,7 @@ public class EnderecamentoRestController implements ServletContextAware {
 		}
 		repository.save(enderecamento);
 		HttpHeaders header = new HttpHeaders();
-		header.setLocation(URI.create("/api/aluno"));
+		header.setLocation(URI.create("/api/enderecamento"));
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 
 	}
@@ -114,6 +112,7 @@ public class EnderecamentoRestController implements ServletContextAware {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Enderecamento> findEnderecamento(@PathVariable("id") Long idEnderecamento,
 			HttpServletRequest request, HttpServletResponse response) {
+		
 		Optional<Enderecamento> enderecemento = repository.findById(idEnderecamento);
 		if (enderecemento.isPresent()) {
 			return ResponseEntity.ok(enderecemento.get());
@@ -130,6 +129,7 @@ public class EnderecamentoRestController implements ServletContextAware {
 	// METODO PARA GERAR RELATÓRIO DO ESTOQUE GERAL
 	@GetMapping(value = "relatorio")
 	public ResponseEntity<Object> relatorioEstoque(HttpServletRequest request, HttpServletResponse response) {
+		
 		// lista de todos os endereçamentos
 		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
 		// passando a lista de endereçamentos para collection
@@ -174,43 +174,44 @@ public class EnderecamentoRestController implements ServletContextAware {
 	}
 
 	/*
-	 * @GetMapping(value = "relatoriooo") public ResponseEntity<Object>
-	 * relatorioEstoqueAbc(HttpServletRequest request, HttpServletResponse reponse)
-	 * { List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
-	 * 
-	 * JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
-	 * Calendar calendar = Calendar.getInstance();
-	 * 
-	 * int yearInt = calendar.get(Calendar.YEAR);
-	 * 
-	 * try { JasperReport report =
-	 * JasperCompileManager.compileReport("src/main/java/relatorios/ABC.jrxml");
-	 * 
-	 * String year = yearInt + "";
-	 * 
-	 * Map<String, Object> map = new HashMap<>(); map.put("CollectionData", dados);
-	 * //variavel para mandar o ano atual para o relatório map.put("year", year); //
-	 * String name = "relatorio.pdf";
-	 * 
-	 * String nameXml = "relatorio.xml";
-	 * 
-	 * JasperPrint print = JasperFillManager.fillReport(report, map, dados);
-	 * 
-	 * JasperExportManager.exportReportToPdfFile(print, name);
-	 * 
-	 * JasperExportManager.exportReportToXmlFile(print, name, true);
-	 * 
-	 * } catch (JRException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); }
-	 * 
-	 * return ResponseEntity.ok().build();
-	 * 
-	 * }
+	  @GetMapping(value = "relatoriooo") public ResponseEntity<Object>
+	  relatorioEstoqueAbc(HttpServletRequest request, HttpServletResponse reponse)
+	  { List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
+	  
+	  JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
+	  Calendar calendar = Calendar.getInstance();
+	  
+	  int yearInt = calendar.get(Calendar.YEAR);
+	 
+	  try { JasperReport report =
+	  JasperCompileManager.compileReport("src/main/java/relatorios/ABC.jrxml");
+	  
+	  String year = yearInt + "";
+	  
+	  Map<String, Object> map = new HashMap<>(); map.put("CollectionData", dados);
+	  //variavel para mandar o ano atual para o relatório map.put("year", year); //
+	  String name = "relatorio.pdf";
+	  
+	  String nameXml = "relatorio.xml";
+	  
+	  JasperPrint print = JasperFillManager.fillReport(report, map, dados);
+	  
+	  JasperExportManager.exportReportToPdfFile(print, name);
+	  
+	  JasperExportManager.exportReportToXmlFile(print, name, true);
+	  
+	 } catch (JRException e) { // TODO Auto-generated catch block
+	  e.printStackTrace(); }
+	  
+	  return ResponseEntity.ok().build();
+	  
+	  }
 	 */
 
-	@GetMapping(value = "relatorioo")
+	@GetMapping(value = "relatorioABC")
 	public ResponseEntity<Object> relatorioABC(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
+		
 		List<Enderecamento> list = (List<Enderecamento>) repository.findAll();
 
 		JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(list);
@@ -253,15 +254,15 @@ public class EnderecamentoRestController implements ServletContextAware {
 			exporter.setParameter(JRXlsExporterParameter.OUTPUT_FILE_NAME, nameXml);
 			exporter.exportReport();
 
-			// criando um arquvio como o nome do relatório
-			//File arquivo = new File(resource.getURI()+"/relatorio.xls");
+			/* criando um arquvio como o nome do relatório
+			File arquivo = new File(resource.getURI()+"/relatorio.xls");
 			
-			// pegando o caminho da requsição
-			//OutputStream output = response.getOutputStream();
-			// mandando o relatório para o front-end
-			// para ser feito o download
+			 pegando o caminho da requsição
+			OutputStream output = response.getOutputStream();
+			 mandando o relatório para o front-end
+			 para ser feito o download
 			
-			//Files.copy(arquivo, output);
+			Files.copy(arquivo, output);*/
 			
 			return ResponseEntity.ok(nomeAleatorio);
 		} catch (JRException e) {

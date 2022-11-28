@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
-
-import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.Professor;
 
 public interface ProfessorRepository extends PagingAndSortingRepository<Professor, Long> {

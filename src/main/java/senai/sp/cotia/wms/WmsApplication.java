@@ -16,12 +16,16 @@ public class WmsApplication {
 		SpringApplication.run(WmsApplication.class, args);
 	}
 
+
 	// Definindo o tempo para deletar os arquivos da pasta relatórios
 	// Toda a quarta-feira as 13:00 da tarde
 	@Scheduled(cron = "0 13 * * 3 *")
 	public void task() throws Exception {
 		String nameXml = new File("src\\main\\resources\\static\\relatorios").getAbsolutePath();
 		File file = new File(nameXml);
+
 	}
 
+
 }
+	

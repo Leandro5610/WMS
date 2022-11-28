@@ -1,18 +1,15 @@
 package senai.sp.cotia.wms.rest;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,6 +30,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import senai.sp.cotia.wms.model.Movimentacao;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
+
 @CrossOrigin
 @RestController
 @RequestMapping("api/movimentacao/")
