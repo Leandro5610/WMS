@@ -56,7 +56,7 @@ public class UnidadeMedidaRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> atualizaUnidades(@PathVariable("id")Long id,@RequestBody UnidadeMedida unidade){
+	public ResponseEntity<Void> atualizaUnidades(@PathVariable("id")Long id, @RequestBody UnidadeMedida unidade){
 			if(id != unidade.getId() ) {
 				throw new RuntimeException("id invalido");	
 			}

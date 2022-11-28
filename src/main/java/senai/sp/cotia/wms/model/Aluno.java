@@ -34,6 +34,9 @@ public class Aluno {
 	private String email;
 	private int codigo;
 
+
+
+
 	/*
 	
 	  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
@@ -62,13 +65,18 @@ public class Aluno {
 		return codMatriculaDecrip;
 	}
 
+
 	
+
+	
+
 	
 	  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
 	  BasicTextEncryptor();
 	  textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
 	  textEncriptor.encrypt(nome); this.nome = nomeCrip; }
 	  
+
 	  public void setCodMatricula(String codMatricula) { BasicTextEncryptor
 	  textEncriptor = new BasicTextEncryptor();
 	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
@@ -86,6 +94,7 @@ public class Aluno {
 	  String codMatriculaDecrip = textDecriptor.decrypt(codMatricula); return
 	  codMatriculaDecrip; }
 	 */
+
 
 
 	public void setSenha(String senha) {

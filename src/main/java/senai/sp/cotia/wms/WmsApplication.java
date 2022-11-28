@@ -24,7 +24,8 @@ public class WmsApplication {
 		String nameXml = new File("src\\main\\resources\\static\\relatorios").getAbsolutePath();
 		File file = new File(nameXml);
 
+	}
+
 
 }
 	
-}

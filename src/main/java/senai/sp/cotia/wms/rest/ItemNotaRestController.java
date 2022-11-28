@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import senai.sp.cotia.wms.model.ItemNota;
 import senai.sp.cotia.wms.repository.ItemNotaRepository;
+import senai.sp.cotia.wms.repository.PedidoRepository;
 
 @CrossOrigin
 @RestController
@@ -24,6 +25,9 @@ public class ItemNotaRestController {
 
 	@Autowired
 	private ItemNotaRepository itemNotaRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemNota> findItensNota(@PathVariable("id") Long idItens) {
@@ -62,7 +66,7 @@ public class ItemNotaRestController {
 	public Iterable<ItemNota> listarPedidos() {
 		return itemNotaRepository.findAll();
 	}
-
+	
 	// metodo para procurar um item à partir de qualquer atributo
 	@GetMapping(value = "/findbyall/{p}")
 	public List<ItemNota> findByAll(@PathVariable("p") String param) {
@@ -75,6 +79,12 @@ public class ItemNotaRestController {
 		return itemNotaRepository.pegarNota(param);
 	}
 	
+	@RequestMapping(value ="pedido/{id}", method = RequestMethod.GET)
+	public List<ItemNota> pegarItemsPorPedido(@PathVariable("id") String idPedido) {
+		Long id = Long.parseLong(idPedido);
+		return itemNotaRepository.pegarItensPorPedido(id);
+	}
+
 	@RequestMapping(value = "pega/{cod}", method = RequestMethod.GET)
 	public List<ItemNota> vamo(@PathVariable("cod") String param) {
 		Long id = Long.parseLong(param);
