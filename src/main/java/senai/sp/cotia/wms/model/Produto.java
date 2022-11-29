@@ -46,7 +46,6 @@ public class Produto {
 	@OneToMany(mappedBy = "produto")
 	private List<Movimentacao> movimentacoes;
 	
-
 	public int getSaldo() {
 		int total = 0;
 		for (Movimentacao m : movimentacoes) {
@@ -62,18 +61,17 @@ public class Produto {
 				
 		return total;
 	}
-	public double getValorLiquido() {
+	/*public double getValorLiquido() {
 		double valorLiquido = 0;
 		double valorIpi = ipi * valorUnitario / 100;
 		double valorIcms = icms * valorUnitario / 100;
 		double valorCofins = cofins * valorUnitario / 100;
 		double valorPis = pis * valorUnitario / 100;
-		double importacao = valorImportacao / 100;
 		double valor = valorCofins + valorIcms + valorIpi + valorPis;
 		valorLiquido = valor;
 		return valorLiquido;
 		
-	}
+	}*/
 	
 	
 }
