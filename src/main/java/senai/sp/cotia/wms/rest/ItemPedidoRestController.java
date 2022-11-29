@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import senai.sp.cotia.wms.model.ItemPedido;
+import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.repository.ItemPedidoRepository;
+import senai.sp.cotia.wms.repository.PedidoRepository;
 
 @CrossOrigin
 @RestController
@@ -25,6 +27,9 @@ public class ItemPedidoRestController {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private PedidoRepository pedRepo;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemPedido> findItemPedido(@PathVariable("id") Long idItens) {
@@ -69,6 +74,26 @@ public class ItemPedidoRestController {
 	public List<ItemPedido> findByAll(@PathVariable("p") String param) {
 		return itemPedidoRepository.procurarTudo(param);
 	}
+	
+	// metodo para procurar um item à partir de qualquer atributo
+	@GetMapping(value = "/findbyall/{cod}/{p}")
+	public List<ItemPedido> procurar(@PathVariable("cod") Long codigo, @PathVariable("p") String param) {
+		return itemPedidoRepository.pesquisarItensPedido(codigo, param);
+	}
+	
+	/*
+	// metodo para procurar um item à partir de qualquer atributo
+		@GetMapping(value = "/{id}/findbyall/{p}")
+		public List<ItemPedido> findByPedido(@PathVariable("p") String param, @PathVariable("id") Long idItens, 
+				@RequestBody Pedido itens) {
+			Optional<Pedido> item = pedRepo.findById(idItens);
+			if (idItens == item.get().getNumPedido()) {
+				return itemPedidoRepository.procurarTudo(param);
+			}else {
+				throw new RuntimeException("ID Inválido");
+			}
+				
+		}*/
 
 	@RequestMapping(value = "/findbypedido/{codigo}")
 	public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {

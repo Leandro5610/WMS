@@ -33,7 +33,7 @@ public class Aluno {
 	@Column(unique = true)
 	private String email;
 	private int codigo;
-<<<<<<< HEAD
+
 
 	/*
 	 * public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
@@ -43,7 +43,7 @@ public class Aluno {
 	 */
 
 	 /*       public void setCodMatricula(String codMatricula) {
-=======
+
 
 
 
@@ -56,12 +56,12 @@ public class Aluno {
 	 textEncriptor.encrypt(nome); this.nome = nomeCrip; }
 	 
 	        public void setCodMatricula(String codMatricula) {
->>>>>>> 2058cb1781bc8438a1e6a47ed22db33e45db15ac
+
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
 		String codMatriculaCrip = textEncriptor.encrypt(codMatricula);
 		this.codMatricula = codMatriculaCrip;
-	}*/
+	}
 
 	
 	  public String getNome() { BasicTextEncryptor textDecriptor = new
@@ -75,13 +75,9 @@ public class Aluno {
 		textDecriptor.setPasswordCharArray("chaves".toCharArray());
 		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
 		return codMatriculaDecrip;
-	}*/
+	}
 
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 2058cb1781bc8438a1e6a47ed22db33e45db15ac
 	
 
 	

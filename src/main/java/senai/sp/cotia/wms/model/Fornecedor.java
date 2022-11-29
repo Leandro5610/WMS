@@ -38,15 +38,15 @@ public class Fornecedor {
 		
 		String cnpjCrip = textEncriptor.encrypt(cnpj);
 		 this.cnpj = cnpjCrip;
-	}*/
-	
+	}
+
 	/*public String getCnpj() {
 		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();
 		textDecriptor.setPasswordCharArray("chaves".toCharArray());
 		
 		String CnpjDecrip = textDecriptor.decrypt(cnpj);
 		return CnpjDecrip;
-	}*/
+	}
 	
 	public String getNome() {
 		BasicTextEncryptor textDecriptor = new BasicTextEncryptor();

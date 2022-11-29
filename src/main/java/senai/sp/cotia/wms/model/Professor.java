@@ -32,34 +32,34 @@ public class Professor {
 	private int codigo;
 
 	/*
-<<<<<<< HEAD
-	 * public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
-	 * BasicTextEncryptor();
-	 * textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
-	 * textEncriptor.encrypt(nome); this.nome = nomeCrip; }
+
+	  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
+	  BasicTextEncryptor();
+	  textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
+	  textEncriptor.encrypt(nome); this.nome = nomeCrip; }
 	 */
 
 	/*public void setNif(String nif) {
-=======
+
 	  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
 	  BasicTextEncryptor();
 	  textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
 	  textEncriptor.encrypt(nome); this.nome = nomeCrip; }
 	 
 	public void setNif(String nif) {
->>>>>>> 2058cb1781bc8438a1e6a47ed22db33e45db15ac
+
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
 		String nifCrip = textEncriptor.encrypt(nif);
 		this.nif = nifCrip;
-	}*/
+	}
 
-	/*public String getNif() {
+	public String getNif() {
 		BasicTextEncryptor textEncriptor = new BasicTextEncryptor();
 		textEncriptor.setPasswordCharArray("chaves".toCharArray());
 		String nifDescrip = textEncriptor.decrypt(nif);
 		return nifDescrip;
-	}*/
+	}
 
 	
 	  public String getNome() { BasicTextEncryptor textEncriptor = new
