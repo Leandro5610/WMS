@@ -14,4 +14,7 @@ public interface FornecedorRepository extends PagingAndSortingRepository<Fornece
 			+ " OR fornecedor.cep LIKE %:p% OR fornecedor.logradouro LIKE %:p% OR fornecedor.localidade LIKE %:p%" 
 			+" OR fornecedor.uf LIKE %:p% OR fornecedor.homologado LIKE %:p%" )
    public List<Fornecedor> procurarTudo(@Param("p") String param);
+	
+	@Query("SELECT forn FROM Fornecedor forn WHERE forn.homologado ='1' ")
+	public List<Fornecedor> fornecedoresHomologados();
 }

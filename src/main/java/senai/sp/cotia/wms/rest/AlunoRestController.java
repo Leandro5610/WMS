@@ -305,10 +305,9 @@ public class AlunoRestController {
 		List<Aluno> aln = repository.findAll();
 
 		for (Aluno aluno2 : aln) {
-<<<<<<< HEAD
+
 			// verifica se o aluno existe
-=======
->>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
+
 			if (aluno.getCodMatricula().equals(aluno2.getCodMatricula())
 					&& aluno.getSenha().equals(aluno2.getSenha())) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -322,7 +321,7 @@ public class AlunoRestController {
 				expiracao.add(Calendar.HOUR, 12);
 
 				Algorithm algoritimo = Algorithm.HMAC256(SECRET);
-
+      
 				TokenWms token = new TokenWms();
 				token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
 						.sign(algoritimo));
@@ -362,8 +361,8 @@ public class AlunoRestController {
 	 * ResponseEntity.notFound().build(); } }
 	 */
 
-<<<<<<< HEAD
-=======
+
+
 	@PostMapping(value = "/buscarEmail/{e}")
 	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {
 
@@ -395,5 +394,5 @@ public class AlunoRestController {
 				return ResponseEntity.notFound().build();
 			}
 	}
->>>>>>> 9458992ac7d41879f284f014372b9948e2c0dee4
+
 }
