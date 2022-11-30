@@ -18,4 +18,9 @@ public interface PedidoRepository extends PagingAndSortingRepository<Pedido, Lon
 	@Query("SELECT ped FROM Pedido ped WHERE aluno.id =:id ")
 	public List<Pedido> pegarPedidosAluno(@Param("id") Long id);
 	
+	@Query("SELECT ped FROM Pedido ped WHERE prof.id =:id ")
+	public List<Pedido> pegarPedidosProf(@Param("id") Long id);
+	
+	public Pedido findBynumPedido(@Param("id") Long id);
+	
 }

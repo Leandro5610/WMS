@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import senai.sp.cotia.wms.model.ItemNota;
+import senai.sp.cotia.wms.model.Pedido;
 
 public interface ItemNotaRepository extends PagingAndSortingRepository<ItemNota, Long> {
 	
@@ -20,6 +21,14 @@ public interface ItemNotaRepository extends PagingAndSortingRepository<ItemNota,
 	
 	@Query("SELECT nota.itens FROM NotaFiscal nota WHERE nota.codigoNota = :codigo")
     public List<ItemNota> pegarNota(@Param("codigo") Long param);
+	
+	@Query("SELECT sexo FROM ItemNota sexo WHERE sexo.pedido = :p")
+	public List<ItemNota> pegarItensPorPedido(@Param("p") Long id);
+
+	@Query("SELECT itens.notaFiscal FROM ItemNota itens WHERE itens.pedido.numPedido = :cod")
+	public List<ItemNota> pegarCod(@Param("cod") Long param);
+	
+
 	
 
 }	

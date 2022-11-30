@@ -16,6 +16,7 @@ public class WmsApplication {
 		SpringApplication.run(WmsApplication.class, args);
 	}
 
+
 	// Definindo o tempo para deletar os arquivos da pasta relatórios
 	// Toda a quarta-feira as 13:00 da tarde
 	// Definindo o tempo para deletar os arquivos da pasta relatórios
@@ -25,10 +26,13 @@ public class WmsApplication {
 		String nameXml = new File("src\\main\\resources\\static\\relatorios").getAbsolutePath();
 		File file = new File(nameXml);
 
+
 		for (File f : file.listFiles()) {
 			f.delete();
 		}
 
 	}
 
+
 }
+	

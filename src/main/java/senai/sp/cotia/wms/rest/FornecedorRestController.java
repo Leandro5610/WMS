@@ -3,11 +3,9 @@ package senai.sp.cotia.wms.rest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import senai.sp.cotia.wms.annotation.Privado;
-import senai.sp.cotia.wms.model.Aluno;
-import senai.sp.cotia.wms.model.Enderecamento;
 import senai.sp.cotia.wms.model.Fornecedor;
 import senai.sp.cotia.wms.repository.FornecedorRepository;
 
@@ -38,8 +32,8 @@ public class FornecedorRestController {
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> saveFornecedor(@RequestBody Fornecedor fornecedor, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
+		
 		try {
-
 			repository.save(fornecedor);
 			return ResponseEntity.ok(HttpStatus.CREATED);
 		} catch (Exception e) {

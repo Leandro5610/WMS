@@ -18,10 +18,13 @@ public interface ItemPedidoRepository extends PagingAndSortingRepository<ItemPed
 	public List<ItemPedido> procurarItemPedido(@Param("p") String param);
 	
 	//metodo para procurar itens no banco de dados por qualquer atributo
-	@Query("SELECT itens FROM ItemPedido itens WHERE itens.pedido LIKE %:p% OR itens.produto LIKE %:p% " + "OR itens.quantidade LIKE %:p% ")
+	@Query("SELECT itens FROM ItemPedido itens WHERE itens.produto.nome LIKE %:p% " + "OR itens.quantidade LIKE %:p% ")
 	public List<ItemPedido> procurarTudo(@Param("p") String param);
 	
-	@Query("SELECT p.itens FROM Pedido p WHERE p.numPedido = :codigo ")
+	@Query("SELECT p.itens FROM Pedido p WHERE p.numPedido = :codigo")
     public List<ItemPedido> pegarItens(@Param("codigo") Long param);
+	
+	@Query("SELECT itens FROM ItemPedido itens WHERE itens.pedido.numPedido = :cod AND itens.produto.nome LIKE %:p% ")
+	public List<ItemPedido> pesquisarItensPedido(@Param("cod") Long codigo, @Param("p") String param);
 
 }

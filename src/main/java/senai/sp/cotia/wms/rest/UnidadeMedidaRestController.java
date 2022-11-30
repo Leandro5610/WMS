@@ -2,11 +2,6 @@ package senai.sp.cotia.wms.rest;
 
 import java.net.URI;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpHeaders;
@@ -19,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import senai.sp.cotia.wms.model.Turma;
-import senai.sp.cotia.wms.model.Aluno;
 import senai.sp.cotia.wms.model.UnidadeMedida;
 import senai.sp.cotia.wms.repository.UnidadeMedidaRepository;
 
@@ -64,7 +56,7 @@ public class UnidadeMedidaRestController {
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> atualizaUnidades(@PathVariable("id")Long id, UnidadeMedida unidade){
+	public ResponseEntity<Void> atualizaUnidades(@PathVariable("id")Long id, @RequestBody UnidadeMedida unidade){
 			if(id != unidade.getId() ) {
 				throw new RuntimeException("id invalido");	
 			}

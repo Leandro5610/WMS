@@ -3,16 +3,10 @@ package senai.sp.cotia.wms.rest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import senai.sp.cotia.wms.annotation.Privado;
-import senai.sp.cotia.wms.model.ItemFornecedor;
 import senai.sp.cotia.wms.model.ItemNota;
-import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.repository.ItemNotaRepository;
+import senai.sp.cotia.wms.repository.PedidoRepository;
 
 @CrossOrigin
 @RestController
@@ -34,6 +25,9 @@ public class ItemNotaRestController {
 
 	@Autowired
 	private ItemNotaRepository itemNotaRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<ItemNota> findItensNota(@PathVariable("id") Long idItens) {
@@ -72,7 +66,7 @@ public class ItemNotaRestController {
 	public Iterable<ItemNota> listarPedidos() {
 		return itemNotaRepository.findAll();
 	}
-
+	
 	// metodo para procurar um item à partir de qualquer atributo
 	@GetMapping(value = "/findbyall/{p}")
 	public List<ItemNota> findByAll(@PathVariable("p") String param) {
@@ -83,5 +77,17 @@ public class ItemNotaRestController {
 	@RequestMapping(value = "teste/{codigo}", method = RequestMethod.GET)
 	public List<ItemNota> teste(@PathVariable("codigo") Long param) {
 		return itemNotaRepository.pegarNota(param);
+	}
+	
+	@RequestMapping(value ="pedido/{id}", method = RequestMethod.GET)
+	public List<ItemNota> pegarItemsPorPedido(@PathVariable("id") String idPedido) {
+		Long id = Long.parseLong(idPedido);
+		return itemNotaRepository.pegarItensPorPedido(id);
+	}
+
+	@RequestMapping(value = "pega/{cod}", method = RequestMethod.GET)
+	public List<ItemNota> vamo(@PathVariable("cod") String param) {
+		Long id = Long.parseLong(param);
+		return itemNotaRepository.pegarCod(id);
 	}
 }

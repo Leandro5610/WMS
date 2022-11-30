@@ -1,32 +1,16 @@
 package senai.sp.cotia.wms.rest;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.hibernate.boot.model.naming.ImplicitTenantIdColumnNameSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,19 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.itextpdf.text.pdf.AcroFields.Item;
-import senai.sp.cotia.wms.annotation.Privado;
-import senai.sp.cotia.wms.model.Aluno;
-import senai.sp.cotia.wms.annotation.Publico;
-import senai.sp.cotia.wms.model.Enderecamento;
-import senai.sp.cotia.wms.model.Estoque;
-import senai.sp.cotia.wms.model.ItemFornecedor;
-import senai.sp.cotia.wms.model.ItemPedido;
 import senai.sp.cotia.wms.model.Movimentacao;
-import senai.sp.cotia.wms.model.Pedido;
 import senai.sp.cotia.wms.model.Produto;
-import senai.sp.cotia.wms.model.UnidadeMedida;
 import senai.sp.cotia.wms.repository.MovimentacaoRepository;
 import senai.sp.cotia.wms.repository.ProdutoRepository;
 import senai.sp.cotia.wms.type.Tipo;
@@ -108,7 +81,7 @@ public class MovimentacaoRestController {
 	}
 
 	
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Iterable<Movimentacao> listarMovimentacao() {
 		return movimentacaoRepository.findAll();
 
@@ -152,34 +125,34 @@ public class MovimentacaoRestController {
 	}
 
 	/*
-	 * @RequestMapping(value = "teste", method = RequestMethod.GET) public
-	 * ResponseEntity<Object> realizarEntrada(Movimentacao mov) {
-	 * 
-	 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
-	 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-	 * mov.setData(time.format(fmt)); mov.setTipo(Tipo.ENTRADA); return
-	 * ResponseEntity.ok().build(); }
+	  @RequestMapping(value = "teste", method = RequestMethod.GET) public
+	  ResponseEntity<Object> realizarEntrada(Movimentacao mov) {
+	  
+	  LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+	  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	  mov.setData(time.format(fmt)); mov.setTipo(Tipo.ENTRADA); return
+	  ResponseEntity.ok().build(); }
 	 */
 
 	/*
-	 * public Object realizarSaida(Movimentacao mov) {
-	 * 
-	 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
-	 * DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-	 * mov.setData(time.format(fmt)); mov.setTipo(Tipo.SAIDA);
-	 * 
-	 * return mov;
-	 * 
-	 * }
+	  public Object realizarSaida(Movimentacao mov) {
+	 
+	  LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+	  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	  mov.setData(time.format(fmt)); mov.setTipo(Tipo.SAIDA);
+	  
+	  return mov;
+	  
+	  }
 	 */
 
 	/*
-	 * public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento
-	 * enderecamento, Estoque est, ItemPedido itens) { int saldo = est.getSaldo();
-	 * //est.setDiponivel(); int qtd = itens.getQuantidade(); est.setSaldo(qtd);
-	 * return ResponseEntity.ok().build();
-	 * 
-	 * }
+	  public ResponseEntity<Object> adicionar(Movimentacao mov, Enderecamento
+	  enderecamento, Estoque est, ItemPedido itens) { int saldo = est.getSaldo();
+	 //est.setDiponivel(); int qtd = itens.getQuantidade(); est.setSaldo(qtd);
+	  return ResponseEntity.ok().build();
+	  
+	  }
 	 */
 	
 	/*@RequestMapping(value = "saldo/{p}", method = RequestMethod.GET)
@@ -203,7 +176,7 @@ public class MovimentacaoRestController {
 	
 	
 
-	@GetMapping(value = "/mostraSaldo" )
+	@GetMapping(value = "/mostraSaldo")
 	public int  saldo() {
 		Produto p = new Produto();
 		return p.getSaldo();
