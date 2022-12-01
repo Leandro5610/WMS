@@ -15,7 +15,7 @@ public interface NotaFiscalRepository extends PagingAndSortingRepository<NotaFis
    public List<NotaFiscal> procurarTudo(@Param("p") String param);*/
 	
 	@Query("SELECT nota FROM NotaFiscal nota WHERE nota.pedido.id = :cod")
-	public List<NotaFiscal> pegaPedido(@Param("cod") Long param);
+	public NotaFiscal pegaPedido(@Param("cod") Long param);
 	
 	
 	

@@ -32,10 +32,7 @@ public class Aluno {
 	private String imagem;
 	@Column(unique = true)
 	private String email;
-<<<<<<< HEAD
-=======
 	private int codigo;
->>>>>>> 41aec6ade8b2b00b43aff43183e3f90a8c785b2c
 
 
 	/*
@@ -46,9 +43,6 @@ public class Aluno {
 	 */
 
 	 /*       public void setCodMatricula(String codMatricula) {
-
-
-
 
 
 	/*
@@ -79,46 +73,7 @@ public class Aluno {
 		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
 		return codMatriculaDecrip;
 	}
-
-<<<<<<< HEAD
-	private int codigo;
-=======
-
->>>>>>> 41aec6ade8b2b00b43aff43183e3f90a8c785b2c
-	
-
-	
-
-	
-	  public void setNome(String nome) { BasicTextEncryptor textEncriptor = new
-	  BasicTextEncryptor();
-	  textEncriptor.setPasswordCharArray("chaves".toCharArray()); String nomeCrip =
-	  textEncriptor.encrypt(nome); this.nome = nomeCrip; }
-	  
-<<<<<<< HEAD
-	
-=======
-
-	  public void setCodMatricula(String codMatricula) { BasicTextEncryptor
-	  textEncriptor = new BasicTextEncryptor();
-	  textEncriptor.setPasswordCharArray("chaves".toCharArray());
-	  String codMatriculaCrip = textEncriptor.encrypt(codMatricula);
-	  this.codMatricula = codMatriculaCrip; }
-	  
-	  public String getNome() { BasicTextEncryptor textDecriptor = new
-	  BasicTextEncryptor();
-	  textDecriptor.setPasswordCharArray("chaves".toCharArray());
-	  String nomeDecrip = textDecriptor.decrypt(nome); return nomeDecrip; }
-	  
-	  public String getCodMatricula() { BasicTextEncryptor textDecriptor = new
-	  BasicTextEncryptor();
-	  textDecriptor.setPasswordCharArray("chaves".toCharArray());
-	  String codMatriculaDecrip = textDecriptor.decrypt(codMatricula); return
-	  codMatriculaDecrip; }
-	 */
-
-
->>>>>>> 41aec6ade8b2b00b43aff43183e3f90a8c785b2c
+*/
 
 	public void setSenha(String senha) {
 		this.senha = HashUtil.hash256(senha);
