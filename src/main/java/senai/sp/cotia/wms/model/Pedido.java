@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Null;
 
 import lombok.Data;
 
@@ -26,8 +27,7 @@ public class Pedido {
 	private int totalItens;
 	@OneToOne
 	private Professor prof;
-	
-
+	private boolean enderecado;
 	
 	public Double totalPedido(Pedido pedido) {
 		double total = 0;

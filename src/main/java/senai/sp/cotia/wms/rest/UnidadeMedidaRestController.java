@@ -26,7 +26,7 @@ public class UnidadeMedidaRestController {
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public Object cadastrarMedida(@RequestBody UnidadeMedida unidade) {
-		try {
+		try {       
 			// salvar o usuário no banco de dados
 			repo.save(unidade);
 			return ResponseEntity.ok(HttpStatus.CREATED);

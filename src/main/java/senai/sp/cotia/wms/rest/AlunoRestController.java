@@ -319,7 +319,7 @@ public class AlunoRestController {
 				expiracao.add(Calendar.HOUR, 12);
 
 				Algorithm algoritimo = Algorithm.HMAC256(SECRET);
-
+      
 				TokenWms token = new TokenWms();
 				token.setToken(JWT.create().withPayload(map).withIssuer(EMISSOR).withExpiresAt(expiracao.getTime())
 						.sign(algoritimo));
@@ -360,6 +360,7 @@ public class AlunoRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 	@PostMapping(value = "/buscarEmail/{e}")
 	public ResponseEntity<Aluno> verifEmail(@RequestBody Aluno aluno, @PathVariable("e") String email) {

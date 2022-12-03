@@ -143,6 +143,21 @@ public class PedidoRestController {
 		header.setLocation(URI.create("/api/pedido"));
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
+	
+	// MÉTODO PARA SALVAR ATUALIZAÇÃO
+	@RequestMapping(value = "enderecado/{id}", method = RequestMethod.PATCH)
+	public ResponseEntity<Void> endecado(@RequestBody Pedido pedido, @PathVariable("id") Long idPedido) {
+		
+		Pedido pedidoBd = pedidoRepo.findBynumPedido(idPedido);
+		pedidoBd.setEnderecado(pedido.isEnderecado());
+		// salvar pedido atualizado
+		System.out.println(pedido);
+		pedidoRepo.save(pedidoBd);
+		// criar novo cabeçalho HTTP
+		HttpHeaders header = new HttpHeaders();
+		header.setLocation(URI.create("/api/pedido"));
+		return new ResponseEntity<Void>(header, HttpStatus.OK);
+	}
 
 	// MÉTODO PARA DELETAR PEDIDO
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -157,26 +172,29 @@ public class PedidoRestController {
 		return pedidoRepo.procurarTudo(param);
 	}
 
-	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PATCH)
+	@RequestMapping(value = "/saida/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> debitar(@PathVariable("id") Long idEndereco, @RequestBody Enderecamento endereco) {
 
 		if (idEndereco != endereco.getId()) {
 			throw new RuntimeException("ID inválido");
 		}
-
+		
+		Optional<Enderecamento> enderecoBd = end.findById(idEndereco);
 		Movimentacao mov = new Movimentacao();
 		mov.setTipo(Tipo.SAIDA);
 		LocalDateTime time = LocalDateTime.now();
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		//mov.setData();
 		mov.setProduto(endereco.getItens());
+		mov.setQuantidade(enderecoBd.get().getQuantidade() - endereco.getQuantidade());
 		movRepo.save(mov);
 
-		if (endereco.getQuantidade() == 0) {
-			endereco.setItens(null);
+		if (endereco.getQuantidade() <= 0) {
+			end.delete(endereco);
+		}else {
+			end.save(endereco);
 		}
-
-		end.save(endereco);
+		
 		// criar novo cabeçalho HTTP
 		HttpHeaders header = new HttpHeaders();
 		header.setLocation(URI.create("/api/pedido"));
