@@ -1,5 +1,8 @@
 package senai.sp.cotia.wms.model;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,7 +23,7 @@ public class Movimentacao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String data;
+	private Date data;
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 	@OneToOne

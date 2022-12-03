@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -78,17 +81,22 @@ public class MovimentacaoPdf {
 	// A PATIR DE UMA DATA E UM PRODUTO ESPECIFICO
 	@RequestMapping(value = "pdf/{a}&{c}&{e}", method = RequestMethod.GET)
 	public String generatedPdfDatasProdutos(@PathVariable("c") String dateStart, @PathVariable("e") String dateEnd,
-			@PathVariable("a") String produto, 
-			HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, JRException {
+			@PathVariable("a") String produto, HttpServletRequest request, HttpServletResponse response)
+			throws FileNotFoundException, JRException, ParseException {
 		// lista de movimentações de acordo com a data e o produto especificado
-		List<Movimentacao> list = movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
+		SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+
+		Date dStart = fmt.parse(dateStart);
+		Date dEnd = fmt.parse(dateEnd);
+		
+		List<Movimentacao> list = movimentacaoRepository.dataProduto(produto, dStart, dEnd);
 		try {
 			// Instanciando uma coleção de dados a partir do lista de movimentações
 			JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 
 			// compilando o arquivo de layout do relatório
 			JasperReport report = JasperCompileManager
-					.compileReport(new FileInputStream("src/main/java/relatorios/Invoice.jrxml"));
+					.compileReport(new FileInputStream("src/main/java/relatorios/moviDatas.jrxml"));
 			HashMap<String, Object> map = new HashMap<>();
 			// passando a coleção de dados para o parameter CollectionBeanParm do jasper
 			// report
@@ -103,11 +111,11 @@ public class MovimentacaoPdf {
 			JasperExportManager.exportReportToPdfFile(jasperPrint, name);
 
 			// NOTA SE ESSE METODO FOR APROVADO PELO CHILE IMPLEMENTAR
-			
-			  File arquivo = new File(name); 
-			  OutputStream output =response.getOutputStream();
-			  Files.copy(arquivo, output);
-			  return "uauauau2";
+
+			File arquivo = new File(name);
+			OutputStream output = response.getOutputStream();
+			Files.copy(arquivo, output);
+			return "uauauau2";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "erro";
@@ -118,11 +126,18 @@ public class MovimentacaoPdf {
 	// METODO PARA GERAR RELATÓRIO DE MOVIMENTAÇÕES
 	// A PATIR DE UMA DATA ESPECIFICA
 	@RequestMapping(value = "pdf/data/{s}&{e}", method = RequestMethod.GET)
-	public ResponseEntity<Movimentacao> generatedPdfDatas(@PathVariable("s") String dateStart, @PathVariable("e") String dateEnd,
-			HttpServletRequest request, HttpServletResponse response)
-			throws FileNotFoundException, JRException {
+	public ResponseEntity<Movimentacao> generatedPdfDatas(@PathVariable("s") String dateStart,
+			@PathVariable("e") String dateEnd, HttpServletRequest request, HttpServletResponse response)
+			throws FileNotFoundException, JRException, ParseException {
 
-		List<Movimentacao> list = movimentacaoRepository.buscarMovimentacoesPorData(dateStart, dateEnd);
+		System.out.println(dateStart);
+		System.out.println(dateEnd);
+		SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+
+		Date dStart = fmt.parse(dateStart);
+		Date dEnd = fmt.parse(dateEnd);
+
+		List<Movimentacao> list = movimentacaoRepository.buscarMovimentacoesPorData(dStart, dEnd);
 
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
 		try {
@@ -137,15 +152,13 @@ public class MovimentacaoPdf {
 
 			JasperExportManager.exportReportToPdfFile(jasperPrint, name);
 
-			 File arquivo = new File(name);
-			 OutputStream output = response.getOutputStream();
-			 Files.copy(arquivo, output);
-			 return ResponseEntity.ok().build();
+			File arquivo = new File(name);
+			OutputStream output = response.getOutputStream();
+			Files.copy(arquivo, output);
+			return ResponseEntity.ok().build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
-		
-		
 
 	}
 

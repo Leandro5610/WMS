@@ -2,8 +2,11 @@ package senai.sp.cotia.wms.rest;
 
 
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +49,7 @@ public class MovimentacaoRestController {
 			movimentacao.setTipo(Tipo.ENTRADA);
 			LocalDateTime time = LocalDateTime.now();
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			movimentacao.setData(time.format(fmt));
+			//movimentacao.setData(time.format(fmt));
 			movimentacaoRepository.save(movimentacao);
 
 		return "deu certo";
@@ -120,8 +123,12 @@ public class MovimentacaoRestController {
 	}
 	
 	@RequestMapping(value = "listar/{a}&{c}&{e}", method = RequestMethod.GET)
-	public List<Movimentacao> listMov(@PathVariable("c")String dateStart, @PathVariable("e")String dateEnd, @PathVariable("a")String produto) {
-		return movimentacaoRepository.dataProduto(produto, dateStart, dateEnd);
+	public List<Movimentacao> listMov(@PathVariable("c")String dateStart, @PathVariable("e")String dateEnd, @PathVariable("a")String produto) throws ParseException {
+		SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
+
+		Date dStart = fmt.parse(dateStart);
+		Date dEnd = fmt.parse(dateEnd);
+		return movimentacaoRepository.dataProduto(produto, dStart, dEnd);
 	}
 
 	/*

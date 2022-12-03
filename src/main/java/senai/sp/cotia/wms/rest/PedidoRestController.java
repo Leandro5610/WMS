@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,7 +168,7 @@ public class PedidoRestController {
 		mov.setTipo(Tipo.SAIDA);
 		LocalDateTime time = LocalDateTime.now();
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		mov.setData(time.format(fmt));
+		//mov.setData();
 		mov.setProduto(endereco.getItens());
 		movRepo.save(mov);
 
@@ -198,16 +200,18 @@ public class PedidoRestController {
 
 	}
 
-	public Object saveMovimentacao(Pedido pedido) {
+	public Object saveMovimentacao(Pedido pedido) throws ParseException {
 
 		for (ItemPedido itens : pedido.getItens()) {
 			Movimentacao mov = new Movimentacao();
 			mov.setProduto(itens.getProduto());
 			mov.setTipo(Tipo.ENTRADA);
-			LocalDateTime time = LocalDateTime.now();
+			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
 			
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			mov.setData(time.format(fmt));
+			Date data =new Date();
+			
+		
+			mov.setData(data);
 			mov.setQuantidade(itens.getQuantidade());
 			movRepo.save(mov);
 		
