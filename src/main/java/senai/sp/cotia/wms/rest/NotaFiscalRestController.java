@@ -67,7 +67,7 @@ public class NotaFiscalRestController {
 	}
 	
 	@RequestMapping(value = "pega/{cod}", method = RequestMethod.GET)
-	public List<NotaFiscal> vamove(@PathVariable("cod") String param) {
+	public NotaFiscal vamove(@PathVariable("cod") String param) {
 		Long id = Long.parseLong(param);
 		return nfRepo.pegaPedido(id);
 	}

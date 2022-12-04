@@ -32,9 +32,13 @@ public class Aluno {
 	private String imagem;
 	@Column(unique = true)
 	private String email;
+<<<<<<< HEAD
 
 	private int codigo;
 
+=======
+	private int codigo;
+>>>>>>> 541adadf7d2c76df28535edd8586ff442e4cfd8e
 
 
 	/*
@@ -45,9 +49,6 @@ public class Aluno {
 	 */
 
 	 /*       public void setCodMatricula(String codMatricula) {
-
-
-
 
 
 	/*
@@ -78,6 +79,7 @@ public class Aluno {
 		String codMatriculaDecrip = textDecriptor.decrypt(codMatricula);
 		return codMatriculaDecrip;
 	}
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 	private int codigo;
@@ -116,6 +118,9 @@ public class Aluno {
 	  codMatriculaDecrip; }
 	 */
 
+=======
+*/
+>>>>>>> 541adadf7d2c76df28535edd8586ff442e4cfd8e
 
 	public void setSenha(String senha) {
 		this.senha = HashUtil.hash256(senha);
