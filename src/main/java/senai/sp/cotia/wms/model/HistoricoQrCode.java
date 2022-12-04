@@ -15,4 +15,5 @@ public class HistoricoQrCode {
 	private Long id;
 	private String codigo;
 	private String data;
+	private Long idAluno;
 }

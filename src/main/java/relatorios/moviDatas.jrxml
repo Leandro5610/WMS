@@ -52,19 +52,19 @@
 			<style backcolor="#D8D8D8"/>
 		</conditionalStyle>
 	</style>
-	<style name="Table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+	<style name="Table 1_TH" mode="Opaque" backcolor="#C2C2C2">
 		<box>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
 			<bottomPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Table 1_CH" mode="Opaque" backcolor="#C2C2C2">
+	<style name="Table 1_CH" mode="Opaque" backcolor="#FFFFFF">
 		<box>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
 			<bottomPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="Table 1_TD" mode="Opaque" backcolor="#D6D6D6">
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
 		<box>
 			<topPen lineWidth="0.5" lineColor="#000000"/>
 			<bottomPen lineWidth="0.5" lineColor="#000000"/>
@@ -83,13 +83,15 @@
 		<field name="data" class="java.util.Date"/>
 		<field name="produto.sku" class="java.lang.String"/>
 		<field name="tipo" class="java.lang.Object"/>
+		<field name="produto.nome" class="java.lang.String"/>
+		<field name="quantidade" class="java.lang.Integer"/>
 	</subDataset>
 	<parameter name="CollectionBeanParam" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<title>
-		<band height="196" splitType="Stretch">
+		<band height="160" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="80" width="556" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
 					<property name="local_mesure_unitheight" value="pixel"/>
@@ -147,12 +149,12 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="20"/>
+		<band height="18"/>
 	</columnHeader>
 	<detail>
 		<band height="295">
 			<componentElement>
-				<reportElement x="108" y="10" width="340" height="110" uuid="3133fd62-335a-40ef-953f-22e722e7c2d9">
+				<reportElement x="10" y="10" width="520" height="110" uuid="3133fd62-335a-40ef-953f-22e722e7c2d9">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
 					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
@@ -174,7 +176,7 @@
 						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="100" height="30" uuid="57d1fec2-71db-48ff-b540-8a5e34a3baee"/>
-								<textElement textAlignment="Center"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{data})]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -185,13 +187,13 @@
 							<staticText>
 								<reportElement x="0" y="0" width="120" height="30" uuid="236e7458-f0c6-4750-9dc3-cb533e53a8bf"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[PRODUTO]]></text>
+								<text><![CDATA[SKU]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="120" height="30" uuid="b4c3afe3-2d28-459e-b198-ff5a9077cfb6"/>
-								<textElement textAlignment="Center"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{produto.sku}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
@@ -200,16 +202,50 @@
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
 						<jr:tableHeader style="Table 1_TH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="120" height="30" uuid="9d02ef65-27a3-4dd9-9e28-cdede5553952"/>
+								<reportElement x="0" y="0" width="120" height="30" uuid="f098f584-7fb5-4543-b963-12363c589dda"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[NOME]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="120" height="30" uuid="e0b49f1d-ecdc-4597-8e2f-4ae952d38170"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{produto.nome}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="0cd146c1-d196-4265-b3f3-2ccd275f34b1">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:tableHeader style="Table 1_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="4d14206e-d31f-4ebd-b424-f8c8dc8f29cc"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[TIPO]]></text>
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table 1_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="120" height="30" uuid="6f26768c-3ab7-4037-937f-41d12a48a227"/>
-								<textElement textAlignment="Center"/>
+								<reportElement x="0" y="0" width="90" height="30" uuid="d2a2b7bd-2f8b-4e41-8956-a7627669347d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[""+$F{tipo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="0d4a70d1-49da-4003-bd7e-1a33250830e8">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:tableHeader style="Table 1_TH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="40ae30a1-9d8d-4a41-ade9-b42c21aae868"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[QAUNTIDADE]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:detailCell style="Table 1_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="30" uuid="c22a3f3a-1602-481d-a98b-53dcacfc2744"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{quantidade}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

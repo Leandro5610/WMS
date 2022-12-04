@@ -95,9 +95,20 @@ public class ProdutoRestController {
 	// MÉTODO PARA BUSCAR PRODUTO NO BANCO
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Produto> findProduto(@PathVariable("id") Long codProduto) {
+		String codString = codProduto.toString();
 		
+		int i =0;
+        while (i < codString.length() && codString.charAt(i) == '0')
+            i++;
+        
+        StringBuffer sb = new StringBuffer(codString);
+        sb.replace(0, i, "");
+		
+		
+		
+		Long id = Long.parseLong(codString);		
 		// buscar pedido
-		Optional<Produto> produto = prodRepo.findById(codProduto);
+		Optional<Produto> produto = prodRepo.findById(id);
 
 		// verificação de pedido
 		if (produto.isPresent()) {

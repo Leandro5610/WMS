@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,29 +66,42 @@ public class BarcodePdf {
 
 			// formata o numero com 9 casas decimais
 			String numeroFormatado = "";
-			if (idProduto < 10) {
-				numeroFormatado= String.format("%.8f", number);
-			}else if(idProduto >=100 && idProduto <=99) {
-				numeroFormatado = String.format("%.7f", number);
+			/*if (idProduto < 10) {
+				numeroFormatado= String.format("%.6f", number);
+			}else if(idProduto >=1000 && idProduto <=999) {
+				numeroFormatado = String.format("%.5f", number);
 			}else if(idProduto >=1000 && idProduto == 9999) {
-				numeroFormatado = String.format("%.6f", number);
+				numeroFormatado = String.format("%.3f", number);
 			}else {
-				numeroFormatado = String.format("%.6f", number);
-			}
-
+				numeroFormatado = String.format("%.4f", number);
+			}*/
+			
+			numeroFormatado= String.format("%.5f", number);
+			
 			// retira a vircula do número
 			String mascaraCodigo = numeroFormatado.replace(",", "");
 
 			// três primeiros digitos do codigo de barras brasileiro GTIN-13
 			String padraoBr = "789";
-
+			
+			String mascaraId = "";
+			if(idProduto >= 10) {
+				mascaraId ="00";
+			}else if(idProduto >=100) {
+				mascaraId="0";
+			}else if(idProduto <10){
+				mascaraId="000";
+			}
+			
+			
 			Paragraph paragrafo = new Paragraph();
+			
 
 			paragrafo.add("Codigo de Barras: " + nomeProduto);
 
 			// inseri as inforções do codigo de barras com a mascara e o identificador do
 			// produto
-			barcode.setCode(padraoBr + mascaraCodigo + idProduto.toString());
+			barcode.setCode(padraoBr + mascaraCodigo +  mascaraId + idProduto.toString());
 
 			// montando o a imagem do codigo de barras
 			Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
@@ -156,8 +170,8 @@ public class BarcodePdf {
 
 	}
 
-	@GetMapping(value = "barCodes")
-	public String generatedPdfA(Long[] ids, HttpServletRequest request, HttpServletResponse response)
+	@PostMapping(value = "barCodes")
+	public String generatedPdfA(Produto[] ids, HttpServletRequest request, HttpServletResponse response)
 			throws FileNotFoundException, JRException, DocumentException {
 
 		try {
@@ -172,19 +186,19 @@ public class BarcodePdf {
 
 			// percorre o array de ids para gerar codigos de barras
 			// de acordo com o tamanho do array
-			for (Long id : ids) {
+			for (Produto produto : ids) {
 				
 				Random geradorNumero = new Random();
-				Produto product = productRepository.findById(id).get();
+				Produto product = productRepository.findById(produto.getCodProduto()).get();
 				System.out.println("Nome do produto: " + product.getNome());
 				// gera um numero aleatório até 10
 				double number = geradorNumero.nextDouble();
 				
 				String numeroFormatado = "";
-				if (id < 10) {
+				/*if (produto.getCodProduto() < 10) {
 					numeroFormatado= String.format("%.8f", number);
 					System.out.println("passou 1");
-				}else if(id >=100 && id <=199) {
+				}else if( >=100 && id <=199) {
 					numeroFormatado = String.format("%.6f", number);
 					System.out.println("passou 2");
 				}else if(id >=1000 && id == 9999) {
@@ -193,7 +207,17 @@ public class BarcodePdf {
 				}else {
 					numeroFormatado = String.format("%.7f", number);
 					System.out.println("passou 4");
+				}*/
+				String mascaraId = "";
+				if(produto.getCodProduto() >= 10) {
+					mascaraId ="00";
+				}else if(produto.getCodProduto() >=100) {
+					mascaraId="0";
+				}else if(produto.getCodProduto() <10){
+					mascaraId="000";
 				}
+				
+				
 				// formata o numero com 9 casas decimais
 
 				// retira a vircula do número
@@ -206,7 +230,7 @@ public class BarcodePdf {
 
 				paragrafo.add("Codigo de Barras: " + product.getNome());
 				// gerar o codigo de barras com a mascara e o identificador do produto
-				barcode.setCode(padraoBr + mascaraCodigo + id);
+				//barcode.setCode(padraoBr + mascaraCodigo + id);
 
 				Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK,
 						BaseColor.BLACK);
