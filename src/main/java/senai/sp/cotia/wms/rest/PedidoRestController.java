@@ -1,4 +1,4 @@
-  package senai.sp.cotia.wms.rest;
+package senai.sp.cotia.wms.rest;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,7 +75,7 @@ public class PedidoRestController {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRep;
-	
+
 	// MÉTODO PARA SALVAR
 	@RequestMapping(value = "save")
 	public ResponseEntity<Pedido> savePedido(@RequestBody Pedido pedido, HttpServletRequest request,
@@ -87,23 +87,21 @@ public class PedidoRestController {
 
 			for (ItemPedido itens : pedido.getItens()) {
 				itens.setPedido(pedido);
-				totalProdutos +=itens.getQuantidade();
-			} 
+				totalProdutos += itens.getQuantidade();
+			}
 
-
-			
 			pedido.setTotalItens(totalProdutos);
 
 			Calendar c = Calendar.getInstance();
 			SimpleDateFormat parse = new SimpleDateFormat("dd-MM-yyyy");
-			
+
 			String data = parse.format(c.getTime());
 			pedido.setDataPedido(data);
-			
+
 			pedidoRepo.save(pedido);
 			saveMovimentacao(pedido);
 			saveNotaFiscal(pedido);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -143,11 +141,11 @@ public class PedidoRestController {
 		header.setLocation(URI.create("/api/pedido"));
 		return new ResponseEntity<Void>(header, HttpStatus.OK);
 	}
-	
+
 	// MÉTODO PARA SALVAR ATUALIZAÇÃO
 	@RequestMapping(value = "enderecado/{id}", method = RequestMethod.PATCH)
 	public ResponseEntity<Void> endecado(@RequestBody Pedido pedido, @PathVariable("id") Long idPedido) {
-		
+
 		Pedido pedidoBd = pedidoRepo.findBynumPedido(idPedido);
 		pedidoBd.setEnderecado(pedido.isEnderecado());
 		// salvar pedido atualizado
@@ -178,23 +176,22 @@ public class PedidoRestController {
 		if (idEndereco != endereco.getId()) {
 			throw new RuntimeException("ID inválido");
 		}
-		
+
 		Optional<Enderecamento> enderecoBd = end.findById(idEndereco);
 		Movimentacao mov = new Movimentacao();
 		mov.setTipo(Tipo.SAIDA);
-		LocalDateTime time = LocalDateTime.now();
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		//mov.setData();
+		Date data = new Date();
+		mov.setData(data);
 		mov.setProduto(endereco.getItens());
 		mov.setQuantidade(enderecoBd.get().getQuantidade() - endereco.getQuantidade());
 		movRepo.save(mov);
 
 		if (endereco.getQuantidade() <= 0) {
 			end.delete(endereco);
-		}else {
+		} else {
 			end.save(endereco);
 		}
-		
+
 		// criar novo cabeçalho HTTP
 		HttpHeaders header = new HttpHeaders();
 		header.setLocation(URI.create("/api/pedido"));
@@ -225,14 +222,12 @@ public class PedidoRestController {
 			mov.setProduto(itens.getProduto());
 			mov.setTipo(Tipo.ENTRADA);
 			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
-			
-			Date data =new Date();
-			
-		
+
+			Date data = new Date();
+
 			mov.setData(data);
 			mov.setQuantidade(itens.getQuantidade());
 			movRepo.save(mov);
-		
 
 		}
 
@@ -271,9 +266,9 @@ public class PedidoRestController {
 	}
 
 	@GetMapping(value = "teste/{id}")
-	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota,HttpServletRequest request,
+	public ResponseEntity<ItemNota> teste(@PathVariable("id") Long nota, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-		
+
 		List<ItemNota> list = itemNotaRepository.pegarNota(nota);
 
 		JRBeanCollectionDataSource bean = new JRBeanCollectionDataSource(list);
@@ -282,20 +277,20 @@ public class PedidoRestController {
 		response.setContentType("apllication/pdf");
 
 		response.addHeader("Content-Disposition", "inline; filename=" + "codigo.pdf");
-		
+
 		try {
 
-
 			/*
-			  LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
-			  DateTimeFormatter.ofPattern("dd-MM-yyyy"); String dataFmt = fmt+"";
+			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+			 * DateTimeFormatter.ofPattern("dd-MM-yyyy"); String dataFmt = fmt+"";
 			 */
 			JasperReport report = JasperCompileManager
 					.compileReport(getClass().getResourceAsStream("/relatorios/notaFiscal.jrxml"));
 
-			/*LocalDateTime time = LocalDateTime.now();
-			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			String dataFmt = fmt+"";*/
+			/*
+			 * LocalDateTime time = LocalDateTime.now(); DateTimeFormatter fmt =
+			 * DateTimeFormatter.ofPattern("dd-MM-yyyy"); String dataFmt = fmt+"";
+			 */
 			Map<String, Object> map = new HashMap<>();
 			String dataEmission = notaToda.get().getDataEmissao();
 			String horaEntrada = dataEmission.substring(11);
@@ -305,10 +300,10 @@ public class PedidoRestController {
 			map.put("horaEntrada", horaEntrada);
 
 			String name = "notaFiscal.pdf";
-			
+
 			JasperPrint jasperPrint = JasperFillManager.fillReport(report, map, bean);
 			JasperExportManager.exportReportToPdfFile(jasperPrint, name);
-			
+
 			File arquivo = new File(name);
 
 			OutputStream output = response.getOutputStream();
@@ -322,19 +317,20 @@ public class PedidoRestController {
 		return ResponseEntity.ok().build();
 
 	}
+
 	@RequestMapping(value = "/findbypedido/{codigo}")
-    public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {
-        return itemPedidoRep.pegarItens(param);
-    }
-	
+	public List<ItemPedido> findAllByPedido(@PathVariable("codigo") Long param) {
+		return itemPedidoRep.pegarItens(param);
+	}
+
 	@GetMapping(value = "pedidosAluno/{id}")
-	public List<Pedido>pegaPedidoDoAluno(@PathVariable("id")Long param){
+	public List<Pedido> pegaPedidoDoAluno(@PathVariable("id") Long param) {
 		return pedidoRepo.pegarPedidosAluno(param);
 	}
+
 	@GetMapping(value = "pedidosProfessor/{id}")
-	public List<Pedido>pegaPedidoDoProf(@PathVariable("id")Long param){
+	public List<Pedido> pegaPedidoDoProf(@PathVariable("id") Long param) {
 		return pedidoRepo.pegarPedidosProf(param);
 	}
-	
 
 }

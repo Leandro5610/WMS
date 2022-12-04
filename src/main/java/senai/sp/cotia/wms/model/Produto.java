@@ -36,6 +36,7 @@ public class Produto {
 	private Double pis;
 	private Double cofins;
 	private Double icms;
+	private Double valorLiquido;
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
 	private List<ItemFornecedor> fornecedores;
 	@OneToOne

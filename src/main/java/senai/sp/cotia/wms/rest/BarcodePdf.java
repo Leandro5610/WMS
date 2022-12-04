@@ -1,6 +1,5 @@
 package senai.sp.cotia.wms.rest;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Optional;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,42 +66,38 @@ public class BarcodePdf {
 
 			// formata o numero com 9 casas decimais
 			String numeroFormatado = "";
-			/*if (idProduto < 10) {
-				numeroFormatado= String.format("%.6f", number);
-			}else if(idProduto >=1000 && idProduto <=999) {
-				numeroFormatado = String.format("%.5f", number);
-			}else if(idProduto >=1000 && idProduto == 9999) {
-				numeroFormatado = String.format("%.3f", number);
-			}else {
-				numeroFormatado = String.format("%.4f", number);
-			}*/
-			
-			numeroFormatado= String.format("%.5f", number);
-			
+			/*
+			 * if (idProduto < 10) { numeroFormatado= String.format("%.6f", number); }else
+			 * if(idProduto >=1000 && idProduto <=999) { numeroFormatado =
+			 * String.format("%.5f", number); }else if(idProduto >=1000 && idProduto ==
+			 * 9999) { numeroFormatado = String.format("%.3f", number); }else {
+			 * numeroFormatado = String.format("%.4f", number); }
+			 */
+
+			numeroFormatado = String.format("%.5f", number);
+
 			// retira a vircula do número
 			String mascaraCodigo = numeroFormatado.replace(",", "");
 
 			// três primeiros digitos do codigo de barras brasileiro GTIN-13
 			String padraoBr = "789";
-			
+
 			String mascaraId = "";
-			if(idProduto >= 10) {
-				mascaraId ="00";
-			}else if(idProduto >=100) {
-				mascaraId="0";
-			}else if(idProduto <10){
-				mascaraId="000";
+			if (idProduto >= 10) {
+				mascaraId = "00";
+			} else if (idProduto >= 100) {
+				mascaraId = "0";
+			} else if (idProduto < 10) {
+				mascaraId = "000";
 			}
-			
-			
+
 			Paragraph paragrafo = new Paragraph();
-			
 
 			paragrafo.add("Codigo de Barras: " + nomeProduto);
 
 			// inseri as inforções do codigo de barras com a mascara e o identificador do
 			// produto
-			barcode.setCode(padraoBr + mascaraCodigo +  mascaraId + idProduto.toString());
+			barcode.setCode(padraoBr + mascaraCodigo + mascaraId + idProduto.toString());
 
 			// montando o a imagem do codigo de barras
 			Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK, BaseColor.BLACK);
@@ -135,12 +131,12 @@ public class BarcodePdf {
 		Document document = new Document(new Rectangle(PageSize.A4));
 		try {
 			/*
-			  CASO PRECISE // coloca na reposta o formato do arquivo
-			  response.setContentType("apllication/pdf"); // cria o arquivo com o nome
-			  qrCode response.addHeader("Content-Disposition", "inline; filename=" +
-			  "qrCode.pdf");
+			 * CASO PRECISE // coloca na reposta o formato do arquivo
+			 * response.setContentType("apllication/pdf"); // cria o arquivo com o nome
+			 * qrCode response.addHeader("Content-Disposition", "inline; filename=" +
+			 * "qrCode.pdf");
 			 */
-			
+
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 
@@ -171,11 +167,18 @@ public class BarcodePdf {
 	}
 
 	@PostMapping(value = "barCodes")
-	public String generatedPdfA(Produto[] ids, HttpServletRequest request, HttpServletResponse response)
-			throws FileNotFoundException, JRException, DocumentException {
-
+	public String generatedPdfA(@RequestBody Produto[] produtos, HttpServletRequest request,
+			HttpServletResponse response) throws FileNotFoundException, JRException, DocumentException {
+		/*
+		 * if (produto.getCodProduto() < 10) { numeroFormatado= String.format("%.8f",
+		 * number); System.out.println("passou 1"); }else if( >=100 && id <=199) {
+		 * numeroFormatado = String.format("%.6f", number);
+		 * System.out.println("passou 2"); }else if(id >=1000 && id == 9999) {
+		 * numeroFormatado = String.format("%.5f", number);
+		 * System.out.println("passou 3"); }else { numeroFormatado =
+		 * String.format("%.7f", number); System.out.println("passou 4"); }
+		 */
 		try {
-
 			Document document = new Document();
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter arquivo = PdfWriter.getInstance(document, response.getOutputStream());
@@ -186,38 +189,27 @@ public class BarcodePdf {
 
 			// percorre o array de ids para gerar codigos de barras
 			// de acordo com o tamanho do array
-			for (Produto produto : ids) {
-				
+			for (Produto produto : produtos) {
+				Optional<Produto> p = productRepository.findById(produto.getCodProduto());
+
 				Random geradorNumero = new Random();
-				Produto product = productRepository.findById(produto.getCodProduto()).get();
-				System.out.println("Nome do produto: " + product.getNome());
+
+				System.out.println("Nome do produto: " + p.get().getNome());
 				// gera um numero aleatório até 10
 				double number = geradorNumero.nextDouble();
-				
+
 				String numeroFormatado = "";
-				/*if (produto.getCodProduto() < 10) {
-					numeroFormatado= String.format("%.8f", number);
-					System.out.println("passou 1");
-				}else if( >=100 && id <=199) {
-					numeroFormatado = String.format("%.6f", number);
-					System.out.println("passou 2");
-				}else if(id >=1000 && id == 9999) {
-					numeroFormatado = String.format("%.5f", number);
-					System.out.println("passou 3");
-				}else {
-					numeroFormatado = String.format("%.7f", number);
-					System.out.println("passou 4");
-				}*/
+				numeroFormatado = String.format("%.5f", number);
+
 				String mascaraId = "";
-				if(produto.getCodProduto() >= 10) {
-					mascaraId ="00";
-				}else if(produto.getCodProduto() >=100) {
-					mascaraId="0";
-				}else if(produto.getCodProduto() <10){
-					mascaraId="000";
+				if (p.get().getCodProduto() >= 10) {
+					mascaraId = "00";
+				} else if (p.get().getCodProduto() >= 100) {
+					mascaraId = "0";
+				} else if (p.get().getCodProduto() < 10) {
+					mascaraId = "000";
 				}
-				
-				
+
 				// formata o numero com 9 casas decimais
 
 				// retira a vircula do número
@@ -228,9 +220,9 @@ public class BarcodePdf {
 
 				Paragraph paragrafo = new Paragraph();
 
-				paragrafo.add("Codigo de Barras: " + product.getNome());
+				paragrafo.add("Codigo de Barras: " + p.get().getNome());
 				// gerar o codigo de barras com a mascara e o identificador do produto
-				//barcode.setCode(padraoBr + mascaraCodigo + id);
+				 barcode.setCode(padraoBr + mascaraCodigo + mascaraId + p.get().getCodProduto());
 
 				Image img = barcode.createImageWithBarcode(arquivo.getDirectContent(), BaseColor.BLACK,
 						BaseColor.BLACK);
@@ -252,34 +244,33 @@ public class BarcodePdf {
 	}
 
 	// METODO PARA GERAR VARIOS QR CODES
-	@RequestMapping(value = "qrCodes", method = RequestMethod.GET)
-	public String generatedQrCodes(Long[] ids, HttpServletRequest request, HttpServletResponse response)
+	@RequestMapping(value = "qrCodes", method = RequestMethod.POST)
+	public String generatedQrCodes(@RequestBody Produto[] produtos, HttpServletRequest request, HttpServletResponse response)
 			throws FileNotFoundException, JRException, DocumentException {
 
 		Document document = new Document(new Rectangle(PageSize.A4));
 		try {
 			// cria um arquivo pdf passando o documento e o lugar que vai ser salvo
 			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
-			
 
 			document.open();
-			
+
 			// percorre o array de ids para gerar codigos de barras
 			// de acordo com o tamanho do array
-			for (Long qrCode : ids) {
-				Produto product = productRepository.findById(qrCode).get();
-				
+			for (Produto qrCodes : produtos) {
+				Optional<Produto> p = productRepository.findById(qrCodes.getCodProduto());
+
 				Paragraph paragrafo = new Paragraph();
-				
-				paragrafo.add("QR CODE: " + product.getNome());
-				
+
+				paragrafo.add("QR CODE: " + p.get().getNome());
+
 				// adicionar o id no qrcode
 				document.add(paragrafo);
-				
-				BarcodeQRCode qrcode = new BarcodeQRCode(qrCode + "", 200, 200, null);
-				
+
+				BarcodeQRCode qrcode = new BarcodeQRCode(qrCodes + "", 200, 200, null);
+
 				Image image = qrcode.getImage();
-				
+
 				// gerar o pdf com vários qr codes
 				document.add(image);
 
