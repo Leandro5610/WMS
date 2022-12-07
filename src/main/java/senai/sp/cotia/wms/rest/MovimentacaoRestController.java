@@ -117,9 +117,25 @@ public class MovimentacaoRestController {
 
 	// metodo para procurar um item à partir de qualquer atributo
 	
-	@RequestMapping(value = "/findbyall/{p}", method = RequestMethod.GET)
-	public List<Movimentacao> findByAll(@PathVariable("p") String param) {
-		return movimentacaoRepository.procurarTudo(param);
+	@RequestMapping(value = "/findByTipo/{p}", method = RequestMethod.GET)
+	public List<Movimentacao> findByTipo(@PathVariable("p") String param) {
+		Tipo t = Tipo.valueOf(param);
+		return movimentacaoRepository.procurarPorTipo(t);
+	}
+	@RequestMapping(value = "/findByData/{p}", method = RequestMethod.GET)
+	public List<Movimentacao> findByData(@PathVariable("p") String param) {
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		Date data = new Date();
+		try {
+			data = fmt.parse(param);
+			return movimentacaoRepository.procurarPorData(data);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return (List<Movimentacao>) ResponseEntity.badRequest().build();
+
+		}
+		
 	}
 	
 	@RequestMapping(value = "listar/{a}&{c}&{e}", method = RequestMethod.GET)

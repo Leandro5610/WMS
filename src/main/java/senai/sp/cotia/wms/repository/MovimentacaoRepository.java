@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import senai.sp.cotia.wms.model.Movimentacao;
+import senai.sp.cotia.wms.type.Tipo;
 
 public interface MovimentacaoRepository extends PagingAndSortingRepository<Movimentacao, Long> {
 	
@@ -16,8 +17,13 @@ public interface MovimentacaoRepository extends PagingAndSortingRepository<Movim
 	public List<Movimentacao> procurarMovimentacao(@Param("p") String param);
 	
 	//metodo para procurar itens no banco de dados por qualquer atributo
-	@Query("SELECT mov FROM Movimentacao mov WHERE mov.data LIKE %:p% OR mov.tipo LIKE %:p% OR mov.produto.nome LIKE %:p%")
-	public List<Movimentacao> procurarTudo(@Param("p") String param);
+	/*@Query("SELECT mov FROM Movimentacao mov WHERE mov.data LIKE %:p% OR mov.tipo LIKE %:p% OR mov.produto.nome LIKE %:p%")
+	public List<Movimentacao> procurarTudo(@Param("p") String param);*/
+	@Query("SELECT m FROM Movimentacao m WHERE tipo = :p")
+	public List<Movimentacao>procurarPorTipo(@Param("p") Tipo param);
+	
+	@Query("SELECT m FROM Movimentacao m WHERE m.data = :d")
+	public List<Movimentacao>procurarPorData(@Param("d") Date param);
 	
 	public List<Movimentacao> findAll();
 	
