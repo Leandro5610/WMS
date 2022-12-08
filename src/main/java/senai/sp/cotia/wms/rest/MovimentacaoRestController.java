@@ -122,6 +122,9 @@ public class MovimentacaoRestController {
 		Tipo t = Tipo.valueOf(param);
 		return movimentacaoRepository.procurarPorTipo(t);
 	}
+	
+	
+	
 	@RequestMapping(value = "/findByData/{p}", method = RequestMethod.GET)
 	public List<Movimentacao> findByData(@PathVariable("p") String param) {
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -206,6 +209,12 @@ public class MovimentacaoRestController {
 	}
 	
 	
+	
+	@RequestMapping(value = "/findByProduto/{p}", method = RequestMethod.GET)
+	public List<Movimentacao> findByProduto(@PathVariable("p") String param) {
+		List<Movimentacao> list = movimentacaoRepository.procurarPorProduto(param);
+		return list;
+	}
 	
 
 }

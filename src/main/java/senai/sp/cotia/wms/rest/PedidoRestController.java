@@ -224,7 +224,9 @@ public class PedidoRestController {
 			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
 
 			Date data = new Date();
-
+			data.setHours(0);
+			data.setSeconds(0);
+			data.setMinutes(0);
 			mov.setData(data);
 			mov.setQuantidade(itens.getQuantidade());
 			movRepo.save(mov);

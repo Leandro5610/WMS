@@ -37,4 +37,6 @@ public interface MovimentacaoRepository extends PagingAndSortingRepository<Movim
 	public List<Movimentacao> buscarMovimentacoesPorData(@Param("s")Date dataStart, @Param("e")Date dataEnd);
 	
 	
+	@Query("SELECT m FROM Movimentacao m WHERE m.produto.nome LIKE %:p%")
+	public List<Movimentacao> procurarPorProduto(@Param("p") String param);
 }

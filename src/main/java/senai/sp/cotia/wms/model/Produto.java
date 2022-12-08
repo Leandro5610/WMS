@@ -11,6 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.Data;
 import senai.sp.cotia.wms.type.Demanda;
 import senai.sp.cotia.wms.type.Tipo;
@@ -45,6 +49,7 @@ public class Produto {
 	@Column(columnDefinition ="LONGTEXT")
 	private String imagem;
 	@OneToMany(mappedBy = "produto")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private List<Movimentacao> movimentacoes;
 	
 	public int getSaldo() {

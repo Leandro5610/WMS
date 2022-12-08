@@ -27,7 +27,6 @@ public class Movimentacao {
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 	@OneToOne
-	@JsonProperty(access = Access.WRITE_ONLY)
 	private Produto produto;
 	private int quantidade; 
 	
