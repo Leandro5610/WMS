@@ -151,62 +151,11 @@ public class AlunoRestController {
 		if (id != aluno.getId()) {
 			throw new RuntimeException("Id Inválido");
 		} // verificar se o aluno tem uma imagem
-		if (aluno.getImagem() != null) {
-			// variavel para guardar a imagem codificada Base64 que está vindo do front
-			String stringImagem = aluno.getImagem();
-
-			// variaveis para extrair o que está entre a / e o ;
-			int posicaoBarra = stringImagem.indexOf('/');
-			int posicaoPontoVirgula = stringImagem.indexOf(';');
-
-			// variavel para retirar a / e o ; para pegar a extensão da imagem
-			String extensao = stringImagem.substring(posicaoBarra, posicaoPontoVirgula);
-
-			// variavel para retirar a / da extensão
-			String ex = extensao.replace("/", "");
-
-			// variavel para retirar o texto data:imagem/enxtensão;base64, que está vindo do
-			// base64 codificado do front-end
-			String base64ImageString = stringImagem.replace("data:image/" + ex + ";base64,", "");
-
-			// variavel para para decodificar o codigo base64 e converter em um vetor de
-			// bytes
-			byte[] decode = Base64.getDecoder().decode(base64ImageString);
-
-			// variavel para converter o vetor de bytes em um texto
-			String arquivoString = decode.toString();
-
-			// variavel para retirar o texto "[B@" da variavel arquivoString
-			String arquivo = arquivoString.replace("[B@", "");
-
-			// variavel para gerar um nome aleatório para o arquivo e juntar com a extensão
-			String nomeArquivo = UUID.randomUUID().toString() + arquivo + "." + ex;
-
-			// variavel para guardar o nome do arquivo em um File
-			File file = new File(nomeArquivo);
-
-			// variavel para converter em arquivo e armazenar na pasta da raiz da aplicação
-			FileOutputStream in = new FileOutputStream("temporaria/" + file);
-
-			// variavel para escrever os bytes no arquivo
-			in.write(decode);
-
-			// pegar o arquivo que foi salvo na pasta temporaria
-			Path pathFile = Paths.get("temporaria/" + nomeArquivo);
-
-			// fazer o upload do arquivo no Fire Base (nuvem)
-			fire.uploadFile(file, decode);
-
-			in.close();
-			// inserir nome da imagem no aluno que está vindo do Front
-			aluno.setImagem(file.toString());
-
-			// salva o aluno com as alteraçoes
-			repository.save(aluno);
-			Files.delete(pathFile);
-			HttpHeaders header = new HttpHeaders();
-			header.setLocation(URI.create("/api/aluno"));
-			return new ResponseEntity<Void>(header, HttpStatus.OK);
+		try {
+			if (aluno.getImagem() != null) {
+				repository.save(aluno);
+			}
+		} catch (Exception e) {
 
 		}
 		repository.save(aluno);
