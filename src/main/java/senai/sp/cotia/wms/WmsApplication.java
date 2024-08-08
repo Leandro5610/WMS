@@ -51,6 +51,7 @@ public class WmsApplication {
 		if (prof.isEmpty()) {
 			profPadrao.setEmail("admin@gmail.com");
 			profPadrao.setNif("1234");
+			
 			profPadrao.setNome("Admin");
 			profPadrao.setSenha("admin");
 			repository.save(profPadrao);
