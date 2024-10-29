@@ -32,9 +32,9 @@ public class AppConfig {
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://roundhouse.proxy.rlwy.net:26690/railway");
+		dataSource.setUrl("jdbc:mysql://root:poHDtLraSvABYbMuQZGEZIepNNUQOwIz@junction.proxy.rlwy.net:50002/railway");
 		dataSource.setUsername("root");
-		dataSource.setPassword("elFwtjLweIakPaFZpnXiWFLUrpPvGiwX");
+		dataSource.setPassword("poHDtLraSvABYbMuQZGEZIepNNUQOwIz");
 		return dataSource;
 	}
 
